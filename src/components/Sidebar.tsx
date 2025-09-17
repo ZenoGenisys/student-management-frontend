@@ -36,11 +36,11 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-interface SidebarProps {
+type SidebarProps = {
   open: boolean;
   handleDrawerOpen: () => void;
   handleDrawerClose: () => void;
-}
+};
 
 const Sidebar: React.FC<SidebarProps> = ({
   open,

@@ -4,9 +4,14 @@ import { PATH } from './path';
 import ProtectedRoute from './ProtectedRoute';
 import { useAuth } from '../state';
 import { Layout } from '../components';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Router = () => {
-  const { token } = useAuth();
+  const { token, isAuthLoading } = useAuth();
+
+  if (isAuthLoading) {
+    return <CircularProgress />;
+  }
 
   return (
     <Routes>

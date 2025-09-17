@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
-import storageService from '../service/storageService';
+import storageService from '../services/storageService';
 import { AuthContext } from './authContext.type';
+import SessionService from '../services/SessionService';
+import { register } from '../repositories';
 
 type AuthState = {
   username: string | null;
@@ -13,12 +15,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [auth, setAuth] = useState<AuthState | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  useEffect(() => {
-    const savedAuth = storageService.getItem<AuthState>('auth');
-    if (savedAuth) {
-      setAuth(savedAuth);
-    }
-    setIsAuthLoading(false);
+  const logout = useCallback(() => {
+    setAuth(null);
+    storageService.removeItem('auth');
   }, []);
 
   const login = useCallback((username: string, token: string) => {
@@ -27,10 +26,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     storageService.setItem('auth', newAuth);
   }, []);
 
-  const logout = useCallback(() => {
-    setAuth(null);
-    storageService.removeItem('auth');
-  }, []);
+  useEffect(() => {
+    register();
+    const savedAuth = storageService.getItem<AuthState>('auth');
+    if (savedAuth) {
+      setAuth(savedAuth);
+    }
+    setIsAuthLoading(false);
+    SessionService.observe(() => {
+      logout();
+    });
+  }, [logout]);
 
   const value = useMemo(
     () => ({
