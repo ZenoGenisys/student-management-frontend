@@ -12,12 +12,11 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import EmailIcon from '@mui/icons-material/Email';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-
-const drawerWidth = 240;
+import { DRAWER_WIDTH, MOBILE_BREAKPOINT } from '../constants/layout';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -59,13 +58,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const StyledAppBar = styled(AppBar, { shouldForwardProp: (prop) => prop !== 'open' })<{
+  open?: boolean;
+}>(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  [theme.breakpoints.up(MOBILE_BREAKPOINT)]: {
+    width: open ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%',
+    marginLeft: open ? DRAWER_WIDTH : 0,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+}));
+
 interface AppbarProps {
   readonly open: boolean;
+  readonly isMobile: boolean;
   readonly handleDrawerOpen: () => void;
   readonly handleDrawerClose: () => void;
 }
 
-export default function Appbar({ open, handleDrawerOpen, handleDrawerClose }: AppbarProps) {
+export default function Appbar({ open, isMobile, handleDrawerOpen, handleDrawerClose }: AppbarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -132,7 +149,7 @@ export default function Appbar({ open, handleDrawerOpen, handleDrawerClose }: Ap
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
-            <MailIcon />
+            <EmailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
@@ -168,21 +185,7 @@ export default function Appbar({ open, handleDrawerOpen, handleDrawerClose }: Ap
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar 
-        position="fixed"
-        sx={{
-          width: open ? `calc(100% - ${drawerWidth}px)` : '100%',
-          marginLeft: open ? `${drawerWidth}px` : 0,
-          transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-          }),
-          [theme.breakpoints.down('sm')]: {
-            width: '100%',
-            marginLeft: 0,
-          }
-        }}
-      >
+      <StyledAppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
             size="large"
@@ -215,7 +218,7 @@ export default function Appbar({ open, handleDrawerOpen, handleDrawerClose }: Ap
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="error">
-                <MailIcon />
+                <EmailIcon />
               </Badge>
             </IconButton>
             <IconButton
@@ -252,7 +255,7 @@ export default function Appbar({ open, handleDrawerOpen, handleDrawerClose }: Ap
             </IconButton>
           </Box>
         </Toolbar>
-      </AppBar>
+      </StyledAppBar>
       {renderMobileMenu}
       {renderMenu}
     </Box>

@@ -1,24 +1,27 @@
-import React, { useMemo, useCallback } from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
-import Avatar from '@mui/material/Avatar';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PeopleIcon from '@mui/icons-material/People';
-import LogoutIcon from '@mui/icons-material/ExitToApp';
+import React from 'react';
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Box,
+  Typography,
+  Divider,
+  useTheme,
+  styled,
+  Avatar,
+} from '@mui/material';
+import {
+  Dashboard as DashboardIcon,
+  People as PeopleIcon,
+  ExitToApp as LogoutIcon,
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../state';
 import { PATH } from '../routes/path';
-
-const drawerWidth = 240;
+import { DRAWER_WIDTH, APPBAR_HEIGHT } from '../constants/layout';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -33,50 +36,68 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 type SidebarProps = {
   open: boolean;
+  isMobile: boolean;
+  onClose: () => void;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({
-  open
+  open,
+  isMobile,
+  onClose
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { logout } = useAuth();
 
-  const menuItems = useMemo(() => [
+  const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: PATH.DASHBOARD },
     { text: 'Students', icon: <PeopleIcon />, path: PATH.STUDENTS },
-  ], []);
+  ];
 
-  const handleLogout = useCallback(() => {
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    if (isMobile) {
+      onClose();
+    }
+  };
+
+  const handleLogout = () => {
     logout();
     navigate(PATH.LOGIN);
-  }, [logout, navigate]);
-
-  const handleNavigate = useCallback((path: string) => {
-    navigate(path);
-  }, [navigate]);
+    if (isMobile) {
+      onClose();
+    }
+  };
 
   return (
     <Box>
       <Drawer
         sx={{
-          width: drawerWidth,
+          width: DRAWER_WIDTH,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            borderLeft: `1px solid ${theme.palette.divider}`,
+            borderLeft: isMobile ? 'none' : `1px solid ${theme.palette.divider}`,
             borderRight: 'none',
+            top: isMobile ? APPBAR_HEIGHT : 0,
+            height: isMobile ? `calc(100% - ${APPBAR_HEIGHT}px)` : '100%',
+            transition: theme.transitions.create(['width', 'margin', 'transform'], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
           },
         }}
-        variant="persistent"
+        variant={isMobile ? "temporary" : "persistent"}
         anchor="left"
         open={open}
+        onClose={onClose}
+        ModalProps={{
+          keepMounted: true,
+        }}
       >
         <DrawerHeader>
-          <Box
-            sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', pl: 2 }}
-          >
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', pl: 2 }}>
             <Avatar
               alt="logo"
               src="/src/assets/images/logo.png"
@@ -87,18 +108,66 @@ const Sidebar: React.FC<SidebarProps> = ({
                 padding: 0.5,
                 objectFit: 'contain',
                 bgcolor: 'transparent',
+                transition: theme.transitions.create(['transform'], {
+                  duration: theme.transitions.duration.shorter,
+                }),
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                },
               }}
             />
-            <Typography variant="h3">Brainybobs</Typography>
+            <Typography 
+              variant="h3"
+              sx={{
+                opacity: open ? 1 : 0,
+                transition: theme.transitions.create(['opacity'], {
+                  duration: theme.transitions.duration.shorter,
+                }),
+              }}
+            >
+              Brainybobs
+            </Typography>
           </Box>
         </DrawerHeader>
         <Divider />
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.text} disablePadding>
-              <ListItemButton onClick={() => handleNavigate(item.path)}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.text} />
+              <ListItemButton 
+                onClick={() => handleNavigation(item.path)}
+                sx={{
+                  minHeight: 48,
+                  px: 2.5,
+                  transition: theme.transitions.create(['background-color', 'transform'], {
+                    duration: theme.transitions.duration.shorter,
+                  }),
+                  '&:hover': {
+                    transform: 'translateX(4px)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                  },
+                }}
+              >
+                <ListItemIcon 
+                  sx={{
+                    minWidth: 0,
+                    mr: 3,
+                    justifyContent: 'center',
+                    transition: theme.transitions.create(['color'], {
+                      duration: theme.transitions.duration.shorter,
+                    }),
+                  }}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText 
+                  primary={item.text}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                    transition: theme.transitions.create(['opacity'], {
+                      duration: theme.transitions.duration.shorter,
+                    }),
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
@@ -106,11 +175,45 @@ const Sidebar: React.FC<SidebarProps> = ({
         <Divider />
         <List>
           <ListItem disablePadding>
-            <ListItemButton onClick={handleLogout}>
-              <ListItemIcon>
+            <ListItemButton 
+              onClick={handleLogout}
+              sx={{
+                minHeight: 48,
+                px: 2.5,
+                transition: theme.transitions.create(['background-color', 'transform'], {
+                  duration: theme.transitions.duration.shorter,
+                }),
+                '&:hover': {
+                  transform: 'translateX(4px)',
+                  backgroundColor: 'rgba(255, 0, 0, 0.04)',
+                },
+              }}
+            >
+              <ListItemIcon 
+                sx={{
+                  minWidth: 0,
+                  mr: 3,
+                  justifyContent: 'center',
+                  color: theme.palette.error.main,
+                  transition: theme.transitions.create(['color'], {
+                    duration: theme.transitions.duration.shorter,
+                  }),
+                }}
+              >
                 <LogoutIcon />
               </ListItemIcon>
-              <ListItemText primary="Logout" />
+              <ListItemText 
+                primary="Logout"
+                sx={{
+                  opacity: open ? 1 : 0,
+                  transition: theme.transitions.create(['opacity'], {
+                    duration: theme.transitions.duration.shorter,
+                  }),
+                  '.MuiTypography-root': {
+                    color: theme.palette.error.main,
+                  },
+                }}
+              />
             </ListItemButton>
           </ListItem>
         </List>
