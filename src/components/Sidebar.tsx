@@ -52,7 +52,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardOutlined />, path: PATH.DASHBOARD },
     { text: 'Students', icon: <SchoolOutlined />, path: PATH.STUDENTS },
-    { text: 'Teachers', icon: <PeopleAltOutlined /> },
+    { text: 'Teachers', icon: <PeopleAltOutlined />, path: PATH.STUDENTS },
   ];
 
   const handleNavigation = (path: string) => {
