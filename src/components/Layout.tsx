@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Box, styled } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -32,13 +32,24 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
 const Layout = () => {
   const [open, setOpen] = useState(true);
 
-  const handleDrawerOpen = () => {
+  const handleDrawerOpen = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
 
-  const handleDrawerClose = () => {
+  const handleDrawerClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
+
+  const layoutContent = useMemo(() => (
+    <Box sx={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
+      <Main open={open}>
+        <Box sx={{ mt: 8, p: 3 }}>
+          <Outlet />
+        </Box>
+      </Main>
+      <Sidebar open={open} />
+    </Box>
+  ), [open]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
@@ -47,14 +58,7 @@ const Layout = () => {
         handleDrawerOpen={handleDrawerOpen}
         handleDrawerClose={handleDrawerClose}
       />
-      <Box sx={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
-        <Main open={open}>
-          <Box sx={{ mt: 8, p: 3 }}>
-            <Outlet />
-          </Box>
-        </Main>
-        <Sidebar open={open} />
-      </Box>
+      {layoutContent}
     </Box>
   );
 };

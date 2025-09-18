@@ -1,23 +1,19 @@
-import React from 'react';
-import {
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Box,
-  Typography,
-  Divider,
-  useTheme,
-  styled,
-  Avatar,
-} from '@mui/material';
-import {
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
-  ExitToApp as LogoutIcon,
-} from '@mui/icons-material';
+import React, { useMemo, useCallback } from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
+import { useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import PeopleIcon from '@mui/icons-material/People';
+import LogoutIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../state';
 import { PATH } from '../routes/path';
@@ -46,15 +42,19 @@ const Sidebar: React.FC<SidebarProps> = ({
   const navigate = useNavigate();
   const { logout } = useAuth();
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     { text: 'Dashboard', icon: <DashboardIcon />, path: PATH.DASHBOARD },
     { text: 'Students', icon: <PeopleIcon />, path: PATH.STUDENTS },
-  ];
+  ], []);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     logout();
     navigate(PATH.LOGIN);
-  };
+  }, [logout, navigate]);
+
+  const handleNavigate = useCallback((path: string) => {
+    navigate(path);
+  }, [navigate]);
 
   return (
     <Box>
@@ -96,7 +96,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.text} disablePadding>
-              <ListItemButton onClick={() => navigate(item.path)}>
+              <ListItemButton onClick={() => handleNavigate(item.path)}>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
               </ListItemButton>

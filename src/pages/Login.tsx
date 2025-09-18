@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../state';
 import { PATH } from '../routes/path';
+import { Box, Typography, TextField, Button, Paper } from '@mui/material';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -22,34 +23,36 @@ const Login: React.FC = () => {
   );
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+      <Paper elevation={3} sx={{ p: 4, maxWidth: 400, width: '100%' }}>
+        <Typography variant="h5" component="h2" gutterBottom align="center">
+          Login
+        </Typography>
+        <Box component="form" onSubmit={handleLogin} display="flex" flexDirection="column" gap={2}>
+          <TextField
+            label="Username"
+            variant="outlined"
             required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            autoFocus
+            fullWidth
           />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
+          <TextField
+            label="Password"
+            variant="outlined"
             type="password"
-            id="password"
-            name="password"
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            fullWidth
           />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            Login
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
