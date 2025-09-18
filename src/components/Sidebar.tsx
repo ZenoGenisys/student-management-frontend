@@ -6,7 +6,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  IconButton,
   Box,
   Typography,
   Divider,
@@ -15,11 +14,8 @@ import {
   Avatar,
 } from '@mui/material';
 import {
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
   Dashboard as DashboardIcon,
   People as PeopleIcon,
-  Menu as MenuIcon,
   ExitToApp as LogoutIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -33,23 +29,22 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
+  justifyContent: 'space-between',
+  [theme.breakpoints.down('sm')]: {
+    justifyContent: 'center',
+  },
 }));
 
 type SidebarProps = {
   open: boolean;
-  handleDrawerOpen: () => void;
-  handleDrawerClose: () => void;
 };
 
 const Sidebar: React.FC<SidebarProps> = ({
-  open,
-  handleDrawerOpen,
-  handleDrawerClose,
+  open
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { username, logout } = useAuth();
+  const { logout } = useAuth();
 
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: PATH.DASHBOARD },
@@ -62,19 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        onClick={handleDrawerOpen}
-        edge="start"
-        sx={{
-          marginRight: 5,
-          ...(open && { display: 'none' }),
-        }}
-      >
-        <MenuIcon />
-      </IconButton>
+    <Box>
       <Drawer
         sx={{
           width: drawerWidth,
@@ -82,6 +65,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            borderLeft: `1px solid ${theme.palette.divider}`,
+            borderRight: 'none',
           },
         }}
         variant="persistent"
@@ -104,15 +89,8 @@ const Sidebar: React.FC<SidebarProps> = ({
                 bgcolor: 'transparent',
               }}
             />
-            <Typography variant="subtitle1">{username}</Typography>
+            <Typography variant="h3">Brainybobs</Typography>
           </Box>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? (
-              <ChevronLeftIcon />
-            ) : (
-              <ChevronRightIcon />
-            )}
-          </IconButton>
         </DrawerHeader>
         <Divider />
         <List>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Box, styled } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import Appbar from './Appbar';
 
 const drawerWidth = 240;
 
@@ -9,19 +10,23 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
 }>(({ theme, open }) => ({
   flexGrow: 1,
-  padding: theme.spacing(3),
-  transition: theme.transitions.create('margin', {
+  transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${drawerWidth}px`,
+  marginLeft: 0,
   ...(open && {
-    transition: theme.transitions.create('margin', {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0,
   }),
+  [theme.breakpoints.down('sm')]: {
+    marginLeft: 0,
+    width: '100%',
+  },
 }));
 
 const Layout = () => {
@@ -36,17 +41,20 @@ const Layout = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Sidebar
+    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <Appbar 
         open={open}
         handleDrawerOpen={handleDrawerOpen}
         handleDrawerClose={handleDrawerClose}
       />
-      <Main open={open}>
-        <Box sx={{ mt: 2 }}>
-          <Outlet />
-        </Box>
-      </Main>
+      <Box sx={{ display: 'flex', flexGrow: 1, position: 'relative' }}>
+        <Main open={open}>
+          <Box sx={{ mt: 8, p: 3 }}>
+            <Outlet />
+          </Box>
+        </Main>
+        <Sidebar open={open} />
+      </Box>
     </Box>
   );
 };
