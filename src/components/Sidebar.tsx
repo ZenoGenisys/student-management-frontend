@@ -14,8 +14,9 @@ import {
   ListItemText,
 } from '@mui/material';
 import {
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
+  DashboardOutlined,
+  PeopleAltOutlined,
+  SchoolOutlined,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../state';
@@ -46,10 +47,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { pathname } = window.location; // Get current path
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: PATH.DASHBOARD },
-    { text: 'Students', icon: <PeopleIcon />, path: PATH.STUDENTS },
+    { text: 'Dashboard', icon: <DashboardOutlined />, path: PATH.DASHBOARD },
+    { text: 'Students', icon: <SchoolOutlined />, path: PATH.STUDENTS },
+    { text: 'Teachers', icon: <PeopleAltOutlined /> },
   ];
 
   const handleNavigation = (path: string) => {
@@ -125,12 +128,15 @@ const Sidebar: React.FC<SidebarProps> = ({
                 sx={{
                   minHeight: 48,
                   px: 2.5,
-                  transition: theme.transitions.create(['background-color', 'transform'], {
+                  backgroundColor: pathname === item.path ? '#F2F5FF' : 'transparent',
+                  color: pathname === item.path ? '#3D5EE1' : 'inherit',
+                  transition: theme.transitions.create(['background-color', 'transform', 'color'], {
                     duration: theme.transitions.duration.shorter,
                   }),
                   '&:hover': {
                     transform: 'translateX(4px)',
                     backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    color: '#3D5EE1',
                   },
                 }}
               >
@@ -139,6 +145,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     minWidth: 0,
                     mr: 3,
                     justifyContent: 'center',
+                    color: pathname === item.path ? '#3D5EE1' : 'inherit',
                     transition: theme.transitions.create(['color'], {
                       duration: theme.transitions.duration.shorter,
                     }),
