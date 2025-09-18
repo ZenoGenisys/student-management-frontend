@@ -1,22 +1,23 @@
 import * as React from 'react';
-import { styled, alpha, useTheme } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import EmailIcon from '@mui/icons-material/Email';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { DRAWER_WIDTH, MOBILE_BREAKPOINT } from '../constants/layout';
+import { DRAWER_WIDTH } from '../constants/layout';
+import { ExitToApp as LogoutIcon } from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import { useAuth } from '../state';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '../routes/path';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -32,6 +33,7 @@ const Search = styled('div')(({ theme }) => ({
     marginLeft: theme.spacing(3),
     width: 'auto',
   },
+  border: `1px solid ${alpha(theme.palette.common.black, 0.1)}`
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -41,7 +43,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   pointerEvents: 'none',
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'end',
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -53,26 +55,31 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '40ch',
     },
   },
 }));
 
-const StyledAppBar = styled(AppBar, { shouldForwardProp: (prop) => prop !== 'open' })<{
+const StyledAppBar = styled(AppBar, {
+  shouldForwardProp: (prop) => prop !== 'open' && prop !== 'isMobile',
+})<{
   open?: boolean;
-}>(({ theme, open }) => ({
+  isMobile?: boolean;
+}>(({ theme, open, isMobile }) => ({
+  zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  [theme.breakpoints.up(MOBILE_BREAKPOINT)]: {
-    width: open ? `calc(100% - ${DRAWER_WIDTH}px)` : '100%',
-    marginLeft: open ? DRAWER_WIDTH : 0,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
+  ...(open &&
+    !isMobile && {
+      width: `calc(100% - ${DRAWER_WIDTH}px)`,
+      marginLeft: DRAWER_WIDTH,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     }),
-  },
 }));
 
 interface AppbarProps {
@@ -82,7 +89,12 @@ interface AppbarProps {
   readonly handleDrawerClose: () => void;
 }
 
-export default function Appbar({ open, isMobile, handleDrawerOpen, handleDrawerClose }: AppbarProps) {
+export default function Appbar({
+  open,
+  isMobile,
+  handleDrawerOpen,
+  handleDrawerClose,
+}: AppbarProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -107,85 +119,35 @@ export default function Appbar({ open, isMobile, handleDrawerOpen, handleDrawerC
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate(PATH.LOGIN);
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
       id={menuId}
       keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <EmailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+      <MenuItem onClick={handleLogout}>
+        <Button variant="outlined" color="error" endIcon={<LogoutIcon />}>
+          Logout
+        </Button>
       </MenuItem>
     </Menu>
   );
-
-  const theme = useTheme();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <StyledAppBar position="fixed" open={open}>
+      <StyledAppBar position="fixed" open={open} isMobile={isMobile}>
         <Toolbar>
           <IconButton
             size="large"
@@ -197,66 +159,45 @@ export default function Appbar({ open, isMobile, handleDrawerOpen, handleDrawerC
           >
             {open ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MUI
-          </Typography>
-          <Search>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' }, alignItems: 'center', justifyContent: 'center' }}>
+            <Avatar
+              alt="logo"
+              src="/src/assets/images/logo.png"
+              sx={{
+                width: 40,
+                height: 40,
+                mr: 2,
+                padding: 0.5,
+                objectFit: 'contain',
+                bgcolor: 'transparent',
+              }}
+            />
+            <Typography 
+              variant="h3"
+            >
+              Brainybobs
+            </Typography>
+          </Box>
+          <Search sx={{ display: { xs: 'none', sm: 'flex' }}}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
+              placeholder="Search"
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <EmailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-              color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
+          <Box sx={{ display: 'flex' }}>
+            <MenuItem onClick={handleProfileMenuOpen}>
+              <Avatar
+                alt="profile"
+                src="/src/assets/images/profile-photo.jpg"
+              />
+            </MenuItem>
           </Box>
         </Toolbar>
       </StyledAppBar>
-      {renderMobileMenu}
       {renderMenu}
     </Box>
   );

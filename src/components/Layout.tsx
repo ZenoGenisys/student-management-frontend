@@ -13,6 +13,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   paddingTop: theme.spacing(2),
   minHeight: `calc(100vh - ${APPBAR_HEIGHT}px)`,
   backgroundColor: theme.palette.background.default,
+  zIndex: 1,
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
