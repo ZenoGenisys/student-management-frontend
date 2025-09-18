@@ -12,13 +12,13 @@ import {
   Divider,
   useTheme,
   styled,
+  Avatar,
 } from '@mui/material';
 import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   Dashboard as DashboardIcon,
   People as PeopleIcon,
-  Person as PersonIcon,
   Menu as MenuIcon,
   ExitToApp as LogoutIcon,
 } from '@mui/icons-material';
@@ -92,7 +92,18 @@ const Sidebar: React.FC<SidebarProps> = ({
           <Box
             sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', pl: 2 }}
           >
-            <PersonIcon sx={{ mr: 1 }} />
+            <Avatar
+              alt="logo"
+              src="/src/assets/images/logo.png"
+              sx={{
+                width: 40,
+                height: 40,
+                mr: 2,
+                padding: 0.5,
+                objectFit: 'contain',
+                bgcolor: 'transparent',
+              }}
+            />
             <Typography variant="subtitle1">{username}</Typography>
           </Box>
           <IconButton onClick={handleDrawerClose}>
