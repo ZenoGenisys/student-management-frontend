@@ -16,7 +16,12 @@ import {
   MenuItem,
   Checkbox,
   TableSortLabel,
+  IconButton,
 } from '@mui/material';
+import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
+import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useTheme } from '@mui/material/styles';
 
 // Updated Row type to allow dynamic property access
@@ -35,26 +40,26 @@ interface Row {
 
 const rows: Row[] = [
   {
-    admissionNo: 'A001',
+    admissionNo: 'AD9892434',
     rollNo: '101',
-    name: 'John Doe',
+    name: 'Ajith',
     avatar: '',
     gender: 'Male',
     level: '1',
     status: 'Active',
-    doj: '2022-06-01',
-    dob: '2007-05-15',
+    doj: '01 Aug 2022',
+    dob: '23 Nov 1999',
   },
   {
-    admissionNo: 'A002',
+    admissionNo: 'AD9892435',
     rollNo: '102',
-    name: 'Jane Smith',
+    name: 'Rajesh',
     avatar: '',
     gender: 'Female',
-    level: '1',
+    level: '3',
     status: 'Inactive',
-    doj: '2021-07-10',
-    dob: '2007-08-22',
+    doj: '01 Aug 2021',
+    dob: '23 Mar 2000',
   },
   // Add more sample rows as needed
 ];
@@ -149,7 +154,9 @@ const ListView: React.FC = () => {
         mb={2}
       >
         <Box display="flex" alignItems="center" gap={1}>
-          <Typography variant="body1" color="textSecondary">Row Per Page</Typography>
+          <Typography variant="body1" color="textSecondary">
+            Row Per Page
+          </Typography>
           <Select
             size="small"
             value={rowsPerPage}
@@ -161,7 +168,9 @@ const ListView: React.FC = () => {
               </MenuItem>
             ))}
           </Select>
-          <Typography variant="body1" color="textSecondary">Entries</Typography>
+          <Typography variant="body1" color="textSecondary">
+            Entries
+          </Typography>
         </Box>
       </Box>
 
@@ -174,10 +183,15 @@ const ListView: React.FC = () => {
             },
           }}
         >
-          <TableHead sx={{ bgcolor: '#F9FAFB', '& th': {
-            fontWeight: 'bold',
-            fontSize: '1rem',
-          } }}>
+          <TableHead
+            sx={{
+              bgcolor: '#F9FAFB',
+              '& th': {
+                fontWeight: 'bold',
+                fontSize: '1rem',
+              },
+            }}
+          >
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
@@ -223,9 +237,33 @@ const ListView: React.FC = () => {
                   Name
                 </TableSortLabel>
               </TableCell>
-              <TableCell align="center">Gender</TableCell>
-              <TableCell align="center">Level</TableCell>
-              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">
+                <TableSortLabel
+                  active={orderBy === 'gender'}
+                  direction={orderBy === 'gender' ? order : 'asc'}
+                  onClick={() => handleRequestSort('gender')}
+                >
+                  Gender
+                </TableSortLabel>
+              </TableCell>
+              <TableCell align="center">
+                <TableSortLabel
+                  active={orderBy === 'level'}
+                  direction={orderBy === 'level' ? order : 'asc'}
+                  onClick={() => handleRequestSort('level')}
+                >
+                  Level
+                </TableSortLabel>
+              </TableCell>
+              <TableCell align="center">
+                <TableSortLabel
+                  active={orderBy === 'status'}
+                  direction={orderBy === 'status' ? order : 'asc'}
+                  onClick={() => handleRequestSort('status')}
+                >
+                  Status
+                </TableSortLabel>
+              </TableCell>
               <TableCell align="center">Date of Join</TableCell>
               <TableCell align="center">DOB</TableCell>
               <TableCell align="center">Action</TableCell>
@@ -251,7 +289,7 @@ const ListView: React.FC = () => {
                   <Box
                     display="flex"
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent="flex-start"
                     gap={1}
                   >
                     <Avatar src={row.avatar} />
@@ -271,9 +309,43 @@ const ListView: React.FC = () => {
                 <TableCell align="center">{row.doj}</TableCell>
                 <TableCell align="center">{row.dob}</TableCell>
                 <TableCell align="center">
-                  <Button size="small" variant="outlined">
-                    Collect Fees
-                  </Button>
+                  <Box>
+                    <IconButton
+                      aria-label="Call"
+                      size="small"
+                      sx={{
+                        border: `1px solid ${theme.palette.divider}`,
+                        borderRadius: 5,
+                        mr: 1,
+                      }}
+                    >
+                      <CallOutlinedIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="Message"
+                      size="small"
+                      sx={{
+                        border: `1px solid ${theme.palette.divider}`,
+                        borderRadius: 5,
+                        mr: 1,
+                      }}
+                    >
+                      <MessageOutlinedIcon />
+                    </IconButton>
+                    <IconButton
+                      aria-label="Mail"
+                      size="small"
+                      sx={{
+                        border: `1px solid ${theme.palette.divider}`,
+                        borderRadius: 5,
+                      }}
+                    >
+                      <MailOutlineOutlinedIcon />
+                    </IconButton>
+                    <IconButton aria-label="settings">
+                      <MoreVertIcon />
+                    </IconButton>
+                  </Box>
                 </TableCell>
               </TableRow>
             ))}
@@ -284,7 +356,7 @@ const ListView: React.FC = () => {
       {/* Pagination */}
       <Box display="flex" justifyContent="flex-end" alignItems="center" mt={2}>
         <Button
-          size="small"
+          size="large"
           variant="text"
           onClick={handlePrev}
           disabled={page === 0}
@@ -293,7 +365,7 @@ const ListView: React.FC = () => {
         </Button>
         <Typography mx={1}>{page + 1}</Typography>
         <Button
-          size="small"
+          size="large"
           variant="text"
           onClick={handleNext}
           disabled={page >= Math.ceil(filteredRows.length / rowsPerPage) - 1}
