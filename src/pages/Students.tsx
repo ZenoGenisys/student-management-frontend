@@ -14,6 +14,8 @@ import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import IconButton from '@mui/material/IconButton';
+import GridView from '../components/GridView';
+import ListView from '../components/ListView';
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -196,6 +198,9 @@ const Students: React.FC = () => {
             Sort by A-Z
           </Button>
         </Box>
+      </Box>
+      <Box flexGrow={1} p={2}>
+        {activeView === 'grid' ? <GridView /> : <ListView />}
       </Box>
     </Box>
   );
