@@ -1,4 +1,4 @@
-import { keyframes } from "@mui/material/styles";
+import { keyframes } from '@mui/material/styles';
 
 // Fade animations
 export const fadeIn = keyframes`
@@ -90,10 +90,10 @@ export const durations = {
 } as const;
 
 export const easings = {
-  easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)",
-  easeOut: "cubic-bezier(0.0, 0, 0.2, 1)",
-  easeIn: "cubic-bezier(0.4, 0, 1, 1)",
-  sharp: "cubic-bezier(0.4, 0, 0.6, 1)",
+  easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  easeOut: 'cubic-bezier(0.0, 0, 0.2, 1)',
+  easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+  sharp: 'cubic-bezier(0.4, 0, 0.6, 1)',
 } as const;
 
 // Helper function to create transition strings
@@ -103,7 +103,7 @@ export const createTransition = (
     duration?: number;
     easing?: string;
     delay?: number;
-  }
+  },
 ) => {
   const {
     duration = durations.standard,
@@ -112,7 +112,7 @@ export const createTransition = (
   } = options ?? {};
 
   const formattedProperties = Array.isArray(properties)
-    ? properties.join(", ")
+    ? properties.join(', ')
     : properties;
 
   const delayString = delay ? ` ${delay}ms` : '';

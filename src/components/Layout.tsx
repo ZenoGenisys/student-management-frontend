@@ -3,7 +3,11 @@ import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Appbar from './Appbar';
-import { DRAWER_WIDTH, MOBILE_BREAKPOINT, APPBAR_HEIGHT } from '../constants/layout';
+import {
+  DRAWER_WIDTH,
+  MOBILE_BREAKPOINT,
+  APPBAR_HEIGHT,
+} from '../constants/layout';
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -51,19 +55,21 @@ const Layout = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <Appbar 
+      <Appbar
         open={open}
         handleDrawerOpen={handleDrawerOpen}
         handleDrawerClose={handleDrawerClose}
         isMobile={isMobile}
       />
       <Sidebar open={open} isMobile={isMobile} onClose={handleDrawerClose} />
-      <Box sx={{ 
-        display: 'flex', 
-        flexGrow: 1, 
-        position: 'relative',
-        pt: `${APPBAR_HEIGHT}px`
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexGrow: 1,
+          position: 'relative',
+          pt: `${APPBAR_HEIGHT}px`,
+        }}
+      >
         <Main open={open}>
           <Outlet />
         </Main>

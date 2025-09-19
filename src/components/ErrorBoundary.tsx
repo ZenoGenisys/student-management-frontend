@@ -31,10 +31,7 @@ class ErrorBoundary extends Component<Props, State> {
           <Typography variant="h4" gutterBottom>
             Something went wrong
           </Typography>
-          <Button 
-            variant="contained" 
-            onClick={() => window.location.reload()}
-          >
+          <Button variant="contained" onClick={() => window.location.reload()}>
             Reload Page
           </Button>
         </Box>

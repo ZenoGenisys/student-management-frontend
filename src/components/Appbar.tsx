@@ -33,7 +33,7 @@ const Search = styled('div')(({ theme }) => ({
     marginLeft: theme.spacing(3),
     width: 'auto',
   },
-  border: `1px solid ${alpha(theme.palette.common.black, 0.1)}`
+  border: `1px solid ${alpha(theme.palette.common.black, 0.1)}`,
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -159,7 +159,14 @@ export default function Appbar({
           >
             {open ? <ChevronLeftIcon /> : <MenuIcon />}
           </IconButton>
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' }, alignItems: 'center', justifyContent: 'center' }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'flex', sm: 'none' },
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
             <Avatar
               alt="logo"
               src="/src/assets/images/logo.png"
@@ -172,13 +179,9 @@ export default function Appbar({
                 bgcolor: 'transparent',
               }}
             />
-            <Typography 
-              variant="h3"
-            >
-              Brainybobs
-            </Typography>
+            <Typography variant="h3">Brainybobs</Typography>
           </Box>
-          <Search sx={{ display: { xs: 'none', sm: 'flex' }}}>
+          <Search sx={{ display: { xs: 'none', sm: 'flex' } }}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>

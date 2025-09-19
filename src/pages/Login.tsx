@@ -23,12 +23,23 @@ const Login: React.FC = () => {
   );
 
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh"
+    >
       <Paper elevation={3} sx={{ p: 4, maxWidth: 400, width: '100%' }}>
         <Typography variant="h5" component="h2" gutterBottom align="center">
           Login
         </Typography>
-        <Box component="form" onSubmit={handleLogin} display="flex" flexDirection="column" gap={2}>
+        <Box
+          component="form"
+          onSubmit={handleLogin}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+        >
           <TextField
             label="Username"
             variant="outlined"

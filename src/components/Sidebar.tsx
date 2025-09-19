@@ -19,7 +19,6 @@ import {
   SchoolOutlined,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../state';
 import { PATH } from '../routes/path';
 import { DRAWER_WIDTH } from '../constants/layout';
 
@@ -40,11 +39,7 @@ type SidebarProps = {
   onClose: () => void;
 };
 
-const Sidebar: React.FC<SidebarProps> = ({
-  open,
-  isMobile,
-  onClose
-}) => {
+const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { pathname } = window.location; // Get current path
@@ -71,15 +66,20 @@ const Sidebar: React.FC<SidebarProps> = ({
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            borderLeft: isMobile ? 'none' : `1px solid ${theme.palette.divider}`,
+            borderLeft: isMobile
+              ? 'none'
+              : `1px solid ${theme.palette.divider}`,
             borderRight: 'none',
-            transition: theme.transitions.create(['width', 'margin', 'transform'], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
+            transition: theme.transitions.create(
+              ['width', 'margin', 'transform'],
+              {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+              },
+            ),
           },
         }}
-        variant={isMobile ? "temporary" : "persistent"}
+        variant={isMobile ? 'temporary' : 'persistent'}
         anchor="left"
         open={open}
         onClose={onClose}
@@ -88,7 +88,9 @@ const Sidebar: React.FC<SidebarProps> = ({
         }}
       >
         <DrawerHeader>
-          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', pl: 2 }}>
+          <Box
+            sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', pl: 2 }}
+          >
             <Avatar
               alt="logo"
               src="/src/assets/images/logo.png"
@@ -107,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 },
               }}
             />
-            <Typography 
+            <Typography
               variant="h3"
               sx={{
                 opacity: open ? 1 : 0,
@@ -123,16 +125,20 @@ const Sidebar: React.FC<SidebarProps> = ({
         <List>
           {menuItems.map((item) => (
             <ListItem key={item.text} disablePadding>
-              <ListItemButton 
+              <ListItemButton
                 onClick={() => handleNavigation(item.path)}
                 sx={{
                   minHeight: 48,
                   px: 2.5,
-                  backgroundColor: pathname === item.path ? '#F2F5FF' : 'transparent',
+                  backgroundColor:
+                    pathname === item.path ? '#F2F5FF' : 'transparent',
                   color: pathname === item.path ? '#3D5EE1' : 'inherit',
-                  transition: theme.transitions.create(['background-color', 'transform', 'color'], {
-                    duration: theme.transitions.duration.shorter,
-                  }),
+                  transition: theme.transitions.create(
+                    ['background-color', 'transform', 'color'],
+                    {
+                      duration: theme.transitions.duration.shorter,
+                    },
+                  ),
                   '&:hover': {
                     transform: 'translateX(4px)',
                     backgroundColor: 'rgba(0, 0, 0, 0.04)',
@@ -140,7 +146,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   },
                 }}
               >
-                <ListItemIcon 
+                <ListItemIcon
                   sx={{
                     minWidth: 0,
                     mr: 3,
@@ -153,7 +159,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                 >
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText 
+                <ListItemText
                   primary={item.text}
                   sx={{
                     opacity: open ? 1 : 0,

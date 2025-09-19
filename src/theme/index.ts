@@ -1,3 +1,3 @@
-export { default as theme } from "./theme";
-export * from "./animations";
-export * from "./AnimatedBox";
+export { default as theme } from './theme';
+export * from './animations';
+export * from './AnimatedBox';
