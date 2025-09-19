@@ -11,25 +11,30 @@ import Grid from '@mui/material/Grid';
 import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
+import { useTheme } from '@mui/material/styles';
 
 const GridView: React.FC = () => {
+  const theme = useTheme();
+
   return (
     <Box>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <Card sx={{ border: '1px solid #E3E8EE' }}>
+          <Card sx={{ border: `1px solid ${theme.palette.divider}` }}>
             <CardHeader
               title={
-                <Typography sx={{ color: '#506EE4' }}>AD9892434</Typography>
+                <Typography sx={{ color: theme.palette.primary.main }}>
+                  AD9892434
+                </Typography>
               }
               action={
                 <Box display={'flex'} alignItems="center" gap={1}>
                   <Typography
                     variant="body2"
-                    color="#28A745"
+                    color={theme.palette.success.main}
                     sx={{
-                      fontWeight: 'bold',
-                      backgroundColor: '#28A7451A',
+                      fontWeight: theme.typography.fontWeightBold,
+                      backgroundColor: theme.palette.success.light,
                       px: 1,
                       py: 0.5,
                       borderRadius: 1,
@@ -43,7 +48,7 @@ const GridView: React.FC = () => {
                 </Box>
               }
             />
-            <CardContent sx={{ borderTop: '1px solid #E3E8EE' }}>
+            <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
               <Box
                 sx={{ backgroundColor: '#F9FAFB', borderRadius: 1 }}
                 p={2}
@@ -74,7 +79,7 @@ const GridView: React.FC = () => {
                   <Typography variant="body1" color="textSecondary">
                     Roll No
                   </Typography>
-                  <Typography variant="body2" color="textPrimary">
+                  <Typography variant="body1" color="textPrimary">
                     231199
                   </Typography>
                 </Box>
@@ -82,7 +87,7 @@ const GridView: React.FC = () => {
                   <Typography variant="body1" color="textSecondary">
                     Gender
                   </Typography>
-                  <Typography variant="body2" color="textPrimary">
+                  <Typography variant="body1" color="textPrimary">
                     Male
                   </Typography>
                 </Box>
@@ -90,7 +95,7 @@ const GridView: React.FC = () => {
                   <Typography variant="body1" color="textSecondary">
                     Joined On
                   </Typography>
-                  <Typography variant="body2" color="textPrimary">
+                  <Typography variant="body1" color="textPrimary">
                     01 Jan 2020
                   </Typography>
                 </Box>
@@ -98,27 +103,27 @@ const GridView: React.FC = () => {
             </CardContent>
             <CardActions
               disableSpacing
-              sx={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #E3E8EE' }}
+              sx={{ display: 'flex', justifyContent: 'space-between', borderTop: `1px solid ${theme.palette.divider}`, p: 2 }}
             >
               <Box>
                 <IconButton
                   aria-label="Call"
                   size="medium"
-                  sx={{ border: '1px solid #E3E8EE', borderRadius: 5, mr: 1 }}
+                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5, mr: 1 }}
                 >
                   <CallOutlinedIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Message"
                   size="medium"
-                  sx={{ border: '1px solid #E3E8EE', borderRadius: 5, mr: 1 }}
+                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5, mr: 1 }}
                 >
                   <MessageOutlinedIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Mail"
                   size="medium"
-                  sx={{ border: '1px solid #E3E8EE', borderRadius: 5 }}
+                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5 }}
                 >
                   <MailOutlineOutlinedIcon />
                 </IconButton>
@@ -127,8 +132,7 @@ const GridView: React.FC = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  size="small"
-                  sx={{ borderRadius: 5, fontWeight: 'bold', fontSize: 12 }}
+                  sx={{ fontWeight: 'bold', fontSize: 12 }}
                 >
                   View Profile
                 </Button>
@@ -138,19 +142,21 @@ const GridView: React.FC = () => {
         </Grid>
 
         <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-          <Card sx={{ border: '1px solid #E3E8EE' }}>
+          <Card sx={{ border: `1px solid ${theme.palette.divider}` }}>
             <CardHeader
               title={
-                <Typography sx={{ color: '#506EE4' }}>AD9892435</Typography>
+                <Typography sx={{ color: theme.palette.primary.main }}>
+                  AD9892435
+                </Typography>
               }
               action={
                 <Box display={'flex'} alignItems="center" gap={1}>
                   <Typography
                     variant="body2"
-                    color="#DC3545"
+                    color={theme.palette.error.main}
                     sx={{
-                      fontWeight: 'bold',
-                      backgroundColor: '#DC35451A',
+                      fontWeight: theme.typography.fontWeightBold,
+                      backgroundColor: theme.palette.error.light,
                       px: 1,
                       py: 0.5,
                       borderRadius: 1,
@@ -164,7 +170,7 @@ const GridView: React.FC = () => {
                 </Box>
               }
             />
-            <CardContent sx={{ borderTop: '1px solid #E3E8EE' }}>
+            <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
               <Box
                 sx={{ backgroundColor: '#F9FAFB', borderRadius: 1 }}
                 p={2}
@@ -172,7 +178,7 @@ const GridView: React.FC = () => {
                 alignItems="center"
               >
                 <Avatar
-                  alt="Ajith Kumar"
+                  alt="Rajesh"
                   src="/src/assets/images/profile-photo.jpg"
                   sx={{ width: 45, height: 45 }}
                 />
@@ -195,15 +201,15 @@ const GridView: React.FC = () => {
                   <Typography variant="body1" color="textSecondary">
                     Roll No
                   </Typography>
-                  <Typography variant="body2" color="textPrimary">
-                    23032000
+                  <Typography variant="body1" color="textPrimary">
+                    230320
                   </Typography>
                 </Box>
                 <Box>
                   <Typography variant="body1" color="textSecondary">
                     Gender
                   </Typography>
-                  <Typography variant="body2" color="textPrimary">
+                  <Typography variant="body1" color="textPrimary">
                     Female
                   </Typography>
                 </Box>
@@ -211,7 +217,7 @@ const GridView: React.FC = () => {
                   <Typography variant="body1" color="textSecondary">
                     Joined On
                   </Typography>
-                  <Typography variant="body2" color="textPrimary">
+                  <Typography variant="body1" color="textPrimary">
                     01 Jan 2019
                   </Typography>
                 </Box>
@@ -219,27 +225,27 @@ const GridView: React.FC = () => {
             </CardContent>
             <CardActions
               disableSpacing
-              sx={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid #E3E8EE' }}
+              sx={{ display: 'flex', justifyContent: 'space-between', borderTop: `1px solid ${theme.palette.divider}`, p: 2 }}
             >
               <Box>
                 <IconButton
                   aria-label="Call"
                   size="medium"
-                  sx={{ border: '1px solid #E3E8EE', borderRadius: 5, mr: 1 }}
+                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5, mr: 1 }}
                 >
                   <CallOutlinedIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Message"
                   size="medium"
-                  sx={{ border: '1px solid #E3E8EE', borderRadius: 5, mr: 1 }}
+                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5, mr: 1 }}
                 >
                   <MessageOutlinedIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Mail"
                   size="medium"
-                  sx={{ border: '1px solid #E3E8EE', borderRadius: 5 }}
+                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5 }}
                 >
                   <MailOutlineOutlinedIcon />
                 </IconButton>
@@ -248,8 +254,7 @@ const GridView: React.FC = () => {
                 <Button
                   variant="contained"
                   color="primary"
-                  size="small"
-                  sx={{ borderRadius: 5, fontWeight: 'bold', fontSize: 12 }}
+                  sx={{ fontWeight: 'bold', fontSize: 12 }}
                 >
                   View Profile
                 </Button>

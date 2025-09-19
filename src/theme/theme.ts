@@ -119,11 +119,11 @@ const baseTheme = createTheme({
     },
   },
   palette: {
-    primary: { main: '#506EE4', contrastText: '#fff' },
-    secondary: { main: '#515B73' },
-    success: { main: '#28A745' },
-    warning: { main: '#FFC107' },
-    error: { main: '#DC3545' },
+    primary: { main: '#506EE4', contrastText: '#fff', light: '#506EE41A' },
+    secondary: { main: '#515B73', contrastText: '#fff', light: '#515B731A' },
+    success: { main: '#28A745', light: '#28A7451A', contrastText: '#fff' },
+    warning: { main: '#FFC107', light: '#FFC1071A', contrastText: '#fff' },
+    error: { main: '#DC3545', contrastText: '#fff', light: '#DC35451A' },
     background: {
       default: '#f7f7ffff',
       paper: '#fff',
@@ -132,7 +132,7 @@ const baseTheme = createTheme({
       primary: '#202C4B',
       secondary: '#6A7287',
     },
-    divider: 'rgba(0, 0, 0, 0.08)',
+    divider: '#E3E8EE',
   },
   typography: {
     fontFamily: 'Roboto, sans-serif',
