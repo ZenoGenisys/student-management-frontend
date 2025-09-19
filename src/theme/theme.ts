@@ -119,13 +119,13 @@ const baseTheme = createTheme({
     },
   },
   palette: {
-    primary: { main: '#1B5A90', contrastText: '#fff' },
-    secondary: { main: '#00B9F1' },
+    primary: { main: '#506EE4', contrastText: '#fff' },
+    secondary: { main: '#515B73' },
     success: { main: '#28A745' },
     warning: { main: '#FFC107' },
     error: { main: '#DC3545' },
     background: {
-      default: '#F8F9FA',
+      default: '#f7f7ffff',
       paper: '#fff',
     },
     text: {
