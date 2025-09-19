@@ -17,7 +17,7 @@ const GridView: React.FC = () => {
   const theme = useTheme();
 
   return (
-    <Box>
+    <Box marginTop={3}>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
           <Card sx={{ border: `1px solid ${theme.palette.divider}` }}>

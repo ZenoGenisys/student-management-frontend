@@ -143,7 +143,6 @@ const Students: React.FC = () => {
         justifyContent={'space-between'}
         flexGrow={1}
         p={2}
-        marginBottom={3}
         sx={{ bgcolor: '#fff', border: '1px solid #E3E8EE' }}
       >
         <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
