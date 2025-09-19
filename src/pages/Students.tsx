@@ -156,6 +156,7 @@ const Students: React.FC = () => {
                 color: activeView === 'grid' ? 'white' : 'inherit',
                 borderRadius: 1,
                 m: 0.5,
+                '&:hover': { bgcolor: activeView === 'grid' ? 'primary.main' : '#F9FAFB', color: activeView === 'grid' ? 'white' : 'inherit'},
               }}
               onClick={() => handleViewToggle('grid')}
             >
@@ -169,6 +170,7 @@ const Students: React.FC = () => {
                 color: activeView === 'list' ? 'white' : 'inherit',
                 borderRadius: 1,
                 m: 0.5,
+                '&:hover': { bgcolor: activeView === 'list' ? 'primary.main' : '#F9FAFB', color: activeView === 'list' ? 'white' : 'inherit'},
               }}
               onClick={() => handleViewToggle('list')}
             >
