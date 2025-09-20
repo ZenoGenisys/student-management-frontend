@@ -48,6 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
     { text: 'Dashboard', icon: <DashboardOutlined />, path: PATH.DASHBOARD },
     { text: 'Students', icon: <SchoolOutlined />, path: PATH.STUDENTS },
     { text: 'Teachers', icon: <PeopleAltOutlined />, path: PATH.TEACHERS },
+    { text: 'StudentDetails', icon: <PeopleAltOutlined />, path: PATH.STUDENT_DETAILS },
   ];
 
   const handleNavigation = (path: string) => {

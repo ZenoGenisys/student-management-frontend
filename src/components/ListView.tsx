@@ -26,11 +26,11 @@ import { useTheme } from '@mui/material/styles';
 
 // Updated Row type to allow dynamic property access
 interface Row {
-  admissionNo: string;
   rollNo: string;
   name: string;
   avatar: string;
   gender: string;
+  center: string;
   level: string;
   status: string;
   doj: string;
@@ -40,22 +40,22 @@ interface Row {
 
 const rows: Row[] = [
   {
-    admissionNo: 'AD9892434',
-    rollNo: '101',
+    rollNo: '1',
     name: 'Ajith',
     avatar: '',
     gender: 'Male',
+    center: 'Puliyur',
     level: '1',
     status: 'Active',
     doj: '01 Aug 2022',
     dob: '23 Nov 1999',
   },
   {
-    admissionNo: 'AD9892435',
     rollNo: '102',
     name: 'Rajesh',
     avatar: '',
     gender: 'Female',
+    center: 'Karur',
     level: '3',
     status: 'Inactive',
     doj: '01 Aug 2021',
@@ -70,7 +70,7 @@ const ListView: React.FC = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [orderBy, setOrderBy] = useState<string>('admissionNo');
+  const [orderBy, setOrderBy] = useState<string>('center');
 
   const handlePrev = () => setPage((p) => Math.max(p - 1, 0));
   const handleNext = () =>
@@ -105,19 +105,19 @@ const ListView: React.FC = () => {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelectedRows = paginatedRows.map((row) => row.admissionNo);
+      const newSelectedRows = paginatedRows.map((row) => row.center);
       setSelectedRows(newSelectedRows);
       return;
     }
     setSelectedRows([]);
   };
 
-  const handleRowClick = (admissionNo: string) => {
-    const selectedIndex = selectedRows.indexOf(admissionNo);
+  const handleRowClick = (center: string) => {
+    const selectedIndex = selectedRows.indexOf(center);
     let newSelectedRows: string[] = [];
 
     if (selectedIndex === -1) {
-      newSelectedRows = newSelectedRows.concat(selectedRows, admissionNo);
+      newSelectedRows = newSelectedRows.concat(selectedRows, center);
     } else if (selectedIndex === 0) {
       newSelectedRows = newSelectedRows.concat(selectedRows.slice(1));
     } else if (selectedIndex === selectedRows.length - 1) {
@@ -212,15 +212,6 @@ const ListView: React.FC = () => {
               </TableCell>
               <TableCell align="center">
                 <TableSortLabel
-                  active={orderBy === 'admissionNo'}
-                  direction={orderBy === 'admissionNo' ? order : 'asc'}
-                  onClick={() => handleRequestSort('admissionNo')}
-                >
-                  Admission No
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
                   active={orderBy === 'rollNo'}
                   direction={orderBy === 'rollNo' ? order : 'asc'}
                   onClick={() => handleRequestSort('rollNo')}
@@ -244,6 +235,15 @@ const ListView: React.FC = () => {
                   onClick={() => handleRequestSort('gender')}
                 >
                   Gender
+                </TableSortLabel>
+              </TableCell>
+              <TableCell align="center">
+                <TableSortLabel
+                  active={orderBy === 'center'}
+                  direction={orderBy === 'center' ? order : 'asc'}
+                  onClick={() => handleRequestSort('center')}
+                >
+                  Center
                 </TableSortLabel>
               </TableCell>
               <TableCell align="center">
@@ -272,18 +272,17 @@ const ListView: React.FC = () => {
           <TableBody>
             {sortedRows.map((row) => (
               <TableRow
-                key={row.admissionNo}
-                selected={selectedRows.indexOf(row.admissionNo) !== -1}
+                key={row.center}
+                selected={selectedRows.indexOf(row.center) !== -1}
                 sx={{ borderBottom: '1px solid #ddd' }}
               >
                 <TableCell padding="checkbox">
                   <Checkbox
                     color="primary"
-                    checked={selectedRows.indexOf(row.admissionNo) !== -1}
-                    onChange={() => handleRowClick(row.admissionNo)}
+                    checked={selectedRows.indexOf(row.center) !== -1}
+                    onChange={() => handleRowClick(row.center)}
                   />
                 </TableCell>
-                <TableCell align="center">{row.admissionNo}</TableCell>
                 <TableCell align="center">{row.rollNo}</TableCell>
                 <TableCell align="center">
                   <Box
@@ -297,6 +296,7 @@ const ListView: React.FC = () => {
                   </Box>
                 </TableCell>
                 <TableCell align="center">{row.gender}</TableCell>
+                <TableCell align="center">{row.center}</TableCell>
                 <TableCell align="center">{row.level}</TableCell>
                 <TableCell align="center">
                   <Chip

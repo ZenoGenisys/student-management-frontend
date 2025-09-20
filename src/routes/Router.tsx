@@ -29,9 +29,10 @@ const Loadable =
     </ErrorBoundary>
   );
 
+const Login = Loadable(lazy(() => import('../pages/Login')));
 const Dashboard = Loadable(lazy(() => import('../pages/Dashboard')));
 const Students = Loadable(lazy(() => import('../pages/Students')));
-const Login = Loadable(lazy(() => import('../pages/Login')));
+const StudentDetails = Loadable(lazy(() => import('../pages/StudentDetails')));
 const Teachers = Loadable(lazy(() => import('../pages/Teachers')));
 const PageNotFound = Loadable(lazy(() => import('../pages/PageNotFound')));
 
@@ -78,6 +79,7 @@ const Router = () => {
         >
           <Route path={PATH.DASHBOARD} element={<Dashboard />} />
           <Route path={PATH.STUDENTS} element={<Students />} />
+          <Route path={PATH.STUDENT_DETAILS} element={<StudentDetails />} />
           <Route path={PATH.TEACHERS} element={<Teachers />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>

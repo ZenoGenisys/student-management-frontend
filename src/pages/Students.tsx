@@ -16,6 +16,7 @@ import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import IconButton from '@mui/material/IconButton';
 import GridView from '../components/GridView';
 import ListView from '../components/ListView';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -64,8 +65,9 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 const Students: React.FC = () => {
+  const isMobile = useMediaQuery('(max-width:600px)');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [activeView, setActiveView] = useState<'grid' | 'list'>('grid');
+  const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

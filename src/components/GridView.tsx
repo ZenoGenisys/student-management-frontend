@@ -24,7 +24,7 @@ const GridView: React.FC = () => {
             <CardHeader
               title={
                 <Typography sx={{ color: theme.palette.primary.main }}>
-                  AD9892434
+                  Roll No: 1
                 </Typography>
               }
               action={
@@ -77,10 +77,10 @@ const GridView: React.FC = () => {
               >
                 <Box>
                   <Typography variant="body1" color="textSecondary">
-                    Roll No
+                    Center
                   </Typography>
                   <Typography variant="body1" color="textPrimary">
-                    231199
+                    Puliyur
                   </Typography>
                 </Box>
                 <Box>
@@ -146,7 +146,7 @@ const GridView: React.FC = () => {
             <CardHeader
               title={
                 <Typography sx={{ color: theme.palette.primary.main }}>
-                  AD9892435
+                  Roll No: 2
                 </Typography>
               }
               action={
@@ -199,10 +199,10 @@ const GridView: React.FC = () => {
               >
                 <Box>
                   <Typography variant="body1" color="textSecondary">
-                    Roll No
+                    Center
                   </Typography>
                   <Typography variant="body1" color="textPrimary">
-                    230320
+                    Karur
                   </Typography>
                 </Box>
                 <Box>
