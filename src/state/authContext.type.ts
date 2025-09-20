@@ -1,16 +1,21 @@
 import { createContext, useContext } from 'react';
+import type { LoginResponse } from '../types';
+
+export type Role = 'ADMIN' | 'STAFF';
 
 export type AuthContextType = {
-  username?: string | null;
+  email?: string | null;
   token?: string | null;
+  role?: Role | null;
   isAuthLoading: boolean;
-  login: (username: string, token: string) => void;
+  login: (data: LoginResponse) => void;
   logout: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
-  username: null,
+  email: null,
   token: null,
+  role: null,
   isAuthLoading: true,
   login: () => {},
   logout: () => {},

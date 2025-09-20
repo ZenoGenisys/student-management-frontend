@@ -67,7 +67,9 @@ const StyledMenu = styled((props: MenuProps) => (
 const Students: React.FC = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
+  const [activeView, setActiveView] = useState<'grid' | 'list'>(
+    isMobile ? 'grid' : 'list',
+  );
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -148,19 +150,27 @@ const Students: React.FC = () => {
         sx={{ bgcolor: '#fff', border: '1px solid #E3E8EE' }}
       >
         <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
-          Students { activeView === 'grid' ? 'Grid' : 'List' }
+          Students {activeView === 'grid' ? 'Grid' : 'List'}
         </Typography>
         <Box display={'flex'} gap={2}>
-          <Box display={'flex'} alignItems="center" sx={{ border: '1px solid #E3E8EE', borderRadius: 1 }}>
+          <Box
+            display={'flex'}
+            alignItems="center"
+            sx={{ border: '1px solid #E3E8EE', borderRadius: 1 }}
+          >
             <IconButton
               aria-label="grid view"
               size="small"
               sx={{
-                backgroundColor: activeView === 'grid' ? 'primary.main' : '#F9FAFB',
+                backgroundColor:
+                  activeView === 'grid' ? 'primary.main' : '#F9FAFB',
                 color: activeView === 'grid' ? 'white' : 'inherit',
                 borderRadius: 1,
                 m: 0.5,
-                '&:hover': { bgcolor: activeView === 'grid' ? 'primary.main' : '#F9FAFB', color: activeView === 'grid' ? 'white' : 'inherit'},
+                '&:hover': {
+                  bgcolor: activeView === 'grid' ? 'primary.main' : '#F9FAFB',
+                  color: activeView === 'grid' ? 'white' : 'inherit',
+                },
               }}
               onClick={() => handleViewToggle('grid')}
             >
@@ -170,11 +180,15 @@ const Students: React.FC = () => {
               aria-label="list view"
               size="small"
               sx={{
-                backgroundColor: activeView === 'list' ? 'primary.main' : '#F9FAFB',
+                backgroundColor:
+                  activeView === 'list' ? 'primary.main' : '#F9FAFB',
                 color: activeView === 'list' ? 'white' : 'inherit',
                 borderRadius: 1,
                 m: 0.5,
-                '&:hover': { bgcolor: activeView === 'list' ? 'primary.main' : '#F9FAFB', color: activeView === 'list' ? 'white' : 'inherit'},
+                '&:hover': {
+                  bgcolor: activeView === 'list' ? 'primary.main' : '#F9FAFB',
+                  color: activeView === 'list' ? 'white' : 'inherit',
+                },
               }}
               onClick={() => handleViewToggle('list')}
             >
