@@ -1,17 +1,18 @@
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React, { useCallback, useEffect } from 'react';
-import { getStaff } from '../repositories';
+import React from 'react';
+import { useStaff } from '../hooks';
 
 const Staff: React.FC = () => {
-  const get = useCallback(async () => {
-    const response = await getStaff({ page: 1, size: 10 });
-    console.log(response);
-  }, []);
-  useEffect(() => {
-    get();
-  }, [get]);
+  useStaff();
 
-  return <Box>Staff Page - To be implemented</Box>;
+  return (
+    <Box>
+      <Typography variant="h2" mb={3}>
+        Staff TODO List
+      </Typography>
+    </Box>
+  );
 };
 
 export default Staff;
