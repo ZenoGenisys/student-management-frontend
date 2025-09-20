@@ -4,22 +4,20 @@ import qs from 'qs';
 import SessionService from '../services/SessionService';
 import { isNil, isEqual, get } from 'lodash-es';
 
-export const AuthorizationKey = 'x-auth-token';
-
 type Data = Record<string, unknown>;
 type Param = Data | Array<unknown>;
 type ResponseData<T> = { data: T };
 
 export const register = async () => {
-  axios.defaults.baseURL = '';
+  axios.defaults.baseURL = 'http://localhost:8080/';
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 };
 
 export const setUserSessionToken = (token?: string | null) => {
   if (!isNil(token)) {
-    axios.defaults.headers.common[AuthorizationKey] = `${token}`;
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else {
-    delete axios.defaults.headers.common[AuthorizationKey];
+    delete axios.defaults.headers.common.Authorization;
   }
 };
 

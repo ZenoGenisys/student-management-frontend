@@ -1,4 +1,7 @@
+import type { Role } from '../state/authContext.type';
+
 export type LoginResponse = {
-  username: string;
+  email: string;
   token: string;
+  role: Role;
 };

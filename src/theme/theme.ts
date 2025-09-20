@@ -185,6 +185,48 @@ const baseTheme = createTheme({
     },
   },
   components: {
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          fontWeight: 500,
+          fontSize: '1rem',
+          borderRadius: 8,
+          boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+          alignItems: 'center',
+        },
+        icon: {
+          color: '#fff',
+        },
+        standardSuccess: {
+          backgroundColor: '#28A745',
+          color: '#fff',
+          '.MuiAlert-icon': {
+            color: '#FFFFFF',
+          },
+        },
+        standardError: {
+          backgroundColor: '#DC3545',
+          color: '#fff',
+          '.MuiAlert-icon': {
+            color: '#FFFFFF',
+          },
+        },
+        standardWarning: {
+          backgroundColor: '#FFC107',
+          color: '#202C4B',
+          '.MuiAlert-icon': {
+            color: '#FFFFFF',
+          },
+        },
+        standardInfo: {
+          backgroundColor: '#506EE4',
+          color: '#fff',
+          '.MuiAlert-icon': {
+            color: '#FFFFFF',
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
