@@ -10,7 +10,6 @@ import {
   Paper,
   Avatar,
   Typography,
-  Chip,
   Button,
   Select,
   MenuItem,
@@ -24,7 +23,6 @@ import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useTheme } from '@mui/material/styles';
 
-// Updated Row type to allow dynamic property access
 interface Row {
   rollNo: string;
   name: string;
@@ -35,7 +33,7 @@ interface Row {
   status: string;
   doj: string;
   dob: string;
-  [key: string]: string; // Added index signature
+  [key: string]: string;
 }
 
 const rows: Row[] = [
@@ -61,7 +59,6 @@ const rows: Row[] = [
     doj: '01 Aug 2021',
     dob: '23 Mar 2000',
   },
-  // Add more sample rows as needed
 ];
 
 const ListView: React.FC = () => {
@@ -86,7 +83,7 @@ const ListView: React.FC = () => {
     }
   };
 
-  const filteredRows = rows; // No search functionality in this version
+  const filteredRows = rows;
 
   const paginatedRows = filteredRows.slice(
     page * rowsPerPage,
