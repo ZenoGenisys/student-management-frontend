@@ -27,7 +27,7 @@ import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import PhoneAndroidOutlinedIcon from '@mui/icons-material/PhoneAndroidOutlined';
-import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
+import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import { GrDocumentPdf } from 'react-icons/gr';
 import { FaDownload } from 'react-icons/fa6';
 import { FaWhatsapp } from 'react-icons/fa6';
@@ -256,6 +256,11 @@ const StudentDetails: React.FC = () => {
                 icon={<PaidOutlinedIcon fontSize="medium" />}
                 iconPosition="start"
                 label="Fees"
+              />
+              <Tab
+                icon={<LocalLibraryOutlinedIcon fontSize="medium" />}
+                iconPosition="start"
+                label="Academic Details"
               />
             </Tabs>
 
@@ -600,6 +605,11 @@ const StudentDetails: React.FC = () => {
             {/* Tab 3 Fees */}
             {tabValue === 2 && (
               <Box>Fees details will show here!</Box>
+            )}
+
+            {/* Tab 4 Fees */}
+            {tabValue === 3 && (
+              <Box>Academic details will show here!</Box>
             )}
           </Box>
         </Grid>
