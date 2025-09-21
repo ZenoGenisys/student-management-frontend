@@ -154,7 +154,7 @@ const baseTheme = createTheme({
     },
     h3: {
       fontSize: '1.5rem',
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.4,
       '@media (max-width:600px)': {
         fontSize: '1.25rem',
@@ -162,8 +162,18 @@ const baseTheme = createTheme({
     },
     h4: {
       fontSize: '1.25rem',
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.4,
+    },
+    h5: {
+      fontSize: '1.125rem',
+      fontWeight: 600,
+      lineHeight: 1.5,
+    },
+    h6: {
+      fontSize: '1rem',
+      fontWeight: 600,
+      lineHeight: 1.6,
     },
     body1: {
       fontSize: '1rem',
@@ -246,7 +256,8 @@ const baseTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          border: '1px solid #E3E8EE',
+          borderRadius: 6,
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
           transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
           '&:hover': {
@@ -262,7 +273,7 @@ const baseTheme = createTheme({
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
           backdropFilter: 'blur(8px)',
           backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          color: '#202C4B', // Using the primary text color
+          color: '#506EE4', // Using the primary text color
           '& .MuiIconButton-root': {
             color: '#202C4B',
             '&:hover': {
@@ -315,6 +326,14 @@ const baseTheme = createTheme({
               boxShadow: '0 4px 8px rgba(0, 0, 0, 0.12)',
             },
           },
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontSize: '1rem',
+          minHeight: 48,
         },
       },
     },
