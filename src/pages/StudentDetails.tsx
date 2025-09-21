@@ -258,6 +258,8 @@ const StudentDetails: React.FC = () => {
                 label="Fees"
               />
             </Tabs>
+
+            {/* Tab 1 Details */}
             {tabValue === 0 && (
               <Box display={'flex'} flexDirection="column" gap={2}>
                 {/* Parent Details */}
@@ -588,6 +590,16 @@ const StudentDetails: React.FC = () => {
                   </CardContent>
                 </Card>
               </Box>
+            )}
+
+            {/* Tab 2 Attendance */}
+            {tabValue === 1 && (
+              <Box>Attendance will show here!</Box>
+            )}
+
+            {/* Tab 3 Fees */}
+            {tabValue === 2 && (
+              <Box>Fees details will show here!</Box>
             )}
           </Box>
         </Grid>
