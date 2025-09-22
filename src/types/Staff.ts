@@ -2,10 +2,12 @@ export type GetStaffRequest = {
   page: number;
   size: number;
   search?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
 };
 
-export type Staff = {
-  staff_id: number;
+export type StaffType = {
+  staffId: number;
   name: string;
   gender: string;
   joiningDate: string;
@@ -18,4 +20,15 @@ export type Staff = {
   qualification: string;
   experience: number;
   workLocation: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  role: 'ADMIN' | 'STAFF';
+};
+
+export type StaffResponse = {
+  staffData: StaffType[];
+  pagination: {
+    totalRows: number;
+    totalPages: number;
+    currentPage: number;
+  };
 };
