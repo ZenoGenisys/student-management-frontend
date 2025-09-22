@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   Box,
   Table,
@@ -8,132 +8,122 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Avatar,
   Typography,
   Button,
   Select,
   MenuItem,
   Checkbox,
   TableSortLabel,
-  IconButton,
 } from '@mui/material';
-import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
-import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
-import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import type { SelectChangeEvent } from '@mui/material/Select';
+import type { ColumnDefsProps, PaginationProps } from '../types';
 import { useTheme } from '@mui/material/styles';
 
-interface Row {
-  rollNo: string;
-  name: string;
-  avatar: string;
-  gender: string;
-  center: string;
-  level: string;
-  status: string;
-  doj: string;
-  dob: string;
-  [key: string]: string;
-}
+type Row = {
+  [key: string]: any;
+};
 
-const rows: Row[] = [
-  {
-    rollNo: '1',
-    name: 'Ajith',
-    avatar: '',
-    gender: 'Male',
-    center: 'Puliyur',
-    level: '1',
-    status: 'Active',
-    doj: '01 Aug 2022',
-    dob: '23 Nov 1999',
-  },
-  {
-    rollNo: '102',
-    name: 'Rajesh',
-    avatar: '',
-    gender: 'Female',
-    center: 'Karur',
-    level: '3',
-    status: 'Inactive',
-    doj: '01 Aug 2021',
-    dob: '23 Mar 2000',
-  },
-];
+type ListViewProps<T extends Row = Row> = {
+  columns: ColumnDefsProps[];
+  rows: T[];
+  showCheckbox?: boolean;
+  pagination?: PaginationProps;
+  page?: number;
+  rowsPerPage?: number;
+  sort?: { orderBy: string; order?: 'asc' | 'desc' } | null;
+  handleRowPerPageChange?: (rowsPerPage: number) => void;
+  handleSort?: (orderBy: string, order?: 'asc' | 'desc') => void;
+  onChangeSelectedRows?: (selectedRows: string[]) => void;
+  handlePageChange?: (page: number) => void;
+};
 
-const ListView: React.FC = () => {
+const ListView = <T extends Row = Row>({
+  columns,
+  rows,
+  pagination = {
+    currentPage: 1,
+    totalPages: 1,
+    totalRows: rows.length,
+  },
+  showCheckbox = true,
+  page = 1,
+  rowsPerPage = 50,
+  sort = null,
+  handleRowPerPageChange,
+  handleSort,
+  onChangeSelectedRows,
+  handlePageChange,
+}: ListViewProps<T>) => {
   const theme = useTheme();
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-  const [orderBy, setOrderBy] = useState<string>('center');
 
-  const handlePrev = () => setPage((p) => Math.max(p - 1, 0));
-  const handleNext = () =>
-    setPage((p) => Math.min(p + 1, Math.ceil(rows.length / rowsPerPage) - 1));
+  useEffect(() => {
+    onChangeSelectedRows?.(selectedRows);
+  }, [selectedRows, onChangeSelectedRows]);
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
-  ) => {
-    const value = event.target.value;
-    if (typeof value === 'number' || typeof value === 'string') {
-      setRowsPerPage(parseInt(value as string, 10));
-      setPage(0);
-    }
-  };
-
-  const filteredRows = rows;
-
-  const paginatedRows = filteredRows.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage,
+  const handleChangeRowsPerPage = useCallback(
+    (event: SelectChangeEvent<number>) => {
+      const newRowsPerPage = Number(event.target.value);
+      handleRowPerPageChange?.(newRowsPerPage);
+    },
+    [handleRowPerPageChange],
   );
 
-  const sortedRows = [...paginatedRows].sort((a, b) => {
-    if (a[orderBy] < b[orderBy]) {
-      return order === 'asc' ? -1 : 1;
-    }
-    if (a[orderBy] > b[orderBy]) {
-      return order === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
+  const handleSelectAllClick = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (event.target.checked) {
+        const newSelectedRows = rows.map((row) => row.staffId);
+        setSelectedRows(newSelectedRows);
+        return;
+      }
+      setSelectedRows([]);
+    },
+    [rows],
+  );
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelectedRows = paginatedRows.map((row) => row.center);
+  const handleRowClick = useCallback(
+    (staffId: string) => {
+      const selectedIndex = selectedRows.indexOf(staffId);
+      let newSelectedRows: string[] = [];
+
+      if (selectedIndex === -1) {
+        newSelectedRows = newSelectedRows.concat(selectedRows, staffId);
+      } else if (selectedIndex === 0) {
+        newSelectedRows = newSelectedRows.concat(selectedRows.slice(1));
+      } else if (selectedIndex === selectedRows.length - 1) {
+        newSelectedRows = newSelectedRows.concat(selectedRows.slice(0, -1));
+      } else if (selectedIndex > 0) {
+        newSelectedRows = newSelectedRows.concat(
+          selectedRows.slice(0, selectedIndex),
+          selectedRows.slice(selectedIndex + 1),
+        );
+      }
+
       setSelectedRows(newSelectedRows);
-      return;
+    },
+    [selectedRows],
+  );
+
+  const handleRequestSort = useCallback(
+    (id: string, order?: 'asc' | 'desc') => {
+      handleSort?.(id, order);
+    },
+    [handleSort],
+  );
+
+  const handlePrevPage = useCallback(() => {
+    if (page > 0) {
+      const newPage = Math.max(page - 1, 0);
+      handlePageChange?.(newPage);
     }
-    setSelectedRows([]);
-  };
+  }, [page, handlePageChange]);
 
-  const handleRowClick = (center: string) => {
-    const selectedIndex = selectedRows.indexOf(center);
-    let newSelectedRows: string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelectedRows = newSelectedRows.concat(selectedRows, center);
-    } else if (selectedIndex === 0) {
-      newSelectedRows = newSelectedRows.concat(selectedRows.slice(1));
-    } else if (selectedIndex === selectedRows.length - 1) {
-      newSelectedRows = newSelectedRows.concat(selectedRows.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelectedRows = newSelectedRows.concat(
-        selectedRows.slice(0, selectedIndex),
-        selectedRows.slice(selectedIndex + 1),
-      );
+  const handleNextPage = useCallback(() => {
+    if (page < pagination?.totalPages) {
+      const newPage = Math.min(page + 1, pagination?.totalPages);
+      handlePageChange?.(newPage);
     }
-
-    setSelectedRows(newSelectedRows);
-  };
-
-  const handleRequestSort = (property: string) => {
-    const isAscending = orderBy === property && order === 'asc';
-    setOrder(isAscending ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
+  }, [page, pagination?.totalPages, handlePageChange]);
 
   return (
     <Paper
@@ -159,7 +149,7 @@ const ListView: React.FC = () => {
             value={rowsPerPage}
             onChange={handleChangeRowsPerPage}
           >
-            {[5, 10, 25, 50].map((n) => (
+            {[25, 50, 75, 100].map((n) => (
               <MenuItem key={n} value={n}>
                 {n}
               </MenuItem>
@@ -190,177 +180,78 @@ const ListView: React.FC = () => {
             }}
           >
             <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  color="primary"
-                  indeterminate={
-                    selectedRows.length > 0 &&
-                    selectedRows.length < paginatedRows.length
-                  }
-                  checked={
-                    paginatedRows.length > 0 &&
-                    selectedRows.length === paginatedRows.length
-                  }
-                  onChange={handleSelectAllClick}
-                  inputProps={{
-                    'aria-label': 'select all desserts',
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'rollNo'}
-                  direction={orderBy === 'rollNo' ? order : 'asc'}
-                  onClick={() => handleRequestSort('rollNo')}
-                >
-                  Roll No
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={orderBy === 'name' ? order : 'asc'}
-                  onClick={() => handleRequestSort('name')}
-                >
-                  Name
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'gender'}
-                  direction={orderBy === 'gender' ? order : 'asc'}
-                  onClick={() => handleRequestSort('gender')}
-                >
-                  Gender
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'center'}
-                  direction={orderBy === 'center' ? order : 'asc'}
-                  onClick={() => handleRequestSort('center')}
-                >
-                  Center
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'level'}
-                  direction={orderBy === 'level' ? order : 'asc'}
-                  onClick={() => handleRequestSort('level')}
-                >
-                  Level
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'status'}
-                  direction={orderBy === 'status' ? order : 'asc'}
-                  onClick={() => handleRequestSort('status')}
-                >
-                  Status
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">Date of Join</TableCell>
-              <TableCell align="center">DOB</TableCell>
-              <TableCell align="center">Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedRows.map((row) => (
-              <TableRow
-                key={row.center}
-                selected={selectedRows.indexOf(row.center) !== -1}
-                sx={{ borderBottom: '1px solid #ddd' }}
-              >
+              {showCheckbox && (
                 <TableCell padding="checkbox">
                   <Checkbox
                     color="primary"
-                    checked={selectedRows.indexOf(row.center) !== -1}
-                    onChange={() => handleRowClick(row.center)}
+                    indeterminate={
+                      selectedRows.length > 0 &&
+                      selectedRows.length < rows.length
+                    }
+                    checked={selectedRows.length === rows.length}
+                    onChange={handleSelectAllClick}
+                    inputProps={{
+                      'aria-label': 'select all desserts',
+                    }}
                   />
                 </TableCell>
-                <TableCell align="center">{row.rollNo}</TableCell>
-                <TableCell align="center">
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="flex-start"
-                    gap={1}
-                  >
-                    <Avatar src={row.avatar} />
-                    {row.name}
-                  </Box>
+              )}
+              {columns?.map((column) => (
+                <TableCell
+                  key={`staff-${column.id}`}
+                  align={column.align || 'center'}
+                  style={{ width: column.width || 'auto', fontWeight: 'bold' }}
+                >
+                  {column.sortable ? (
+                    <TableSortLabel
+                      active={sort?.orderBy === column.id}
+                      direction={sort?.order}
+                      onClick={() => handleRequestSort(column.id, sort?.order)}
+                    >
+                      {column.label}
+                    </TableSortLabel>
+                  ) : (
+                    column.label
+                  )}
                 </TableCell>
-                <TableCell align="center">{row.gender}</TableCell>
-                <TableCell align="center">{row.center}</TableCell>
-                <TableCell align="center">{row.level}</TableCell>
-                <TableCell align="center">
-                  <Box display="flex" justifyContent="center">
-                    <Typography
-                      variant="body2"
-                      color={
-                        row.status === 'Active'
-                          ? theme.palette.success.main
-                          : theme.palette.error.main
-                      }
-                      sx={{
-                        fontWeight: theme.typography.fontWeightBold,
-                        backgroundColor:
-                          row.status === 'Active'
-                            ? theme.palette.success.light
-                            : theme.palette.error.light,
-                        px: 1,
-                        py: 0.5,
-                        borderRadius: 1,
-                        width: 'fit-content',
-                      }}
-                    >
-                      {row.status}
-                    </Typography>
-                  </Box>
-                </TableCell>
-                <TableCell align="center">{row.doj}</TableCell>
-                <TableCell align="center">{row.dob}</TableCell>
-                <TableCell align="center">
-                  <Box>
-                    <IconButton
-                      aria-label="Call"
-                      size="small"
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 5,
-                        mr: 1,
-                      }}
-                    >
-                      <CallOutlinedIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label="Message"
-                      size="small"
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 5,
-                        mr: 1,
-                      }}
-                    >
-                      <MessageOutlinedIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label="Mail"
-                      size="small"
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 5,
-                      }}
-                    >
-                      <MailOutlineOutlinedIcon />
-                    </IconButton>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={`staff-${row.staffId}`}
+                selected={selectedRows.indexOf(row.staffId) !== -1}
+                sx={{ borderBottom: '1px solid #ddd' }}
+              >
+                {showCheckbox && (
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      color="primary"
+                      checked={selectedRows.indexOf(row.staffId) !== -1}
+                      onChange={() => handleRowClick(row.staffId)}
+                    />
+                  </TableCell>
+                )}
+                {columns.map((column) => {
+                  if (typeof column.cellRenderer === 'function') {
+                    return (
+                      <TableCell
+                        key={column.id}
+                        align={column.align || 'center'}
+                      >
+                        {column.cellRenderer({ column, row, rows })}
+                      </TableCell>
+                    );
+                  }
+                  // fallback to default rendering if no cellRenderer provided
+                  return (
+                    <TableCell key={column.id} align={column.align || 'center'}>
+                      {row[column.id]}
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))}
           </TableBody>
@@ -372,17 +263,19 @@ const ListView: React.FC = () => {
         <Button
           size="large"
           variant="text"
-          onClick={handlePrev}
-          disabled={page === 0}
+          onClick={handlePrevPage}
+          disabled={page === 1}
         >
           Prev
         </Button>
-        <Typography mx={1}>{page + 1}</Typography>
+        <Typography mx={1}>
+          {page} / {pagination?.totalPages}
+        </Typography>
         <Button
           size="large"
           variant="text"
-          onClick={handleNext}
-          disabled={page >= Math.ceil(filteredRows.length / rowsPerPage) - 1}
+          onClick={handleNextPage}
+          disabled={page >= pagination?.totalPages}
         >
           Next
         </Button>
