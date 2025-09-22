@@ -60,7 +60,7 @@ const Staff: React.FC = () => {
       />
       <Box flexGrow={1}>
         {activeView === 'grid' ? (
-          <GridView />
+          <GridView type="STAFF" rows={data?.staffData ?? []} />
         ) : (
           <ListView
             columns={Column}
