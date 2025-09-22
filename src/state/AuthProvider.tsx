@@ -2,11 +2,14 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import storageService from '../services/storageService';
 import { AuthContext } from './authContext.type';
 import SessionService from '../services/SessionService';
-import { register } from '../repositories';
+import { register, setUserSessionToken } from '../repositories';
+import type { LoginResponse } from '../types';
+import type { Role } from './authContext.type';
 
 type AuthState = {
-  username: string | null;
+  email: string | null;
   token: string | null;
+  role: Role | null;
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -20,11 +23,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     storageService.removeItem('auth');
   }, []);
 
-  const login = useCallback((username: string, token: string) => {
-    const newAuth = { username, token };
-    setAuth(newAuth);
-    storageService.setItem('auth', newAuth);
+  const login = useCallback((data: LoginResponse) => {
+    setAuth(data);
+    storageService.setItem('auth', data);
   }, []);
+
+  useEffect(() => {
+    if (auth?.token) {
+      setUserSessionToken(auth.token);
+    }
+  }, [auth?.token]);
 
   useEffect(() => {
     register();

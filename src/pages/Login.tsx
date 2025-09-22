@@ -1,25 +1,38 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../state';
+import { useAuth, useSnackbar } from '../state';
 import { PATH } from '../routes/path';
 import { Box, Typography, TextField, Button, Paper } from '@mui/material';
+import { loginService } from '../repositories';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [username, setUsername] = useState('');
+  const { showSnackbar } = useSnackbar();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      // Do API call and Place the response based on that
-      // In a real app, you would make an API call here
-      const fakeToken = btoa(`${username}:${password}`);
-      login(username, fakeToken);
-      navigate(PATH.DASHBOARD, { replace: true });
+    async (e: React.FormEvent) => {
+      try {
+        e.preventDefault();
+        const response = await loginService(email, password);
+        login(response);
+        showSnackbar({
+          message: 'Login successful!',
+          severity: 'success',
+        });
+        navigate(PATH.DASHBOARD, { replace: true });
+      } catch (e: unknown) {
+        showSnackbar({
+          message:
+            (e as Error).message ||
+            'Login failed. Please check your credentials.',
+          severity: 'error',
+        });
+      }
     },
-    [navigate, login, username, password],
+    [navigate, login, showSnackbar, email, password],
   );
 
   return (
@@ -41,11 +54,12 @@ const Login: React.FC = () => {
           gap={2}
         >
           <TextField
-            label="Username"
+            label="Email"
             variant="outlined"
             required
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             autoFocus
             fullWidth
           />

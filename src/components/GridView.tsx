@@ -48,7 +48,9 @@ const GridView: React.FC = () => {
                 </Box>
               }
             />
-            <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
+            <CardContent
+              sx={{ borderTop: `1px solid ${theme.palette.divider}` }}
+            >
               <Box
                 sx={{ backgroundColor: '#F9FAFB', borderRadius: 1 }}
                 p={2}
@@ -103,27 +105,43 @@ const GridView: React.FC = () => {
             </CardContent>
             <CardActions
               disableSpacing
-              sx={{ display: 'flex', justifyContent: 'space-between', borderTop: `1px solid ${theme.palette.divider}`, p: 2 }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                borderTop: `1px solid ${theme.palette.divider}`,
+                p: 2,
+              }}
             >
               <Box>
                 <IconButton
                   aria-label="Call"
                   size="medium"
-                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5, mr: 1 }}
+                  sx={{
+                    border: `1px solid ${theme.palette.divider}`,
+                    borderRadius: 5,
+                    mr: 1,
+                  }}
                 >
                   <CallOutlinedIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Message"
                   size="medium"
-                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5, mr: 1 }}
+                  sx={{
+                    border: `1px solid ${theme.palette.divider}`,
+                    borderRadius: 5,
+                    mr: 1,
+                  }}
                 >
                   <MessageOutlinedIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Mail"
                   size="medium"
-                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5 }}
+                  sx={{
+                    border: `1px solid ${theme.palette.divider}`,
+                    borderRadius: 5,
+                  }}
                 >
                   <MailOutlineOutlinedIcon />
                 </IconButton>
@@ -170,7 +188,9 @@ const GridView: React.FC = () => {
                 </Box>
               }
             />
-            <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
+            <CardContent
+              sx={{ borderTop: `1px solid ${theme.palette.divider}` }}
+            >
               <Box
                 sx={{ backgroundColor: '#F9FAFB', borderRadius: 1 }}
                 p={2}
@@ -225,27 +245,43 @@ const GridView: React.FC = () => {
             </CardContent>
             <CardActions
               disableSpacing
-              sx={{ display: 'flex', justifyContent: 'space-between', borderTop: `1px solid ${theme.palette.divider}`, p: 2 }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                borderTop: `1px solid ${theme.palette.divider}`,
+                p: 2,
+              }}
             >
               <Box>
                 <IconButton
                   aria-label="Call"
                   size="medium"
-                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5, mr: 1 }}
+                  sx={{
+                    border: `1px solid ${theme.palette.divider}`,
+                    borderRadius: 5,
+                    mr: 1,
+                  }}
                 >
                   <CallOutlinedIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Message"
                   size="medium"
-                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5, mr: 1 }}
+                  sx={{
+                    border: `1px solid ${theme.palette.divider}`,
+                    borderRadius: 5,
+                    mr: 1,
+                  }}
                 >
                   <MessageOutlinedIcon />
                 </IconButton>
                 <IconButton
                   aria-label="Mail"
                   size="medium"
-                  sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 5 }}
+                  sx={{
+                    border: `1px solid ${theme.palette.divider}`,
+                    borderRadius: 5,
+                  }}
                 >
                   <MailOutlineOutlinedIcon />
                 </IconButton>

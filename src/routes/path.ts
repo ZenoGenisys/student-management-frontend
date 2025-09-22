@@ -3,6 +3,6 @@ export const PATH = {
   HOME: '/dashboard',
   DASHBOARD: '/dashboard',
   STUDENTS: '/students',
-  TEACHERS: '/teachers',
+  STAFF: '/staffs',
   STUDENT_DETAILS: '/studentDetails',
 };
