@@ -319,7 +319,7 @@ const Students: React.FC = () => {
         </Box>
       </Box>
       <Box flexGrow={1}>
-        {activeView === 'grid' ? <GridView /> : <ListView />}
+        {/* {activeView === 'grid' ? <GridView /> : <ListView />} */}
       </Box>
     </Box>
   );

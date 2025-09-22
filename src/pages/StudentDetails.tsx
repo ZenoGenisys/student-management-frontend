@@ -89,76 +89,76 @@ const StudentDetails: React.FC = () => {
   };
 
   const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [selectedRows, setSelectedRows] = useState<string[]>([]);
-    const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-    const [orderBy, setOrderBy] = useState<string>('center');
-  
-    const handlePrev = () => setPage((p) => Math.max(p - 1, 0));
-    const handleNext = () =>
-      setPage((p) => Math.min(p + 1, Math.ceil(rows.length / rowsPerPage) - 1));
-  
-    const handleChangeRowsPerPage = (
-      event: React.ChangeEvent<{ name?: string; value: unknown }>,
-    ) => {
-      const value = event.target.value;
-      if (typeof value === 'number' || typeof value === 'string') {
-        setRowsPerPage(parseInt(value as string, 10));
-        setPage(0);
-      }
-    };
-  
-    const filteredRows = rows;
-  
-    const paginatedRows = filteredRows.slice(
-      page * rowsPerPage,
-      page * rowsPerPage + rowsPerPage,
-    );
-  
-    const sortedRows = [...paginatedRows].sort((a, b) => {
-      if (a[orderBy] < b[orderBy]) {
-        return order === 'asc' ? -1 : 1;
-      }
-      if (a[orderBy] > b[orderBy]) {
-        return order === 'asc' ? 1 : -1;
-      }
-      return 0;
-    });
-  
-    const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-      if (event.target.checked) {
-        const newSelectedRows = paginatedRows.map((row) => row.center);
-        setSelectedRows(newSelectedRows);
-        return;
-      }
-      setSelectedRows([]);
-    };
-  
-    const handleRowClick = (center: string) => {
-      const selectedIndex = selectedRows.indexOf(center);
-      let newSelectedRows: string[] = [];
-  
-      if (selectedIndex === -1) {
-        newSelectedRows = newSelectedRows.concat(selectedRows, center);
-      } else if (selectedIndex === 0) {
-        newSelectedRows = newSelectedRows.concat(selectedRows.slice(1));
-      } else if (selectedIndex === selectedRows.length - 1) {
-        newSelectedRows = newSelectedRows.concat(selectedRows.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelectedRows = newSelectedRows.concat(
-          selectedRows.slice(0, selectedIndex),
-          selectedRows.slice(selectedIndex + 1),
-        );
-      }
-  
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<string>('center');
+
+  const handlePrev = () => setPage((p) => Math.max(p - 1, 0));
+  const handleNext = () =>
+    setPage((p) => Math.min(p + 1, Math.ceil(rows.length / rowsPerPage) - 1));
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<{ name?: string; value: unknown }>,
+  ) => {
+    const value = event.target.value;
+    if (typeof value === 'number' || typeof value === 'string') {
+      setRowsPerPage(parseInt(value as string, 10));
+      setPage(0);
+    }
+  };
+
+  const filteredRows = rows;
+
+  const paginatedRows = filteredRows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage,
+  );
+
+  const sortedRows = [...paginatedRows].sort((a, b) => {
+    if (a[orderBy] < b[orderBy]) {
+      return order === 'asc' ? -1 : 1;
+    }
+    if (a[orderBy] > b[orderBy]) {
+      return order === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelectedRows = paginatedRows.map((row) => row.center);
       setSelectedRows(newSelectedRows);
-    };
-  
-    const handleRequestSort = (property: string) => {
-      const isAscending = orderBy === property && order === 'asc';
-      setOrder(isAscending ? 'desc' : 'asc');
-      setOrderBy(property);
-    };
+      return;
+    }
+    setSelectedRows([]);
+  };
+
+  const handleRowClick = (center: string) => {
+    const selectedIndex = selectedRows.indexOf(center);
+    let newSelectedRows: string[] = [];
+
+    if (selectedIndex === -1) {
+      newSelectedRows = newSelectedRows.concat(selectedRows, center);
+    } else if (selectedIndex === 0) {
+      newSelectedRows = newSelectedRows.concat(selectedRows.slice(1));
+    } else if (selectedIndex === selectedRows.length - 1) {
+      newSelectedRows = newSelectedRows.concat(selectedRows.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelectedRows = newSelectedRows.concat(
+        selectedRows.slice(0, selectedIndex),
+        selectedRows.slice(selectedIndex + 1),
+      );
+    }
+
+    setSelectedRows(newSelectedRows);
+  };
+
+  const handleRequestSort = (property: string) => {
+    const isascending = orderBy === property && order === 'asc';
+    setOrder(isascending ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
 
   return (
     <Box display="flex" flexDirection="column">
@@ -719,270 +719,273 @@ const StudentDetails: React.FC = () => {
             )}
 
             {/* Tab 2 Attendance */}
-            {tabValue === 1 && (
-              <Box>Attendance will show here!</Box>
-            )}
+            {tabValue === 1 && <Box>Attendance will show here!</Box>}
 
             {/* Tab 3 Fees */}
             {tabValue === 2 && (
               <Paper
-      sx={{
-        p: 2,
-        borderRadius: 0,
-        border: `1px solid ${theme.palette.divider}`,
-        borderTop: 'none',
-      }}
-    >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={2}
-      >
-        <Box display="flex" alignItems="center" gap={1}>
-          <Typography variant="body1" color="textSecondary">
-            Row Per Page
-          </Typography>
-          <Select
-            size="small"
-            value={rowsPerPage}
-            onChange={handleChangeRowsPerPage}
-          >
-            {[5, 10, 25, 50].map((n) => (
-              <MenuItem key={n} value={n}>
-                {n}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography variant="body1" color="textSecondary">
-            Entries
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Table */}
-      <TableContainer>
-        <Table
-          sx={{
-            '& th, & td': {
-              borderBottom: '1px solid #e0e0e0', // only horizontal line
-            },
-          }}
-        >
-          <TableHead
-            sx={{
-              bgcolor: '#F9FAFB',
-              '& th': {
-                fontWeight: 'bold',
-                fontSize: '1rem',
-              },
-            }}
-          >
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  color="primary"
-                  indeterminate={
-                    selectedRows.length > 0 &&
-                    selectedRows.length < paginatedRows.length
-                  }
-                  checked={
-                    paginatedRows.length > 0 &&
-                    selectedRows.length === paginatedRows.length
-                  }
-                  onChange={handleSelectAllClick}
-                  inputProps={{
-                    'aria-label': 'select all desserts',
-                  }}
-                />
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'rollNo'}
-                  direction={orderBy === 'rollNo' ? order : 'asc'}
-                  onClick={() => handleRequestSort('rollNo')}
-                >
-                  Roll No
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'name'}
-                  direction={orderBy === 'name' ? order : 'asc'}
-                  onClick={() => handleRequestSort('name')}
-                >
-                  Name
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'gender'}
-                  direction={orderBy === 'gender' ? order : 'asc'}
-                  onClick={() => handleRequestSort('gender')}
-                >
-                  Gender
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'center'}
-                  direction={orderBy === 'center' ? order : 'asc'}
-                  onClick={() => handleRequestSort('center')}
-                >
-                  Center
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'level'}
-                  direction={orderBy === 'level' ? order : 'asc'}
-                  onClick={() => handleRequestSort('level')}
-                >
-                  Level
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">
-                <TableSortLabel
-                  active={orderBy === 'status'}
-                  direction={orderBy === 'status' ? order : 'asc'}
-                  onClick={() => handleRequestSort('status')}
-                >
-                  Status
-                </TableSortLabel>
-              </TableCell>
-              <TableCell align="center">Date of Join</TableCell>
-              <TableCell align="center">DOB</TableCell>
-              <TableCell align="center">Action</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {sortedRows.map((row) => (
-              <TableRow
-                key={row.center}
-                selected={selectedRows.indexOf(row.center) !== -1}
-                sx={{ borderBottom: '1px solid #ddd' }}
+                sx={{
+                  p: 2,
+                  borderRadius: 0,
+                  border: `1px solid ${theme.palette.divider}`,
+                  borderTop: 'none',
+                }}
               >
-                <TableCell padding="checkbox">
-                  <Checkbox
-                    color="primary"
-                    checked={selectedRows.indexOf(row.center) !== -1}
-                    onChange={() => handleRowClick(row.center)}
-                  />
-                </TableCell>
-                <TableCell align="center">{row.rollNo}</TableCell>
-                <TableCell align="center">
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="flex-start"
-                    gap={1}
-                  >
-                    <Avatar src={row.avatar} />
-                    {row.name}
-                  </Box>
-                </TableCell>
-                <TableCell align="center">{row.gender}</TableCell>
-                <TableCell align="center">{row.center}</TableCell>
-                <TableCell align="center">{row.level}</TableCell>
-                <TableCell align="center">
-                  <Box display="flex" justifyContent="center">
-                    <Typography
-                      variant="body2"
-                      color={
-                        row.status === 'Active'
-                          ? theme.palette.success.main
-                          : theme.palette.error.main
-                      }
-                      sx={{
-                        fontWeight: theme.typography.fontWeightBold,
-                        backgroundColor:
-                          row.status === 'Active'
-                            ? theme.palette.success.light
-                            : theme.palette.error.light,
-                        px: 1,
-                        py: 0.5,
-                        borderRadius: 1,
-                        width: 'fit-content',
-                      }}
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  mb={2}
+                >
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <Typography variant="body1" color="textSecondary">
+                      Row Per Page
+                    </Typography>
+                    <Select
+                      size="small"
+                      value={rowsPerPage}
+                      onChange={handleChangeRowsPerPage}
                     >
-                      {row.status}
+                      {[5, 10, 25, 50].map((n) => (
+                        <MenuItem key={n} value={n}>
+                          {n}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    <Typography variant="body1" color="textSecondary">
+                      Entries
                     </Typography>
                   </Box>
-                </TableCell>
-                <TableCell align="center">{row.doj}</TableCell>
-                <TableCell align="center">{row.dob}</TableCell>
-                <TableCell align="center">
-                  <Box>
-                    <IconButton
-                      aria-label="Call"
-                      size="small"
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 5,
-                        mr: 1,
-                      }}
-                    >
-                      <CallOutlinedIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label="Message"
-                      size="small"
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 5,
-                        mr: 1,
-                      }}
-                    >
-                      <MessageOutlinedIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label="Mail"
-                      size="small"
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 5,
-                      }}
-                    >
-                      <MailOutlineOutlinedIcon />
-                    </IconButton>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
-                  </Box>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                </Box>
 
-      {/* Pagination */}
-      <Box display="flex" justifyContent="flex-end" alignItems="center" mt={2}>
-        <Button
-          size="large"
-          variant="text"
-          onClick={handlePrev}
-          disabled={page === 0}
-        >
-          Prev
-        </Button>
-        <Typography mx={1}>{page + 1}</Typography>
-        <Button
-          size="large"
-          variant="text"
-          onClick={handleNext}
-          disabled={page >= Math.ceil(filteredRows.length / rowsPerPage) - 1}
-        >
-          Next
-        </Button>
-      </Box>
-    </Paper>
+                {/* Table */}
+                <TableContainer>
+                  <Table
+                    sx={{
+                      '& th, & td': {
+                        borderBottom: '1px solid #e0e0e0', // only horizontal line
+                      },
+                    }}
+                  >
+                    <TableHead
+                      sx={{
+                        bgcolor: '#F9FAFB',
+                        '& th': {
+                          fontWeight: 'bold',
+                          fontSize: '1rem',
+                        },
+                      }}
+                    >
+                      <TableRow>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            indeterminate={
+                              selectedRows.length > 0 &&
+                              selectedRows.length < paginatedRows.length
+                            }
+                            checked={
+                              paginatedRows.length > 0 &&
+                              selectedRows.length === paginatedRows.length
+                            }
+                            onChange={handleSelectAllClick}
+                            inputProps={{
+                              'aria-label': 'select all desserts',
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <TableSortLabel
+                            active={orderBy === 'rollNo'}
+                            direction={orderBy === 'rollNo' ? order : 'asc'}
+                            onClick={() => handleRequestSort('rollNo')}
+                          >
+                            Roll No
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell align="center">
+                          <TableSortLabel
+                            active={orderBy === 'name'}
+                            direction={orderBy === 'name' ? order : 'asc'}
+                            onClick={() => handleRequestSort('name')}
+                          >
+                            Name
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell align="center">
+                          <TableSortLabel
+                            active={orderBy === 'gender'}
+                            direction={orderBy === 'gender' ? order : 'asc'}
+                            onClick={() => handleRequestSort('gender')}
+                          >
+                            Gender
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell align="center">
+                          <TableSortLabel
+                            active={orderBy === 'center'}
+                            direction={orderBy === 'center' ? order : 'asc'}
+                            onClick={() => handleRequestSort('center')}
+                          >
+                            Center
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell align="center">
+                          <TableSortLabel
+                            active={orderBy === 'level'}
+                            direction={orderBy === 'level' ? order : 'asc'}
+                            onClick={() => handleRequestSort('level')}
+                          >
+                            Level
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell align="center">
+                          <TableSortLabel
+                            active={orderBy === 'status'}
+                            direction={orderBy === 'status' ? order : 'asc'}
+                            onClick={() => handleRequestSort('status')}
+                          >
+                            Status
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell align="center">Date of Join</TableCell>
+                        <TableCell align="center">DOB</TableCell>
+                        <TableCell align="center">Action</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {sortedRows.map((row) => (
+                        <TableRow
+                          key={row.center}
+                          selected={selectedRows.indexOf(row.center) !== -1}
+                          sx={{ borderBottom: '1px solid #ddd' }}
+                        >
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              checked={selectedRows.indexOf(row.center) !== -1}
+                              onChange={() => handleRowClick(row.center)}
+                            />
+                          </TableCell>
+                          <TableCell align="center">{row.rollNo}</TableCell>
+                          <TableCell align="center">
+                            <Box
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="flex-start"
+                              gap={1}
+                            >
+                              <Avatar src={row.avatar} />
+                              {row.name}
+                            </Box>
+                          </TableCell>
+                          <TableCell align="center">{row.gender}</TableCell>
+                          <TableCell align="center">{row.center}</TableCell>
+                          <TableCell align="center">{row.level}</TableCell>
+                          <TableCell align="center">
+                            <Box display="flex" justifyContent="center">
+                              <Typography
+                                variant="body2"
+                                color={
+                                  row.status === 'Active'
+                                    ? theme.palette.success.main
+                                    : theme.palette.error.main
+                                }
+                                sx={{
+                                  fontWeight: theme.typography.fontWeightBold,
+                                  backgroundColor:
+                                    row.status === 'Active'
+                                      ? theme.palette.success.light
+                                      : theme.palette.error.light,
+                                  px: 1,
+                                  py: 0.5,
+                                  borderRadius: 1,
+                                  width: 'fit-content',
+                                }}
+                              >
+                                {row.status}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell align="center">{row.doj}</TableCell>
+                          <TableCell align="center">{row.dob}</TableCell>
+                          <TableCell align="center">
+                            <Box>
+                              <IconButton
+                                aria-label="Call"
+                                size="small"
+                                sx={{
+                                  border: `1px solid ${theme.palette.divider}`,
+                                  borderRadius: 5,
+                                  mr: 1,
+                                }}
+                              >
+                                <CallOutlinedIcon />
+                              </IconButton>
+                              <IconButton
+                                aria-label="Message"
+                                size="small"
+                                sx={{
+                                  border: `1px solid ${theme.palette.divider}`,
+                                  borderRadius: 5,
+                                  mr: 1,
+                                }}
+                              >
+                                <MessageOutlinedIcon />
+                              </IconButton>
+                              <IconButton
+                                aria-label="Mail"
+                                size="small"
+                                sx={{
+                                  border: `1px solid ${theme.palette.divider}`,
+                                  borderRadius: 5,
+                                }}
+                              >
+                                <MailOutlineOutlinedIcon />
+                              </IconButton>
+                              <IconButton aria-label="settings">
+                                <MoreVertIcon />
+                              </IconButton>
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                {/* Pagination */}
+                <Box
+                  display="flex"
+                  justifyContent="flex-end"
+                  alignItems="center"
+                  mt={2}
+                >
+                  <Button
+                    size="large"
+                    variant="text"
+                    onClick={handlePrev}
+                    disabled={page === 0}
+                  >
+                    Prev
+                  </Button>
+                  <Typography mx={1}>{page + 1}</Typography>
+                  <Button
+                    size="large"
+                    variant="text"
+                    onClick={handleNext}
+                    disabled={
+                      page >= Math.ceil(filteredRows.length / rowsPerPage) - 1
+                    }
+                  >
+                    Next
+                  </Button>
+                </Box>
+              </Paper>
             )}
 
             {/* Tab 4 Fees */}
-            {tabValue === 3 && (
-              <Box>Academic details will show here!</Box>
-            )}
+            {tabValue === 3 && <Box>Academic details will show here!</Box>}
           </Box>
         </Grid>
       </Grid>
