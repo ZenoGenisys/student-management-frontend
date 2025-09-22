@@ -7,21 +7,51 @@ import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import IconButton from '@mui/material/IconButton';
 import { Search } from '../../components';
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
+import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
+import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
+import { useCallback, useState } from 'react';
+import styled from '@emotion/styled';
 
+const StyledMenu = styled(Menu)``;
 type GridFilterProps = {
   title: string;
   activeView: 'grid' | 'list';
   search?: string;
+  enableFilter?: boolean;
   handleViewToggle: (view: 'grid' | 'list') => void;
   handleSearch?: (value: string) => void;
+  handleSortChange: (order: 'asc' | 'desc') => void;
 };
 const GridFilter = ({
   title,
   activeView,
   search,
+  enableFilter = false,
   handleViewToggle,
   handleSearch,
+  handleSortChange,
 }: GridFilterProps) => {
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
+  const handleMenuOpen = useCallback((
+    menu: string,
+    event: React.MouseEvent<HTMLElement>,
+  ) => {
+    setActiveMenu(menu);
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleMenuClose = useCallback(() => {
+    setActiveMenu(null);
+    setAnchorEl(null);
+  }, []);
+
   return (
     <Box
       display={'flex'}
@@ -78,24 +108,54 @@ const GridFilter = ({
             <ListAltOutlinedIcon />
           </IconButton>
         </Box>
-        <Button
-          variant="outlined"
-          color="secondary"
-          size="medium"
-          startIcon={<FilterAltOutlinedIcon />}
-          endIcon={<KeyboardArrowDownIcon />}
-        >
-          Filter
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          size="medium"
-          startIcon={<SwapVertOutlinedIcon />}
-          endIcon={<KeyboardArrowDownIcon />}
-        >
-          Sort by A-Z
-        </Button>
+        {enableFilter && 
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="medium"
+            startIcon={<FilterAltOutlinedIcon />}
+            endIcon={<KeyboardArrowDownIcon />}
+          >
+            Filter
+          </Button>
+        }
+        {activeView === 'grid' && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              size="medium"
+              startIcon={<SwapVertOutlinedIcon />}
+              endIcon={<KeyboardArrowDownIcon />}
+              id="sortby-menu"
+              aria-controls={open ? 'sortby-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={(e) => handleMenuOpen('sortby', e)}
+            >
+              Sort by A-Z
+            </Button>
+          )}
+
+          <StyledMenu
+            id="sortby-menu"
+            slotProps={{
+              list: {
+                'aria-labelledby': 'sortby-menu',
+              },
+            }}
+            anchorEl={anchorEl}
+            open={activeMenu === 'sortby'}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={() => handleSortChange('asc')} disableRipple>
+              <ArrowUpwardOutlinedIcon />
+              Ascending
+            </MenuItem>
+            <MenuItem onClick={() => handleSortChange('desc')} disableRipple>
+              <ArrowDownwardOutlinedIcon />
+              Descending
+            </MenuItem>
+          </StyledMenu>
       </Box>
     </Box>
   );

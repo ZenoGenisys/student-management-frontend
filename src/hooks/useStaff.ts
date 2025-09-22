@@ -65,6 +65,10 @@ const useStaff = () => {
     setSearch(search);
   }, []);
 
+  const handleGridSort = useCallback((order: 'asc' | 'desc') => {
+    setSort({ orderBy: 'name', order });
+  }, []);
+
   return {
     data,
     isLoading,
@@ -79,6 +83,7 @@ const useStaff = () => {
     handlePageChange,
     handleSort,
     handleSearch,
+    handleGridSort,
   };
 };
 export default useStaff;

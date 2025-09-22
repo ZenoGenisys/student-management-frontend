@@ -46,6 +46,7 @@ const Staff: React.FC = () => {
     handlePageChange,
     handleSort,
     handleRowPerPageChange,
+    handleGridSort,
   } = useStaff();
 
   return (
@@ -57,6 +58,7 @@ const Staff: React.FC = () => {
         search={search}
         handleViewToggle={handleViewToggle}
         handleSearch={handleSearch}
+        handleSortChange={handleGridSort}
       />
       <Box flexGrow={1}>
         {activeView === 'grid' ? (
