@@ -26,7 +26,7 @@ const StatusCell = ({ row }: CellRender<StaffType>) => {
           width: 'fit-content',
         }}
       >
-        {row.status}
+        {row.status === 'ACTIVE' ? 'Active' : 'Inactive'}
       </Typography>
     </Box>
   );
