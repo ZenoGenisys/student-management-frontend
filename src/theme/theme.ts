@@ -240,7 +240,7 @@ const baseTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 6,
           padding: '8px 16px',
           transition: 'all 0.2s ease-in-out',
           '&:hover': {
@@ -297,7 +297,7 @@ const baseTheme = createTheme({
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 6,
           margin: '4px 8px',
           transition: 'all 0.2s ease-in-out',
           '&:hover': {
@@ -317,7 +317,7 @@ const baseTheme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: 8,
+            borderRadius: 6,
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
               boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
@@ -334,6 +334,31 @@ const baseTheme = createTheme({
         root: {
           fontSize: '1rem',
           minHeight: 48,
+        },
+      },
+    },
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 6,
+          marginTop: 8,
+          minWidth: 180,
+          color: 'rgb(55, 65, 81)',
+          boxShadow:
+            'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+          '& .MuiMenu-list': {
+            padding: '4px 0',
+          },
+          '& .MuiMenuItem-root': {
+            '& .MuiSvgIcon-root': {
+              fontSize: 18,
+              color: '#6A7287',
+              marginRight: 12,
+            },
+            '&:active': {
+              backgroundColor: 'rgba(80, 110, 228, 0.12)',
+            },
+          },
         },
       },
     },

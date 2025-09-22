@@ -1,9 +1,9 @@
-import { Button, Typography } from '@mui/material';
+import { Button, FormControl, InputLabel, Select, Typography, type SelectChangeEvent } from '@mui/material';
 import Box from '@mui/material/Box';
 import React, { useState } from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import AddIcon from '@mui/icons-material/Add';
-import Menu, { type MenuProps } from '@mui/material/Menu';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
@@ -17,69 +17,46 @@ import IconButton from '@mui/material/IconButton';
 import GridView from '../components/GridView';
 import ListView from '../components/ListView';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
+import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 
-const StyledMenu = styled((props: MenuProps) => (
-  <Menu
-    elevation={0}
-    anchorOrigin={{
-      vertical: 'bottom',
-      horizontal: 'right',
-    }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'right',
-    }}
-    {...props}
-  />
-))(({ theme }) => ({
-  '& .MuiPaper-root': {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    color: 'rgb(55, 65, 81)',
-    boxShadow:
-      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
-    '& .MuiMenu-list': {
-      padding: '4px 0',
-    },
-    '& .MuiMenuItem-root': {
-      '& .MuiSvgIcon-root': {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
-        ...theme.applyStyles('dark', {
-          color: 'inherit',
-        }),
-      },
-      '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity,
-        ),
-      },
-    },
-    ...theme.applyStyles('dark', {
-      color: theme.palette.grey[300],
-    }),
-  },
-}));
+const StyledMenu = styled(Menu)``;
 
 const Students: React.FC = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [activeView, setActiveView] = useState<'grid' | 'list'>(
     isMobile ? 'grid' : 'list',
   );
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+
+  const [activeMenu, setActiveMenu] = React.useState<string | null>(null);
+
+  const handleMenuOpen = (
+    menu: string,
+    event: React.MouseEvent<HTMLElement>,
+  ) => {
+    setActiveMenu(menu);
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+
+  const handleMenuClose = () => {
+    setActiveMenu(null);
     setAnchorEl(null);
   };
+
   const handleViewToggle = (view: 'grid' | 'list') => {
     setActiveView(view);
   };
+
+  const [age, setAge] = React.useState('');
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value);
+  };
+
   return (
     <Box display="flex" flexDirection="column">
       <Box
@@ -104,7 +81,7 @@ const Students: React.FC = () => {
             aria-controls={open ? 'export-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
+            onClick={(e) => handleMenuOpen('export', e)}
             endIcon={<KeyboardArrowDownIcon />}
           >
             Export Students
@@ -117,14 +94,14 @@ const Students: React.FC = () => {
               },
             }}
             anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
+            open={activeMenu === 'export'}
+            onClose={handleMenuClose}
           >
-            <MenuItem onClick={handleClose} disableRipple>
+            <MenuItem onClick={handleMenuClose} disableRipple>
               <PictureAsPdfOutlinedIcon />
               Export as PDF
             </MenuItem>
-            <MenuItem onClick={handleClose} disableRipple>
+            <MenuItem onClick={handleMenuClose} disableRipple>
               <RiFileExcel2Line
                 style={{ marginRight: 12, width: 16, height: 16 }}
               />
@@ -201,18 +178,144 @@ const Students: React.FC = () => {
             size="medium"
             startIcon={<FilterAltOutlinedIcon />}
             endIcon={<KeyboardArrowDownIcon />}
+            id="filter-menu"
+            aria-controls={open ? 'filter-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={(e) => handleMenuOpen('filter', e)}
           >
             Filter
           </Button>
-          <Button
-            variant="outlined"
-            color="secondary"
-            size="medium"
-            startIcon={<SwapVertOutlinedIcon />}
-            endIcon={<KeyboardArrowDownIcon />}
+          <StyledMenu
+            id="filter-menu"
+            slotProps={{
+              list: {
+                'aria-labelledby': 'filter-menu',
+              },
+            }}
+            anchorEl={anchorEl}
+            open={activeMenu === 'filter'}
+            onClose={handleMenuClose}
           >
-            Sort by A-Z
-          </Button>
+            <Box>
+              <Box display={'flex'} flexDirection="row" alignItems="center">
+                <FormControl sx={{ m: 1, minWidth: 120, width: '90%' }} size="small">
+                  <InputLabel id="demo-select-small-label">Age</InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={age}
+                    label="Age"
+                    autoWidth
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120, width: '90%' }} size="small">
+                  <InputLabel id="demo-select-small-label">Age</InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={age}
+                    label="Age"
+                    autoWidth
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+                </Box>
+              <Box display={'flex'} flexDirection="row" alignItems="center">
+                <FormControl sx={{ m: 1, minWidth: 120, width: '90%' }} size="small">
+                  <InputLabel id="demo-select-small-label">Age</InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={age}
+                    label="Age"
+                    autoWidth
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120, width: '90%' }} size="small">
+                  <InputLabel id="demo-select-small-label">Age</InputLabel>
+                  <Select
+                    labelId="demo-select-small-label"
+                    id="demo-select-small"
+                    value={age}
+                    label="Age"
+                    autoWidth
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={10}>Ten</MenuItem>
+                    <MenuItem value={20}>Twenty</MenuItem>
+                    <MenuItem value={30}>Thirty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+            </Box>
+          </StyledMenu>
+          {activeView === 'grid' && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              size="medium"
+              startIcon={<SwapVertOutlinedIcon />}
+              endIcon={<KeyboardArrowDownIcon />}
+              id="sortby-menu"
+              aria-controls={open ? 'sortby-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={(e) => handleMenuOpen('sortby', e)}
+            >
+              Sort by A-Z
+            </Button>
+          )}
+          <StyledMenu
+            id="sortby-menu"
+            slotProps={{
+              list: {
+                'aria-labelledby': 'sortby-menu',
+              },
+            }}
+            anchorEl={anchorEl}
+            open={activeMenu === 'sortby'}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={handleMenuClose} disableRipple>
+              <ArrowUpwardOutlinedIcon />
+              Ascending
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose} disableRipple>
+              <ArrowDownwardOutlinedIcon />
+              Descending
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose} disableRipple>
+              <AccessTimeOutlinedIcon />
+              Recently Added
+            </MenuItem>
+          </StyledMenu>
         </Box>
       </Box>
       <Box flexGrow={1}>
