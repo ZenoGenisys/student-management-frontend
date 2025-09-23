@@ -9,13 +9,15 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { DRAWER_WIDTH } from '../constants/layout';
-import { ExitToApp as LogoutIcon } from '@mui/icons-material';
+import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import Button from '@mui/material/Button';
 import { useAuth } from '../state';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../routes/path';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'isMobile',
@@ -72,7 +74,9 @@ export default function Appbar({
     navigate(PATH.LOGIN);
   };
 
-  const menuId = 'primary-search-account-menu';
+  const theme = useTheme();
+
+  const menuId = 'account-menu';
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -81,9 +85,41 @@ export default function Appbar({
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
+          <Avatar
+            alt="profile"
+            src="/src/assets/images/profile-photo.jpg"
+            sx={{ mr: 1 }}
+          />
+          <Box>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+              John Doe
+            </Typography>
+            <Typography variant="body2" color="primary">
+              Admin
+            </Typography>
+          </Box>
+        </Box>
+      </MenuItem>
       <MenuItem onClick={handleLogout}>
-        <Button variant="outlined" color="error" endIcon={<LogoutIcon />}>
+        <Button
+          variant="outlined"
+          color="error"
+          endIcon={
+            <ExitToAppOutlinedIcon
+              sx={{ color: theme.palette.error.main || 'red' }}
+            />
+          }
+          sx={{ fontSize: '1rem', width: '100%' }}
+        >
           Logout
         </Button>
       </MenuItem>

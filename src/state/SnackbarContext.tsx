@@ -1,7 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, Slide, IconButton } from '@mui/material';
 import type { AlertColor } from '@mui/material';
 import { SnackbarContext, type SnackbarOptions } from './useSnackbar';
+import CloseIcon from '@mui/icons-material/Close';
+
+function SlideTransition(props: any) {
+  return <Slide {...props} direction="down" />;
+}
 
 export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -35,6 +40,8 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
         open={open}
         onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        TransitionComponent={SlideTransition}
+        autoHideDuration={5000}
       >
         <Alert
           onClose={handleClose}
