@@ -12,15 +12,7 @@ import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import { useTheme } from '@mui/material/styles';
-
-type Row = {
-  [key: string]: any;
-};
-
-type GridViewProps<T extends Row = Row> = {
-  type: 'STAFF' | 'STUDENT';
-  rows: T[];
-};
+import type { GridViewProps } from '../types';
 
 const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
   const theme = useTheme();
