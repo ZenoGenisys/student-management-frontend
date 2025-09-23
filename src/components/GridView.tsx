@@ -12,15 +12,7 @@ import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import { useTheme } from '@mui/material/styles';
-
-type Row = {
-  [key: string]: any;
-};
-
-type GridViewProps<T extends Row = Row> = {
-  type: 'STAFF' | 'STUDENT';
-  rows: T[];
-};
+import type { GridViewProps } from '../types';
 
 const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
   const theme = useTheme();
@@ -46,10 +38,17 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                   <Box display={'flex'} alignItems="center" gap={1}>
                     <Typography
                       variant="body2"
-                      color={row?.status === 'ACTIVE' ? theme.palette.success.main : theme.palette.error.main}
+                      color={
+                        row?.status === 'ACTIVE'
+                          ? theme.palette.success.main
+                          : theme.palette.error.main
+                      }
                       sx={{
                         fontWeight: theme.typography.fontWeightBold,
-                        backgroundColor: row?.status === 'ACTIVE' ? theme.palette.success.light : theme.palette.error.light,
+                        backgroundColor:
+                          row?.status === 'ACTIVE'
+                            ? theme.palette.success.light
+                            : theme.palette.error.light,
                         px: 1,
                         py: 0.5,
                         borderRadius: 1,

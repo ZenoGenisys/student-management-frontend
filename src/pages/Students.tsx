@@ -1,4 +1,11 @@
-import { Button, FormControl, InputLabel, Select, Typography, type SelectChangeEvent } from '@mui/material';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  Typography,
+  type SelectChangeEvent,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
@@ -14,8 +21,6 @@ import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import IconButton from '@mui/material/IconButton';
-import GridView from '../components/GridView';
-import ListView from '../components/ListView';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
@@ -199,7 +204,10 @@ const Students: React.FC = () => {
           >
             <Box>
               <Box display={'flex'} flexDirection="row" alignItems="center">
-                <FormControl sx={{ m: 1, minWidth: 120, width: '90%' }} size="small">
+                <FormControl
+                  sx={{ m: 1, minWidth: 120, width: '90%' }}
+                  size="small"
+                >
                   <InputLabel id="demo-select-small-label">Age</InputLabel>
                   <Select
                     labelId="demo-select-small-label"
@@ -217,7 +225,10 @@ const Students: React.FC = () => {
                     <MenuItem value={30}>Thirty</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl sx={{ m: 1, minWidth: 120, width: '90%' }} size="small">
+                <FormControl
+                  sx={{ m: 1, minWidth: 120, width: '90%' }}
+                  size="small"
+                >
                   <InputLabel id="demo-select-small-label">Age</InputLabel>
                   <Select
                     labelId="demo-select-small-label"
@@ -235,9 +246,12 @@ const Students: React.FC = () => {
                     <MenuItem value={30}>Thirty</MenuItem>
                   </Select>
                 </FormControl>
-                </Box>
+              </Box>
               <Box display={'flex'} flexDirection="row" alignItems="center">
-                <FormControl sx={{ m: 1, minWidth: 120, width: '90%' }} size="small">
+                <FormControl
+                  sx={{ m: 1, minWidth: 120, width: '90%' }}
+                  size="small"
+                >
                   <InputLabel id="demo-select-small-label">Age</InputLabel>
                   <Select
                     labelId="demo-select-small-label"
@@ -255,7 +269,10 @@ const Students: React.FC = () => {
                     <MenuItem value={30}>Thirty</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl sx={{ m: 1, minWidth: 120, width: '90%' }} size="small">
+                <FormControl
+                  sx={{ m: 1, minWidth: 120, width: '90%' }}
+                  size="small"
+                >
                   <InputLabel id="demo-select-small-label">Age</InputLabel>
                   <Select
                     labelId="demo-select-small-label"
