@@ -10,6 +10,7 @@ export type CellRender<T> = {
   rows: T[];
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ColumnDefsProps<T = any> = {
   id: string;
   label: string | React.ReactNode;

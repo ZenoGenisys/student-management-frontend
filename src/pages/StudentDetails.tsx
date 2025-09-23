@@ -24,7 +24,7 @@ import {
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SensorOccupiedOutlinedIcon from '@mui/icons-material/SensorOccupiedOutlined';
@@ -84,9 +84,12 @@ const StudentDetails: React.FC = () => {
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue);
-  };
+  const handleTabChange = useCallback(
+    (_: React.SyntheticEvent, newValue: number) => {
+      setTabValue(newValue);
+    },
+    [],
+  );
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -98,15 +101,19 @@ const StudentDetails: React.FC = () => {
   const handleNext = () =>
     setPage((p) => Math.min(p + 1, Math.ceil(rows.length / rowsPerPage) - 1));
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<{ name?: string; value: unknown }>,
-  ) => {
-    const value = event.target.value;
-    if (typeof value === 'number' || typeof value === 'string') {
-      setRowsPerPage(parseInt(value as string, 10));
+  const handleChangeRowsPerPage = useCallback(
+    (
+      event:
+        | React.ChangeEvent<{ value: unknown }>
+        | React.ChangeEvent<HTMLInputElement>
+        | Event,
+    ) => {
+      const target = event.target as HTMLInputElement | { value: unknown };
+      setRowsPerPage(Number(target.value));
       setPage(0);
-    }
-  };
+    },
+    [],
+  );
 
   const filteredRows = rows;
 

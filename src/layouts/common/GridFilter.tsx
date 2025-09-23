@@ -33,19 +33,18 @@ const GridFilter = ({
   handleSearch,
   handleSortChange,
 }: GridFilterProps) => {
-
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-  const handleMenuOpen = useCallback((
-    menu: string,
-    event: React.MouseEvent<HTMLElement>,
-  ) => {
-    setActiveMenu(menu);
-    setAnchorEl(event.currentTarget);
-  }, []);
+  const handleMenuOpen = useCallback(
+    (menu: string, event: React.MouseEvent<HTMLElement>) => {
+      setActiveMenu(menu);
+      setAnchorEl(event.currentTarget);
+    },
+    [],
+  );
 
   const handleMenuClose = useCallback(() => {
     setActiveMenu(null);
@@ -108,7 +107,7 @@ const GridFilter = ({
             <ListAltOutlinedIcon />
           </IconButton>
         </Box>
-        {enableFilter && 
+        {enableFilter && (
           <Button
             variant="outlined"
             color="secondary"
@@ -118,44 +117,44 @@ const GridFilter = ({
           >
             Filter
           </Button>
-        }
+        )}
         {activeView === 'grid' && (
-            <Button
-              variant="outlined"
-              color="secondary"
-              size="medium"
-              startIcon={<SwapVertOutlinedIcon />}
-              endIcon={<KeyboardArrowDownIcon />}
-              id="sortby-menu"
-              aria-controls={open ? 'sortby-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? 'true' : undefined}
-              onClick={(e) => handleMenuOpen('sortby', e)}
-            >
-              Sort by A-Z
-            </Button>
-          )}
-
-          <StyledMenu
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="medium"
+            startIcon={<SwapVertOutlinedIcon />}
+            endIcon={<KeyboardArrowDownIcon />}
             id="sortby-menu"
-            slotProps={{
-              list: {
-                'aria-labelledby': 'sortby-menu',
-              },
-            }}
-            anchorEl={anchorEl}
-            open={activeMenu === 'sortby'}
-            onClose={handleMenuClose}
+            aria-controls={open ? 'sortby-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={(e) => handleMenuOpen('sortby', e)}
           >
-            <MenuItem onClick={() => handleSortChange('asc')} disableRipple>
-              <ArrowUpwardOutlinedIcon />
-              Ascending
-            </MenuItem>
-            <MenuItem onClick={() => handleSortChange('desc')} disableRipple>
-              <ArrowDownwardOutlinedIcon />
-              Descending
-            </MenuItem>
-          </StyledMenu>
+            Sort by A-Z
+          </Button>
+        )}
+
+        <StyledMenu
+          id="sortby-menu"
+          slotProps={{
+            list: {
+              'aria-labelledby': 'sortby-menu',
+            },
+          }}
+          anchorEl={anchorEl}
+          open={activeMenu === 'sortby'}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={() => handleSortChange('asc')} disableRipple>
+            <ArrowUpwardOutlinedIcon />
+            Ascending
+          </MenuItem>
+          <MenuItem onClick={() => handleSortChange('desc')} disableRipple>
+            <ArrowDownwardOutlinedIcon />
+            Descending
+          </MenuItem>
+        </StyledMenu>
       </Box>
     </Box>
   );
