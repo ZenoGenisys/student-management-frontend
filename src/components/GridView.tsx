@@ -30,8 +30,8 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                 title={
                   <Typography sx={{ color: theme.palette.primary.main }}>
                     {type === 'STAFF'
-                      ? `Staff No: ${row?.staffId ?? ''}`
-                      : `Roll No: ${row?.staffId ?? ''}`}
+                      ? `Staff Id: ${row?.staffId ?? ''}`
+                      : `Roll No: ${row?.studentId ?? ''}`}
                   </Typography>
                 }
                 action={
@@ -82,7 +82,7 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                     </Typography>
                     {type === 'STUDENT' && (
                       <Typography color="textSecondary" variant="body2">
-                        Level: {row?.level}
+                        Level: {row?.learningLevel}
                       </Typography>
                     )}
                   </Box>

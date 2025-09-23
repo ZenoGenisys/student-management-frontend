@@ -1,6 +1,6 @@
 import Login from './Login';
-import Students from './Students';
+import Student from './Student';
 import Dashboard from './Dashboard';
 import Staff from './Staff';
 
-export { Login, Students, Dashboard, Staff };
+export { Login, Student, Dashboard, Staff };

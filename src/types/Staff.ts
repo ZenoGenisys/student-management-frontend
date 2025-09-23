@@ -25,7 +25,7 @@ export type StaffType = {
 };
 
 export type StaffResponse = {
-  staffData: StaffType[];
+  data: StaffType[];
   pagination: {
     totalRows: number;
     totalPages: number;

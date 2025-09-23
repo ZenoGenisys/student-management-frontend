@@ -2,12 +2,12 @@ import Box from '@mui/material/Box';
 import React from 'react';
 import GridView from '../components/GridView';
 import ListView from '../components/ListView';
-import { useStaff } from '../hooks';
+import { useStudent } from '../hooks';
 import { GridFilter, GridHeader } from '../layouts';
 import { ActionCell, NameCell, StatusCell } from '../components';
 
 const Column = [
-  { id: 'staffId', label: 'Staff ID', sortable: true },
+  { id: 'studentId', label: 'Student ID', sortable: true },
   {
     id: 'name',
     label: 'Name',
@@ -16,8 +16,8 @@ const Column = [
     align: 'left' as const,
   },
   { id: 'gender', label: 'Gender', sortable: true },
-  { id: 'workLocation', label: 'Center', sortable: true },
-  { id: 'qualification', label: 'Qualification', sortable: true },
+  { id: 'age', label: 'Age', sortable: true },
+  { id: 'schoolName', label: 'School Name', sortable: true },
   {
     id: 'status',
     label: 'Status',
@@ -33,7 +33,7 @@ const Column = [
   },
 ];
 
-const Staff: React.FC = () => {
+const Student: React.FC = () => {
   const {
     data,
     activeView,
@@ -47,13 +47,13 @@ const Staff: React.FC = () => {
     handleSort,
     handleRowPerPageChange,
     handleGridSort,
-  } = useStaff();
+  } = useStudent();
 
   return (
     <Box display="flex" flexDirection="column">
-      <GridHeader title="Staff" />
+      <GridHeader title="Student" />
       <GridFilter
-        title="Staff"
+        title="Student"
         activeView={activeView}
         search={search}
         handleViewToggle={handleViewToggle}
@@ -62,7 +62,7 @@ const Staff: React.FC = () => {
       />
       <Box flexGrow={1}>
         {activeView === 'grid' ? (
-          <GridView type="STAFF" rows={data?.data ?? []} />
+          <GridView type="STUDENT" rows={data?.data ?? []} />
         ) : (
           <ListView
             columns={Column}
@@ -74,7 +74,7 @@ const Staff: React.FC = () => {
             handleSort={handleSort}
             handleRowPerPageChange={handleRowPerPageChange}
             handlePageChange={handlePageChange}
-            getRowId={(row) => row.staffId.toString()}
+            getRowId={(row) => row.studentId.toString()}
           />
         )}
       </Box>
@@ -82,4 +82,4 @@ const Staff: React.FC = () => {
   );
 };
 
-export default Staff;
+export default Student;

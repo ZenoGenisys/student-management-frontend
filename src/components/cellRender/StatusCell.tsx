@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import type { CellRender, StaffType } from '../../types';
+import type { CellRender, StaffType, StudentType } from '../../types';
 import { useTheme } from '@mui/material/styles';
 
-const StatusCell = ({ row }: CellRender<StaffType>) => {
+const StatusCell = ({ row }: CellRender<StaffType | StudentType>) => {
   const theme = useTheme();
   return (
     <Box display="flex" justifyContent="center">

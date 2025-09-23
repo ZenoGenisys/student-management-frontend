@@ -65,6 +65,42 @@ const GridFilter = ({
       </Typography>
       <Box display={'flex'} gap={2}>
         <Search search={search} onChange={handleSearch} />
+        {activeView === 'grid' && (
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="medium"
+            startIcon={<SwapVertOutlinedIcon />}
+            endIcon={<KeyboardArrowDownIcon />}
+            id="sortby-menu"
+            aria-controls={open ? 'sortby-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={(e) => handleMenuOpen('sortby', e)}
+          >
+            Sort by A-Z
+          </Button>
+        )}
+        <StyledMenu
+          id="sortby-menu"
+          slotProps={{
+            list: {
+              'aria-labelledby': 'sortby-menu',
+            },
+          }}
+          anchorEl={anchorEl}
+          open={activeMenu === 'sortby'}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={() => handleSortChange('asc')} disableRipple>
+            <ArrowUpwardOutlinedIcon />
+            Ascending
+          </MenuItem>
+          <MenuItem onClick={() => handleSortChange('desc')} disableRipple>
+            <ArrowDownwardOutlinedIcon />
+            Descending
+          </MenuItem>
+        </StyledMenu>
         <Box
           display={'flex'}
           alignItems="center"
@@ -118,43 +154,6 @@ const GridFilter = ({
             Filter
           </Button>
         )}
-        {activeView === 'grid' && (
-          <Button
-            variant="outlined"
-            color="secondary"
-            size="medium"
-            startIcon={<SwapVertOutlinedIcon />}
-            endIcon={<KeyboardArrowDownIcon />}
-            id="sortby-menu"
-            aria-controls={open ? 'sortby-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={(e) => handleMenuOpen('sortby', e)}
-          >
-            Sort by A-Z
-          </Button>
-        )}
-
-        <StyledMenu
-          id="sortby-menu"
-          slotProps={{
-            list: {
-              'aria-labelledby': 'sortby-menu',
-            },
-          }}
-          anchorEl={anchorEl}
-          open={activeMenu === 'sortby'}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={() => handleSortChange('asc')} disableRipple>
-            <ArrowUpwardOutlinedIcon />
-            Ascending
-          </MenuItem>
-          <MenuItem onClick={() => handleSortChange('desc')} disableRipple>
-            <ArrowDownwardOutlinedIcon />
-            Descending
-          </MenuItem>
-        </StyledMenu>
       </Box>
     </Box>
   );

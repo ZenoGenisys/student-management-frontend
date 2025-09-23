@@ -9,7 +9,7 @@ import ErrorBoundary from '../components/ErrorBoundary';
 
 const Login = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
-const Students = lazy(() => import('../pages/Students'));
+const Student = lazy(() => import('../pages/Student'));
 const StudentDetails = lazy(() => import('../pages/StudentDetails'));
 const Staff = lazy(() => import('../pages/Staff'));
 const PageNotFound = lazy(() => import('../pages/PageNotFound'));
@@ -56,7 +56,7 @@ const Router = () => {
           }
         >
           <Route path={PATH.DASHBOARD} element={<Dashboard />} />
-          <Route path={PATH.STUDENTS} element={<Students />} />
+          <Route path={PATH.STUDENT} element={<Student />} />
           <Route path={PATH.STUDENT_DETAILS} element={<StudentDetails />} />
           <Route path={PATH.STAFF} element={<Staff />} />
           <Route path="*" element={<PageNotFound />} />

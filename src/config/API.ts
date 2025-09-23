@@ -1,5 +1,5 @@
 export const API_PATH = {
   LOGIN: '/login',
-  STUDENTS: '/students',
+  STUDENT: '/student/getAllStudents',
   STAFF: '/staff',
 };

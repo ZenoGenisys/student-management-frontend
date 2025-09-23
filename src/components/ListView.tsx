@@ -35,7 +35,8 @@ const ListView = <T extends Row = Row>({
   handleSort,
   onChangeSelectedRows,
   handlePageChange,
-}: ListViewProps<T>) => {
+  getRowId = (row: T) => (row as any).id, // Default to `id` field
+}: ListViewProps<T> & { getRowId?: (row: T) => string }) => {
   const theme = useTheme();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
@@ -54,22 +55,22 @@ const ListView = <T extends Row = Row>({
   const handleSelectAllClick = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.checked) {
-        const newSelectedRows = rows.map((row) => row.staffId);
+        const newSelectedRows = rows.map((row) => getRowId(row));
         setSelectedRows(newSelectedRows);
         return;
       }
       setSelectedRows([]);
     },
-    [rows],
+    [rows, getRowId],
   );
 
   const handleRowClick = useCallback(
-    (staffId: string) => {
-      const selectedIndex = selectedRows.indexOf(staffId);
+    (rowId: string) => {
+      const selectedIndex = selectedRows.indexOf(rowId);
       let newSelectedRows: string[] = [];
 
       if (selectedIndex === -1) {
-        newSelectedRows = newSelectedRows.concat(selectedRows, staffId);
+        newSelectedRows = newSelectedRows.concat(selectedRows, rowId);
       } else if (selectedIndex === 0) {
         newSelectedRows = newSelectedRows.concat(selectedRows.slice(1));
       } else if (selectedIndex === selectedRows.length - 1) {
@@ -173,14 +174,14 @@ const ListView = <T extends Row = Row>({
                     checked={selectedRows.length === rows.length}
                     onChange={handleSelectAllClick}
                     inputProps={{
-                      'aria-label': 'select all desserts',
+                      'aria-label': 'select all',
                     }}
                   />
                 </TableCell>
               )}
               {columns?.map((column) => (
                 <TableCell
-                  key={`staff-${column.id}`}
+                  key={`column-${column.id}`}
                   align={column.align || 'center'}
                   style={{ width: column.width || 'auto', fontWeight: 'bold' }}
                 >
@@ -203,16 +204,16 @@ const ListView = <T extends Row = Row>({
           <TableBody>
             {rows.map((row) => (
               <TableRow
-                key={`staff-${row.staffId}`}
-                selected={selectedRows.indexOf(row.staffId) !== -1}
+                key={getRowId(row)}
+                selected={selectedRows.indexOf(getRowId(row)) !== -1}
                 sx={{ borderBottom: '1px solid #ddd' }}
               >
                 {showCheckbox && (
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={selectedRows.indexOf(row.staffId) !== -1}
-                      onChange={() => handleRowClick(row.staffId)}
+                      checked={selectedRows.indexOf(getRowId(row)) !== -1}
+                      onChange={() => handleRowClick(getRowId(row))}
                     />
                   </TableCell>
                 )}
