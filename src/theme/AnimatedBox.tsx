@@ -50,7 +50,6 @@ const StyledBox = styled(Box)<AnimatedBoxProps>`
 
 export const AnimatedBox: FC<AnimatedBoxProps> = ({
   animation = 'fade',
-  animationType = 'enter',
   direction = 'right',
   show = true,
   children,

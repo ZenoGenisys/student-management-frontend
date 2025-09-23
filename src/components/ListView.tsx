@@ -16,26 +16,8 @@ import {
   TableSortLabel,
 } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material/Select';
-import type { ColumnDefsProps, PaginationProps } from '../types';
+import type { ListViewProps, Row } from '../types';
 import { useTheme } from '@mui/material/styles';
-
-type Row = {
-  [key: string]: any;
-};
-
-type ListViewProps<T extends Row = Row> = {
-  columns: ColumnDefsProps[];
-  rows: T[];
-  showCheckbox?: boolean;
-  pagination?: PaginationProps;
-  page?: number;
-  rowsPerPage?: number;
-  sort?: { orderBy: string; order?: 'asc' | 'desc' } | null;
-  handleRowPerPageChange?: (rowsPerPage: number) => void;
-  handleSort?: (orderBy: string, order?: 'asc' | 'desc') => void;
-  onChangeSelectedRows?: (selectedRows: string[]) => void;
-  handlePageChange?: (page: number) => void;
-};
 
 const ListView = <T extends Row = Row>({
   columns,
