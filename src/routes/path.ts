@@ -5,4 +5,5 @@ export const PATH = {
   STUDENT: '/student',
   STAFF: '/staffs',
   STUDENT_DETAILS: '/studentDetails',
+  ADD_STUDENT: '/addStudent'
 };

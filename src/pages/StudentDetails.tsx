@@ -38,9 +38,8 @@ import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import PhoneAndroidOutlinedIcon from '@mui/icons-material/PhoneAndroidOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import { GrDocumentPdf } from 'react-icons/gr';
-import { FaDownload } from 'react-icons/fa6';
-import { FaWhatsapp } from 'react-icons/fa6';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { FaDownload, FaWhatsapp } from 'react-icons/fa6';
 
 interface Row {
   rollNo: string;
@@ -269,6 +268,12 @@ const StudentDetails: React.FC = () => {
                     <b>Age:</b>
                   </Grid>
                   <Grid size={6}>25</Grid>
+                </Grid>
+                <Grid container spacing={2} columns={12} mb={1}>
+                  <Grid size={6}>
+                    <b>Blood Group:</b>
+                  </Grid>
+                  <Grid size={6}>B+</Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>

@@ -13,6 +13,7 @@ const Student = lazy(() => import('../pages/Student'));
 const StudentDetails = lazy(() => import('../pages/StudentDetails'));
 const Staff = lazy(() => import('../pages/Staff'));
 const PageNotFound = lazy(() => import('../pages/PageNotFound'));
+const AddStudent = lazy(() => import('../pages/AddStudent'));
 
 const Router = () => {
   const { token, isAuthLoading } = useAuth();
@@ -59,6 +60,7 @@ const Router = () => {
           <Route path={PATH.STUDENT} element={<Student />} />
           <Route path={PATH.STUDENT_DETAILS} element={<StudentDetails />} />
           <Route path={PATH.STAFF} element={<Staff />} />
+          <Route path={PATH.ADD_STUDENT} element={<AddStudent />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

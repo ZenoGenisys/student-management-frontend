@@ -1,4 +1,3 @@
-import { Padding } from '@mui/icons-material';
 import type { Theme } from '@mui/material/styles';
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 
@@ -98,7 +97,6 @@ const customSpacing = {
   },
 };
 
-// Generate shadows array with exact 25 elements as required by MUI
 const shadows = [
   'none',
   '0 2px 4px rgba(0, 0, 0, 0.08)',
@@ -274,7 +272,7 @@ const baseTheme = createTheme({
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
           backdropFilter: 'blur(8px)',
           backgroundColor: 'rgba(255, 255, 255, 0.95)',
-          color: '#506EE4', // Using the primary text color
+          color: '#506EE4',
           '& .MuiIconButton-root': {
             color: '#202C4B',
             '&:hover': {
@@ -330,6 +328,18 @@ const baseTheme = createTheme({
         },
       },
     },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: {
+          '&.Mui-disabled': {
+            backgroundColor: '#e9e9e9',
+            color: '#9e9e9e',
+            cursor: 'not-allowed',
+            WebkitTextFillColor: '#9e9e9e',
+          },
+        },
+      },
+    },
     MuiTab: {
       styleOverrides: {
         root: {
@@ -372,7 +382,6 @@ const baseTheme = createTheme({
   customSpacing,
 });
 
-// Apply responsive font sizes
 const theme = responsiveFontSizes(baseTheme);
 
 export default theme;
