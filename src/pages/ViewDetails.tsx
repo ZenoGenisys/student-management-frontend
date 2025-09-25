@@ -79,7 +79,7 @@ const rows: Row[] = [
   },
 ];
 
-const StudentDetails: React.FC = () => {
+const ViewDetails: React.FC = () => {
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
 
@@ -306,6 +306,7 @@ const StudentDetails: React.FC = () => {
           {/* Primary Contact details */}
           <Card>
             <CardHeader
+            sx={{ background: '#E9EDF4' }}
               title={
                 <Typography variant="h5">Primary Contact Details</Typography>
               }
@@ -403,6 +404,7 @@ const StudentDetails: React.FC = () => {
                 {/* Parent Details */}
                 <Card>
                   <CardHeader
+                  sx={{ background: '#E9EDF4' }}
                     title={
                       <Typography variant="h5">Parents Information</Typography>
                     }
@@ -593,9 +595,10 @@ const StudentDetails: React.FC = () => {
 
                 <Grid container spacing={2} columns={12}>
                   {/* Address */}
-                  <Grid size={6}>
+                  <Grid size={12}>
                     <Card>
                       <CardHeader
+                        sx={{ background: '#E9EDF4' }}
                         title={<Typography variant="h5">Address</Typography>}
                       />
                       <CardContent
@@ -615,9 +618,10 @@ const StudentDetails: React.FC = () => {
                   </Grid>
 
                   {/* School Details */}
-                  <Grid size={6}>
+                  <Grid size={12}>
                     <Card>
                       <CardHeader
+                      sx={{ background: '#E9EDF4' }}
                         title={
                           <Typography variant="h5">School Details</Typography>
                         }
@@ -642,6 +646,7 @@ const StudentDetails: React.FC = () => {
                 {/* Documents */}
                 <Card>
                   <CardHeader
+                  sx={{ background: '#E9EDF4' }}
                     title={<Typography variant="h5">Documents</Typography>}
                   />
                   <CardContent
@@ -704,6 +709,7 @@ const StudentDetails: React.FC = () => {
                 {/* Notes */}
                 <Card>
                   <CardHeader
+                  sx={{ background: '#E9EDF4' }}
                     title={<Typography variant="h5">Notes</Typography>}
                   />
                   <CardContent
@@ -1005,4 +1011,4 @@ const StudentDetails: React.FC = () => {
   );
 };
 
-export default StudentDetails;
+export default ViewDetails;

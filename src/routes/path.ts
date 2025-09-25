@@ -4,6 +4,6 @@ export const PATH = {
   DASHBOARD: '/dashboard',
   STUDENT: '/student',
   STAFF: '/staffs',
-  STUDENT_DETAILS: '/studentDetails',
-  ADD_STUDENT: '/addStudent'
+  VIEW_DETAILS: '/viewDetails',
+  ADD_DETAILS: '/addDetails'
 };

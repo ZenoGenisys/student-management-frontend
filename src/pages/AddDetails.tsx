@@ -36,7 +36,7 @@ import { FaDownload } from 'react-icons/fa6';
 import { GrDocumentPdf } from 'react-icons/gr';
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 
-const AddStudent: React.FC = () => {
+const AddDetails: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -708,4 +708,4 @@ const AddStudent: React.FC = () => {
   );
 };
 
-export default AddStudent;
+export default AddDetails;

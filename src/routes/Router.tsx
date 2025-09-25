@@ -10,10 +10,10 @@ import ErrorBoundary from '../components/ErrorBoundary';
 const Login = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Student = lazy(() => import('../pages/Student'));
-const StudentDetails = lazy(() => import('../pages/StudentDetails'));
+const ViewDetails = lazy(() => import('../pages/ViewDetails'));
 const Staff = lazy(() => import('../pages/Staff'));
 const PageNotFound = lazy(() => import('../pages/PageNotFound'));
-const AddStudent = lazy(() => import('../pages/AddStudent'));
+const AddDetails = lazy(() => import('../pages/AddDetails'));
 
 const Router = () => {
   const { token, isAuthLoading } = useAuth();
@@ -58,9 +58,9 @@ const Router = () => {
         >
           <Route path={PATH.DASHBOARD} element={<Dashboard />} />
           <Route path={PATH.STUDENT} element={<Student />} />
-          <Route path={PATH.STUDENT_DETAILS} element={<StudentDetails />} />
+          <Route path={PATH.VIEW_DETAILS} element={<ViewDetails />} />
           <Route path={PATH.STAFF} element={<Staff />} />
-          <Route path={PATH.ADD_STUDENT} element={<AddStudent />} />
+          <Route path={PATH.ADD_DETAILS} element={<AddDetails />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
