@@ -13,6 +13,7 @@ import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import { useTheme } from '@mui/material/styles';
 import type { GridViewProps } from '../types';
+import { getAvatarProps } from '../utils/avatar';
 
 const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
   const theme = useTheme();
@@ -21,10 +22,7 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
     <Box marginTop={3}>
       <Grid container spacing={2}>
         {rows.map((row, index) => (
-          <Grid
-            size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
-            key={`Grid${row?.staffId || index}`}
-          >
+          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`Grid${row?.staffId || index}`}>
             <Card sx={{ border: `1px solid ${theme.palette.divider}` }}>
               <CardHeader
                 title={
@@ -62,37 +60,22 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                   </Box>
                 }
               />
-              <CardContent
-                sx={{ borderTop: `1px solid ${theme.palette.divider}` }}
-              >
+              <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
                 <Box
                   sx={{ backgroundColor: '#F9FAFB', borderRadius: 1 }}
                   p={2}
                   display={'flex'}
                   alignItems="center"
                 >
-                  <Avatar
-                    alt="Ajith Kumar"
-                    src="/src/assets/images/profile-photo.jpg"
-                    sx={{ width: 45, height: 45 }}
-                  />
+                  <Avatar src="" {...getAvatarProps(`${row.name}`)} />
                   <Box ml={2} display={'flex'} flexDirection="column">
-                    <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
-                      {row?.name}
+                    <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>{row?.name}</Typography>
+                    <Typography color="textSecondary" variant="body2">
+                      Level: {row?.level}
                     </Typography>
-                    {type === 'STUDENT' && (
-                      <Typography color="textSecondary" variant="body2">
-                        Level: {row?.learningLevel}
-                      </Typography>
-                    )}
                   </Box>
                 </Box>
-                <Box
-                  mt={2}
-                  display={'flex'}
-                  flexDirection="row"
-                  justifyContent="space-around"
-                >
+                <Box mt={2} display={'flex'} flexDirection="row" justifyContent="space-around">
                   <Box>
                     <Typography variant="body1" color="textSecondary">
                       Center
@@ -138,9 +121,7 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                       mr: 1,
                     }}
                     component="a"
-                    href={
-                      row.contactNumber ? `tel:${row.contactNumber}` : undefined
-                    }
+                    href={row.contactNumber ? `tel:${row.contactNumber}` : undefined}
                     disabled={!row.contactNumber}
                   >
                     <CallOutlinedIcon />
@@ -154,11 +135,7 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                       mr: 1,
                     }}
                     component="a"
-                    href={
-                      row.contactNumber
-                        ? `https://wa.me/${row.contactNumber}`
-                        : undefined
-                    }
+                    href={row.contactNumber ? `https://wa.me/${row.contactNumber}` : undefined}
                     disabled={!row.contactNumber}
                   >
                     <WhatsAppIcon />
