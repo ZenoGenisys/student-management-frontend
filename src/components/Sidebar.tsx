@@ -49,14 +49,14 @@ const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
     { text: 'Students', icon: <SchoolOutlined />, path: PATH.STUDENT },
     { text: 'Staff', icon: <PeopleAltOutlined />, path: PATH.STAFF },
     {
-      text: 'View Details',
+      text: 'Staff Details',
       icon: <PeopleAltOutlined />,
-      path: PATH.VIEW_DETAILS,
+      path: PATH.STAFF_DETAILS,
     },
     {
-      text: 'Add Details',
+      text: 'Add Staff',
       icon: <PeopleAltOutlined />,
-      path: PATH.ADD_DETAILS,
+      path: PATH.ADD_STAFF,
     },
   ];
 

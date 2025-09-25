@@ -10,10 +10,11 @@ import ErrorBoundary from '../components/ErrorBoundary';
 const Login = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Student = lazy(() => import('../pages/Student'));
-const ViewDetails = lazy(() => import('../pages/ViewDetails'));
+const ViewDetails = lazy(() => import('../pages/Staff/StaffDetails'));
 const Staff = lazy(() => import('../pages/Staff'));
 const PageNotFound = lazy(() => import('../pages/PageNotFound'));
-const AddDetails = lazy(() => import('../pages/AddDetails'));
+const AddStaff = lazy(() => import('../pages/Staff/AddStaff'));
+const StaffDetails = lazy(() => import('../pages/Staff/StaffDetails'));
 
 const Router = () => {
   const { token, isAuthLoading } = useAuth();
@@ -58,9 +59,9 @@ const Router = () => {
         >
           <Route path={PATH.DASHBOARD} element={<Dashboard />} />
           <Route path={PATH.STUDENT} element={<Student />} />
-          <Route path={PATH.VIEW_DETAILS} element={<ViewDetails />} />
+          <Route path={PATH.STAFF_DETAILS} element={<StaffDetails />} />
           <Route path={PATH.STAFF} element={<Staff />} />
-          <Route path={PATH.ADD_DETAILS} element={<AddDetails />} />
+          <Route path={PATH.ADD_STAFF} element={<AddStaff />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

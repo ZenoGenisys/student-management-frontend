@@ -79,7 +79,7 @@ const rows: Row[] = [
   },
 ];
 
-const ViewDetails: React.FC = () => {
+const StaffDetails: React.FC = () => {
   const theme = useTheme();
   const [tabValue, setTabValue] = useState(0);
 
@@ -1011,4 +1011,4 @@ const ViewDetails: React.FC = () => {
   );
 };
 
-export default ViewDetails;
+export default StaffDetails;
