@@ -1,13 +1,13 @@
 import Box from '@mui/material/Box';
 import React from 'react';
-import GridView from '../components/GridView';
-import ListView from '../components/ListView';
-import { useStudent } from '../hooks';
-import { GridFilter, GridHeader } from '../layouts';
-import { ActionCell, NameCell, StatusCell } from '../components';
+import GridView from '../../components/GridView';
+import ListView from '../../components/ListView';
+import { useStaff } from '../../hooks';
+import { GridFilter, GridHeader } from '../../layouts';
+import { ActionCell, NameCell, StatusCell } from '../../components';
 
 const Column = [
-  { id: 'studentId', label: 'Student ID', sortable: true },
+  { id: 'staffId', label: 'Staff ID', sortable: true },
   {
     id: 'name',
     label: 'Name',
@@ -16,8 +16,9 @@ const Column = [
     align: 'left' as const,
   },
   { id: 'gender', label: 'Gender', sortable: true },
-  { id: 'age', label: 'Age', sortable: true },
-  { id: 'schoolName', label: 'School Name', sortable: true },
+  { id: 'center', label: 'Center', sortable: true },
+  { id: 'level', label: 'Level', sortable: true },
+  { id: 'qualification', label: 'Qualification', sortable: true },
   {
     id: 'status',
     label: 'Status',
@@ -33,7 +34,7 @@ const Column = [
   },
 ];
 
-const Student: React.FC = () => {
+const Staff: React.FC = () => {
   const {
     data,
     activeView,
@@ -47,13 +48,13 @@ const Student: React.FC = () => {
     handleSort,
     handleRowPerPageChange,
     handleGridSort,
-  } = useStudent();
+  } = useStaff();
 
   return (
     <Box display="flex" flexDirection="column">
-      <GridHeader title="Student" />
+      <GridHeader title="Staff" />
       <GridFilter
-        title="Student"
+        title="Staff"
         activeView={activeView}
         search={search}
         handleViewToggle={handleViewToggle}
@@ -62,7 +63,7 @@ const Student: React.FC = () => {
       />
       <Box flexGrow={1}>
         {activeView === 'grid' ? (
-          <GridView type="STUDENT" rows={data?.data ?? []} />
+          <GridView type="STAFF" rows={data?.data ?? []} />
         ) : (
           <ListView
             columns={Column}
@@ -74,7 +75,7 @@ const Student: React.FC = () => {
             handleSort={handleSort}
             handleRowPerPageChange={handleRowPerPageChange}
             handlePageChange={handlePageChange}
-            getRowId={(row) => row.studentId.toString()}
+            getRowId={(row) => row.staffId.toString()}
           />
         )}
       </Box>
@@ -82,4 +83,4 @@ const Student: React.FC = () => {
   );
 };
 
-export default Student;
+export default Staff;

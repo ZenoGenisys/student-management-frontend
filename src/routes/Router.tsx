@@ -9,9 +9,8 @@ import ErrorBoundary from '../components/ErrorBoundary';
 
 const Login = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
-const Student = lazy(() => import('../pages/Student'));
-const ViewDetails = lazy(() => import('../pages/Staff/StaffDetails'));
-const Staff = lazy(() => import('../pages/Staff'));
+const Student = lazy(() => import('../pages/Student/Student'));
+const Staff = lazy(() => import('../pages/Staff/Staff'));
 const PageNotFound = lazy(() => import('../pages/PageNotFound'));
 const AddStaff = lazy(() => import('../pages/Staff/AddStaff'));
 const StaffDetails = lazy(() => import('../pages/Staff/StaffDetails'));
