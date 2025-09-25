@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import type { CellRender, StaffType } from '../../types';
 import { useTheme } from '@mui/material/styles';
-import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -43,7 +43,7 @@ const ActionCell = ({ row }: CellRender<StaffType>) => {
         rel="noopener noreferrer"
         disabled={!row.contactNumber}
       >
-        <MessageOutlinedIcon />
+        <WhatsAppIcon />
       </IconButton>
       {/* Email button: uses mailto: link */}
       <IconButton

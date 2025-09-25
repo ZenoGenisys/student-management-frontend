@@ -16,7 +16,7 @@ export type StudentType = {
   grade: string;
   joiningDate: string;
   learningLevel: string;
-  status: 'ACTIVE' | 'INACTIVE';
+  status: string;
   center: string;
   batch: string;
   primaryContactNumber: string;

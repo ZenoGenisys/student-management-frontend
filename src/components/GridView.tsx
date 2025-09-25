@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, Button, IconButton } from '@mui/material';
 import Grid from '@mui/material/Grid';
-import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import { useTheme } from '@mui/material/styles';
@@ -39,14 +39,14 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                     <Typography
                       variant="body2"
                       color={
-                        row?.status === 'ACTIVE'
+                        row?.status === 'Active'
                           ? theme.palette.success.main
                           : theme.palette.error.main
                       }
                       sx={{
                         fontWeight: theme.typography.fontWeightBold,
                         backgroundColor:
-                          row?.status === 'ACTIVE'
+                          row?.status === 'Active'
                             ? theme.palette.success.light
                             : theme.palette.error.light,
                         px: 1,
@@ -54,7 +54,7 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                         borderRadius: 1,
                       }}
                     >
-                      {row?.status === 'ACTIVE' ? 'Active' : 'Inactive'}
+                      {row?.status}
                     </Typography>
                     <IconButton aria-label="settings">
                       <MoreVertIcon />
@@ -161,7 +161,7 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                     }
                     disabled={!row.contactNumber}
                   >
-                    <MessageOutlinedIcon />
+                    <WhatsAppIcon />
                   </IconButton>
                   <IconButton
                     aria-label="Mail"
@@ -173,6 +173,8 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                     component="a"
                     href={row.email ? `mailto:${row.email}` : undefined}
                     disabled={!row.email}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <MailOutlineOutlinedIcon />
                   </IconButton>

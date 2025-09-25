@@ -20,8 +20,8 @@ export type StaffType = {
   qualification: string;
   experience: number;
   workLocation: string;
-  status: 'ACTIVE' | 'INACTIVE';
-  role: 'ADMIN' | 'STAFF';
+  status: string;
+  role: string;
 };
 
 export type StaffResponse = {

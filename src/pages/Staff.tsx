@@ -16,7 +16,8 @@ const Column = [
     align: 'left' as const,
   },
   { id: 'gender', label: 'Gender', sortable: true },
-  { id: 'workLocation', label: 'Center', sortable: true },
+  { id: 'center', label: 'Center', sortable: true },
+  { id: 'level', label: 'Level', sortable: true },
   { id: 'qualification', label: 'Qualification', sortable: true },
   {
     id: 'status',

@@ -10,14 +10,14 @@ const StatusCell = ({ row }: CellRender<StaffType | StudentType>) => {
       <Typography
         variant="body2"
         color={
-          row.status === 'ACTIVE'
+          row.status === 'Active'
             ? theme.palette.success.main
             : theme.palette.error.main
         }
         sx={{
           fontWeight: theme.typography.fontWeightBold,
           backgroundColor:
-            row.status === 'ACTIVE'
+            row.status === 'Active'
               ? theme.palette.success.light
               : theme.palette.error.light,
           px: 1,
@@ -26,7 +26,7 @@ const StatusCell = ({ row }: CellRender<StaffType | StudentType>) => {
           width: 'fit-content',
         }}
       >
-        {row.status === 'ACTIVE' ? 'Active' : 'Inactive'}
+        {row.status}
       </Typography>
     </Box>
   );
