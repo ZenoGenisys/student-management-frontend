@@ -5,3 +5,7 @@ import { getHttpClient } from './AxiosClient';
 export const getStaff = (params: GetStaffRequest): Promise<StaffResponse> => {
   return getHttpClient(API_PATH.STAFF, 'GET', null, params);
 };
+
+export const getStaffById = (staffId: string): Promise<StaffResponse> => {
+  return getHttpClient(`${API_PATH.STAFF}/${staffId}`, 'GET');
+};

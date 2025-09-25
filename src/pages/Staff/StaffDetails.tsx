@@ -13,8 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
+import { useParams } from 'react-router-dom';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SensorOccupiedOutlinedIcon from '@mui/icons-material/SensorOccupiedOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
@@ -28,10 +29,19 @@ import PhoneAndroidOutlinedIcon from '@mui/icons-material/PhoneAndroidOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import { GrDocumentPdf } from 'react-icons/gr';
 import { FaDownload, FaWhatsapp } from 'react-icons/fa6';
+import { getStaffById } from '../../repositories/StaffRepository';
 
 const StaffDetails: React.FC = () => {
   const theme = useTheme();
+  const { staffId } = useParams<{ staffId: string }>();
+  const [staff, setStaff] = useState<any>(null);
   const [tabValue, setTabValue] = useState(0);
+
+  useEffect(() => {
+    if (staffId) {
+      getStaffById(staffId).then(setStaff).catch(console.error);
+    }
+  }, [staffId]);
 
   const handleTabChange = useCallback(
     (_: React.SyntheticEvent, newValue: number) => {
@@ -40,6 +50,9 @@ const StaffDetails: React.FC = () => {
     [],
   );
 
+  if (!staff) {
+    return <Typography>Loading...</Typography>;
+  }
 
   return (
     <Box display="flex" flexDirection="column">
@@ -97,7 +110,7 @@ const StaffDetails: React.FC = () => {
                 />
                 <Box>
                   <Typography variant="h4" mb={1}>
-                    Janet Daniel
+                    {staff?.name || 'Staff Name Not Available'}
                   </Typography>
                   <Typography
                     variant="body2"

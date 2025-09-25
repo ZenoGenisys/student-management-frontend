@@ -14,9 +14,11 @@ import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import { useTheme } from '@mui/material/styles';
 import type { GridViewProps } from '../types';
 import { getAvatarProps } from '../utils/avatar';
+import { useNavigate } from 'react-router-dom';
 
 const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <Box marginTop={3}>
@@ -161,6 +163,7 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                     variant="contained"
                     color="primary"
                     sx={{ fontWeight: 'bold', fontSize: 12 }}
+                    onClick={() => navigate(`/staff/${row.staffId}`)}
                   >
                     View Profile
                   </Button>
