@@ -6,9 +6,30 @@ import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useCallback, useState } from 'react';
+import DeleteConfirmation from '../DeleteConfirmation';
 
-const ActionCell = ({ row }: CellRender<StaffType>) => {
+type ActionCellProps = CellRender<StaffType> & {
+  onClickView: (row: StaffType) => void;
+  onClickEdit: (row: StaffType) => void;
+  onClickDelete: (row: StaffType) => void;
+};
+const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCellProps) => {
   const theme = useTheme();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
+
+  const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
   return (
     <Box>
       {/* Call button: uses tel: link */}
@@ -36,9 +57,7 @@ const ActionCell = ({ row }: CellRender<StaffType>) => {
           mr: 1,
         }}
         component="a"
-        href={
-          row.contactNumber ? `https://wa.me/${row.contactNumber}` : undefined
-        }
+        href={row.contactNumber ? `https://wa.me/${row.contactNumber}` : undefined}
         target="_blank"
         rel="noopener noreferrer"
         disabled={!row.contactNumber}
@@ -59,9 +78,32 @@ const ActionCell = ({ row }: CellRender<StaffType>) => {
       >
         <MailOutlineOutlinedIcon />
       </IconButton>
-      <IconButton aria-label="settings">
+      <IconButton aria-label="settings" onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'basic-button',
+          },
+        }}
+      >
+        <MenuItem onClick={() => onClickView(row)}>View</MenuItem>
+        <MenuItem onClick={() => onClickEdit(row)}>Edit</MenuItem>
+        <MenuItem onClick={() => setOpenDeleteConfirm(true)}>Delete</MenuItem>
+      </Menu>
+      <DeleteConfirmation
+        open={openDeleteConfirm}
+        onClose={() => setOpenDeleteConfirm(false)}
+        onConfirm={() => {
+          onClickDelete(row);
+          handleClose();
+        }}
+      />
     </Box>
   );
 };

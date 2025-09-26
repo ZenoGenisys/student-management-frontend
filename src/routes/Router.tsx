@@ -37,11 +37,7 @@ const Router = () => {
         <Route
           path="/"
           element={
-            token ? (
-              <Navigate to={PATH.DASHBOARD} replace />
-            ) : (
-              <Navigate to={PATH.LOGIN} replace />
-            )
+            token ? <Navigate to={PATH.DASHBOARD} replace /> : <Navigate to={PATH.LOGIN} replace />
           }
         />
         <Route

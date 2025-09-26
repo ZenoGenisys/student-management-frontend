@@ -105,15 +105,9 @@ export const createTransition = (
     delay?: number;
   },
 ) => {
-  const {
-    duration = durations.standard,
-    easing = easings.easeInOut,
-    delay = 0,
-  } = options ?? {};
+  const { duration = durations.standard, easing = easings.easeInOut, delay = 0 } = options ?? {};
 
-  const formattedProperties = Array.isArray(properties)
-    ? properties.join(', ')
-    : properties;
+  const formattedProperties = Array.isArray(properties) ? properties.join(', ') : properties;
 
   const delayString = delay ? ` ${delay}ms` : '';
   return `${formattedProperties} ${duration}ms ${easing}${delayString}`;

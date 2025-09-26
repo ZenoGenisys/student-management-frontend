@@ -13,11 +13,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import {
-  DashboardOutlined,
-  PeopleAltOutlined,
-  SchoolOutlined,
-} from '@mui/icons-material';
+import { DashboardOutlined, PeopleAltOutlined, SchoolOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../routes/path';
 import { DRAWER_WIDTH } from '../constants/layout';
@@ -66,17 +62,12 @@ const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
           '& .MuiDrawer-paper': {
             width: DRAWER_WIDTH,
             boxSizing: 'border-box',
-            borderLeft: isMobile
-              ? 'none'
-              : `1px solid ${theme.palette.divider}`,
+            borderLeft: isMobile ? 'none' : `1px solid ${theme.palette.divider}`,
             borderRight: 'none',
-            transition: theme.transitions.create(
-              ['width', 'margin', 'transform'],
-              {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-              },
-            ),
+            transition: theme.transitions.create(['width', 'margin', 'transform'], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
           },
         }}
         variant={isMobile ? 'temporary' : 'persistent'}
@@ -88,9 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
         }}
       >
         <DrawerHeader>
-          <Box
-            sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', pl: 2 }}
-          >
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', pl: 2 }}>
             <Avatar
               alt="logo"
               src="/src/assets/images/logo.png"
@@ -130,15 +119,11 @@ const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
                 sx={{
                   minHeight: 48,
                   px: 2.5,
-                  backgroundColor:
-                    pathname === item.path ? '#F2F5FF' : 'transparent',
+                  backgroundColor: pathname === item.path ? '#F2F5FF' : 'transparent',
                   color: pathname === item.path ? '#3D5EE1' : 'inherit',
-                  transition: theme.transitions.create(
-                    ['background-color', 'transform', 'color'],
-                    {
-                      duration: theme.transitions.duration.shorter,
-                    },
-                  ),
+                  transition: theme.transitions.create(['background-color', 'transform', 'color'], {
+                    duration: theme.transitions.duration.shorter,
+                  }),
                   '&:hover': {
                     transform: 'translateX(4px)',
                     backgroundColor: 'rgba(0, 0, 0, 0.04)',

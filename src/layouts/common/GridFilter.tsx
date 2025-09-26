@@ -38,13 +38,10 @@ const GridFilter = ({
 
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-  const handleMenuOpen = useCallback(
-    (menu: string, event: React.MouseEvent<HTMLElement>) => {
-      setActiveMenu(menu);
-      setAnchorEl(event.currentTarget);
-    },
-    [],
-  );
+  const handleMenuOpen = useCallback((menu: string, event: React.MouseEvent<HTMLElement>) => {
+    setActiveMenu(menu);
+    setAnchorEl(event.currentTarget);
+  }, []);
 
   const handleMenuClose = useCallback(() => {
     setActiveMenu(null);
@@ -110,8 +107,7 @@ const GridFilter = ({
             aria-label="grid view"
             size="small"
             sx={{
-              backgroundColor:
-                activeView === 'grid' ? 'primary.main' : '#F9FAFB',
+              backgroundColor: activeView === 'grid' ? 'primary.main' : '#F9FAFB',
               color: activeView === 'grid' ? 'white' : 'inherit',
               borderRadius: 1,
               m: 0.5,
@@ -128,8 +124,7 @@ const GridFilter = ({
             aria-label="list view"
             size="small"
             sx={{
-              backgroundColor:
-                activeView === 'list' ? 'primary.main' : '#F9FAFB',
+              backgroundColor: activeView === 'list' ? 'primary.main' : '#F9FAFB',
               color: activeView === 'list' ? 'white' : 'inherit',
               borderRadius: 1,
               m: 0.5,

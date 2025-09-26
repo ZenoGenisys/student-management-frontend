@@ -27,9 +27,7 @@ export const getHttpClient = <T>(
   data: Data | null = null,
   params: Param | null = null,
 ): Promise<T> => {
-  const query = !isNil(params)
-    ? '?' + qs.stringify(params, { allowDots: true })
-    : '';
+  const query = !isNil(params) ? '?' + qs.stringify(params, { allowDots: true }) : '';
   const urlPath = path + query;
 
   return asyncOperation(
@@ -48,8 +46,7 @@ export const postMultiPart = <T>(
   params: Param | null = null,
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
 ): Promise<T> => {
-  const query =
-    params !== null ? '?' + qs.stringify(params, { allowDots: true }) : '';
+  const query = params !== null ? '?' + qs.stringify(params, { allowDots: true }) : '';
 
   const url = axios.defaults.baseURL + path + query;
   return asyncOperation(
@@ -89,11 +86,7 @@ const asyncOperation = async <T>(request: Promise<T>) => {
 class ServerException extends Error {
   status: number;
   response: Param | null;
-  constructor(
-    message: string | undefined,
-    status: number,
-    response: Data | null,
-  ) {
+  constructor(message: string | undefined, status: number, response: Data | null) {
     super(message);
     this.name = 'ServerException';
     this.status = status;

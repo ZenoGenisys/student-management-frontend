@@ -2,7 +2,6 @@ function stringToColor(string: string) {
   let hash = 0;
   let i;
 
-  /* eslint-disable no-bitwise */
   for (i = 0; i < string.length; i += 1) {
     hash = string.charCodeAt(i) + ((hash << 5) - hash);
   }
@@ -13,7 +12,6 @@ function stringToColor(string: string) {
     const value = (hash >> (i * 8)) & 0xff;
     color += `00${value.toString(16)}`.slice(-2);
   }
-  /* eslint-enable no-bitwise */
 
   return color;
 }
@@ -21,7 +19,7 @@ function stringToColor(string: string) {
 export function getAvatarProps(
   name: string,
   customStyles: object = {},
-  variant: 'circular' | 'rounded' | 'square' = 'circular'
+  variant: 'circular' | 'rounded' | 'square' = 'circular',
 ) {
   const nameParts = name.split(' ');
   return {
@@ -30,9 +28,6 @@ export function getAvatarProps(
       ...customStyles,
     },
     variant,
-    children:
-      nameParts.length > 1
-        ? `${nameParts[0][0]}${nameParts[1][0]}`
-        : `${nameParts[0][0]}`,
+    children: nameParts.length > 1 ? `${nameParts[0][0]}${nameParts[1][0]}` : `${nameParts[0][0]}`,
   };
 }

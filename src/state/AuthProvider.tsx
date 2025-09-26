@@ -10,11 +10,10 @@ type AuthState = {
   email: string | null;
   token: string | null;
   role: Role | null;
+  name: string | null;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [auth, setAuth] = useState<AuthState | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
@@ -25,20 +24,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = useCallback((data: LoginResponse) => {
     setAuth(data);
+    setUserSessionToken(data.token);
     storageService.setItem('auth', data);
   }, []);
-
-  useEffect(() => {
-    if (auth?.token) {
-      setUserSessionToken(auth.token);
-    }
-  }, [auth?.token]);
 
   useEffect(() => {
     register();
     const savedAuth = storageService.getItem<AuthState>('auth');
     if (savedAuth) {
       setAuth(savedAuth);
+      setUserSessionToken(savedAuth.token);
     }
     setIsAuthLoading(false);
     SessionService.observe(() => {

@@ -1,13 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { getStaff } from '../repositories';
+import { deleteStaff, getStaff } from '../repositories';
 import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useNavigate } from 'react-router-dom';
+import type { StaffType } from '../types';
+import { useSnackbar } from '../state';
 
 const useStaff = () => {
+  const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [activeView, setActiveView] = useState<'grid' | 'list'>(
-    isMobile ? 'grid' : 'list',
-  );
+  const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const [search, setSearch] = useState<string | undefined>();
   const [debouncedSearch, setDebouncedSearch] = useState<string | undefined>();
   const [page, setPage] = useState(1);
@@ -16,6 +18,7 @@ const useStaff = () => {
     orderBy: string;
     order: 'asc' | 'desc';
   } | null>(null);
+  const { showSnackbar } = useSnackbar();
 
   // Debounce search input
   useEffect(() => {
@@ -37,8 +40,7 @@ const useStaff = () => {
         ...(sort
           ? {
               sortBy: sort.orderBy,
-              order:
-                (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
+              order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
             }
           : {}),
       }),
@@ -69,6 +71,42 @@ const useStaff = () => {
     setSort({ orderBy: 'name', order });
   }, []);
 
+  const handleAddStaff = useCallback(() => {
+    navigate('/AddStaff');
+  }, [navigate]);
+
+  const handleView = useCallback(
+    (row: StaffType) => {
+      navigate(`/staff/${row.staffId}`);
+    },
+    [navigate],
+  );
+
+  const handleEdit = useCallback(
+    (row: StaffType) => {
+      navigate(`/edit-staff/${row.staffId}`);
+    },
+    [navigate],
+  );
+
+  const handleDelete = useCallback(
+    async (row: StaffType) => {
+      try {
+        await deleteStaff(row.staffId);
+        showSnackbar({
+          message: 'Staff deleted successfully!',
+          severity: 'success',
+        });
+      } catch (error) {
+        showSnackbar({
+          message: (error as Error).message || 'Failed to delete staff.',
+          severity: 'error',
+        });
+      }
+    },
+    [showSnackbar],
+  );
+
   return {
     data,
     isLoading,
@@ -84,6 +122,10 @@ const useStaff = () => {
     handleSort,
     handleSearch,
     handleGridSort,
+    handleAddStaff,
+    handleView,
+    handleEdit,
+    handleDelete,
   };
 };
 export default useStaff;

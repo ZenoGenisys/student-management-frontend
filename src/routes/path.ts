@@ -5,6 +5,6 @@ export const PATH = {
   STUDENT: '/student',
   STAFF: '/staffs',
   STAFF_DETAILS: '/staff/:staffId',
-  ADD_STAFF: '/addStaff',
-  EDIT_STAFF: '/addStaff/:staffId'
+  ADD_STAFF: '/add-staff',
+  EDIT_STAFF: '/edit-staff/:staffId',
 };
