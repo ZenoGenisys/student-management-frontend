@@ -21,6 +21,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../routes/path';
 import { DRAWER_WIDTH } from '../constants/layout';
+import logo from "../assets/images/logo.png";
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -93,7 +94,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
           >
             <Avatar
               alt="logo"
-              src="/src/assets/images/logo.png"
+              src={logo}
               sx={{
                 width: 40,
                 height: 40,
