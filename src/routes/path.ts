@@ -4,6 +4,7 @@ export const PATH = {
   DASHBOARD: '/dashboard',
   STUDENT: '/student',
   STAFF: '/staffs',
-  STAFF_DETAILS: '/staff/:staffId', // Updated route to include staffId
-  ADD_STAFF: '/addStaff'
+  STAFF_DETAILS: '/staff/:staffId',
+  ADD_STAFF: '/addStaff',
+  EDIT_STAFF: '/addStaff/:staffId'
 };

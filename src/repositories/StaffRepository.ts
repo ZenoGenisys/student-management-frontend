@@ -13,3 +13,7 @@ export const getStaffById = (staffId: string): Promise<StaffResponse> => {
 export const createStaff = (staffData: any): Promise<StaffResponse> => {
   return getHttpClient(API_PATH.STAFF, 'POST', staffData);
 };
+
+export const updateStaff = (staffData: any): Promise<StaffResponse> => {
+  return getHttpClient(API_PATH.STAFF, 'PUT', staffData);
+};

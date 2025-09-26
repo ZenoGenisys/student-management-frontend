@@ -10,13 +10,12 @@ import {
   FormControl,
   MenuItem,
   Select,
-  type SelectChangeEvent,
   useMediaQuery,
   TextField,
   TextareaAutosize
 } from '@mui/material';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
@@ -24,12 +23,13 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { Dayjs } from 'dayjs';
-import { createStaff } from '../../repositories/StaffRepository';
+import dayjs from 'dayjs';
+import { createStaff, getStaffById, updateStaff } from '../../repositories/StaffRepository';
 
 const AddStaff: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { staffId } = useParams<{ staffId: string }>();
 
   const navigate = useNavigate();
 
@@ -49,6 +49,20 @@ const AddStaff: React.FC = () => {
     status: '',
   });
 
+  useEffect(() => {
+    if (staffId) {
+      getStaffById(staffId)
+        .then((data: any) => {
+          setStaffData({
+            ...data,
+            dateOfBirth: data.dateOfBirth ? dayjs(data.dateOfBirth) : null,
+            joiningDate: data.joiningDate ? dayjs(data.joiningDate) : null,
+          });
+        })
+        .catch(console.error);
+    }
+  }, [staffId]);
+
   const handleSave = async () => {
     try {
       const payload = {
@@ -56,7 +70,13 @@ const AddStaff: React.FC = () => {
         dateOfBirth: staffData.dateOfBirth ? staffData.dateOfBirth.format('YYYY-MM-DD') : null,
         joiningDate: staffData.joiningDate ? staffData.joiningDate.format('YYYY-MM-DD') : null,
       };
-      await createStaff(payload);
+
+      if (staffId) {
+        await updateStaff({ ...payload, staffId });
+      } else {
+        await createStaff(payload);
+      }
+
       navigate('/staffs');
     } catch (error) {
       console.error('Failed to add staff:', error);
@@ -80,7 +100,7 @@ const AddStaff: React.FC = () => {
         paddingRight={0}
       >
         <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold' }}>
-          Add Staff
+          {staffId ? 'Edit Staff' : 'Add Staff'}
         </Typography>
       </Box>
 

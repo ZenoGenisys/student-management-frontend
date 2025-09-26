@@ -12,7 +12,7 @@ import {
 import Box from '@mui/material/Box';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SensorOccupiedOutlinedIcon from '@mui/icons-material/SensorOccupiedOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
@@ -28,9 +28,11 @@ import {
   StaffContactDetails,
 } from '../../components';
 import { getAvatarProps } from '../../utils/avatar';
+import { PATH } from '../../routes/path';
 
 const StaffDetails: React.FC = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { staffId } = useParams<{ staffId: string }>();
   const [staff, setStaff] = useState<any>(null);
   const [tabValue, setTabValue] = useState(0);
@@ -44,6 +46,10 @@ const StaffDetails: React.FC = () => {
   const handleTabChange = useCallback((_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   }, []);
+
+  const handleEdit = () => {
+    navigate(PATH.EDIT_STAFF.replace(':staffId', staffId!));
+  };
 
   return (
     <Box display="flex" flexDirection="column">
@@ -61,7 +67,13 @@ const StaffDetails: React.FC = () => {
           Staff Details
         </Typography>
         <Box display={'flex'} gap={2}>
-          <Button variant="outlined" color="primary" size="large" startIcon={<EditOutlinedIcon />}>
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            startIcon={<EditOutlinedIcon />}
+            onClick={handleEdit}
+          >
             Edit Staff
           </Button>
           <Button

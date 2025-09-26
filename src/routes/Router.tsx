@@ -61,6 +61,7 @@ const Router = () => {
           <Route path={PATH.STAFF_DETAILS} element={<StaffDetails />} />
           <Route path={PATH.STAFF} element={<Staff />} />
           <Route path={PATH.ADD_STAFF} element={<AddStaff />} />
+          <Route path={PATH.EDIT_STAFF} element={<AddStaff />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
