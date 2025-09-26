@@ -30,6 +30,12 @@ const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCell
     setAnchorEl(null);
   }, []);
 
+  const handleConfirm = useCallback(() => {
+    onClickDelete(row);
+    setOpenDeleteConfirm(false);
+    handleClose();
+  }, [onClickDelete, row, handleClose]);
+
   return (
     <Box>
       {/* Call button: uses tel: link */}
@@ -99,10 +105,7 @@ const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCell
       <DeleteConfirmation
         open={openDeleteConfirm}
         onClose={() => setOpenDeleteConfirm(false)}
-        onConfirm={() => {
-          onClickDelete(row);
-          handleClose();
-        }}
+        onConfirm={handleConfirm}
       />
     </Box>
   );

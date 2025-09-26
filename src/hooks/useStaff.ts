@@ -30,7 +30,7 @@ const useStaff = () => {
     };
   }, [search]);
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['staff', debouncedSearch, page, rowsPerPage, sort],
     queryFn: () =>
       getStaff({
@@ -93,6 +93,7 @@ const useStaff = () => {
     async (row: StaffType) => {
       try {
         await deleteStaff(row.staffId);
+        refetch();
         showSnackbar({
           message: 'Staff deleted successfully!',
           severity: 'success',
@@ -104,7 +105,7 @@ const useStaff = () => {
         });
       }
     },
-    [showSnackbar],
+    [showSnackbar, refetch],
   );
 
   return {
