@@ -9,7 +9,7 @@ type Param = Data | Array<unknown>;
 type ResponseData<T> = { data: T };
 
 export const register = async () => {
-  axios.defaults.baseURL = 'http://140.245.209.64/';
+  axios.defaults.baseURL = '/api';
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 };
 
