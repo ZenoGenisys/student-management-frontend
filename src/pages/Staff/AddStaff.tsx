@@ -12,7 +12,7 @@ import {
   Select,
   useMediaQuery,
   TextField,
-  TextareaAutosize
+  TextareaAutosize,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -286,7 +286,9 @@ const AddStaff: React.FC = () => {
                   id="maritialStatus"
                   value={staffData.maritalStatus}
                   onChange={(e) => setStaffData({ ...staffData, maritalStatus: e.target.value })}
-                  size="small" displayEmpty>
+                  size="small"
+                  displayEmpty
+                >
                   <MenuItem value="" disabled>
                     <em>Select</em>
                   </MenuItem>
@@ -333,7 +335,9 @@ const AddStaff: React.FC = () => {
                   id="level"
                   value={staffData.level}
                   onChange={(e) => setStaffData({ ...staffData, level: e.target.value })}
-                  size="small" displayEmpty>
+                  size="small"
+                  displayEmpty
+                >
                   <MenuItem value="" disabled>
                     <em>Select</em>
                   </MenuItem>

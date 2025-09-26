@@ -21,7 +21,6 @@ export type ColumnDefsProps<T = any> = {
   cellRenderer?: ({ column, row, rows }: CellRender<T>) => React.ReactNode;
 };
 
- 
 export type Row = {
   [key: string]: any;
 };

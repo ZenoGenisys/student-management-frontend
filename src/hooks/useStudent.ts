@@ -5,9 +5,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 const useStudent = () => {
   const isMobile = useMediaQuery('(max-width:600px)');
-  const [activeView, setActiveView] = useState<'grid' | 'list'>(
-    isMobile ? 'grid' : 'list',
-  );
+  const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const [search, setSearch] = useState<string | undefined>();
   const [debouncedSearch, setDebouncedSearch] = useState<string | undefined>();
   const [page, setPage] = useState(1);
@@ -37,8 +35,7 @@ const useStudent = () => {
         ...(sort
           ? {
               sortBy: sort.orderBy,
-              order:
-                (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
+              order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
             }
           : {}),
       }),

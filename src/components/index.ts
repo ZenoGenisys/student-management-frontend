@@ -26,5 +26,5 @@ export {
   StaffAttendanceTab,
   StaffDetailsTab,
   StaffSalaryTab,
-  StaffContactDetails
+  StaffContactDetails,
 };

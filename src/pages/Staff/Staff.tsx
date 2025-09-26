@@ -1,39 +1,11 @@
 import Box from '@mui/material/Box';
-import React from 'react';
+import React, { useMemo } from 'react';
 import GridView from '../../components/GridView';
 import ListView from '../../components/ListView';
 import { useStaff } from '../../hooks';
 import { GridFilter, GridHeader } from '../../layouts';
 import { ActionCell, NameCell, StatusCell } from '../../components';
-import { useNavigate } from 'react-router-dom';
-
-const Column = [
-  { id: 'staffId', label: 'Staff ID', sortable: true },
-  {
-    id: 'name',
-    label: 'Name',
-    sortable: true,
-    cellRenderer: NameCell,
-    align: 'left' as const,
-  },
-  { id: 'gender', label: 'Gender', sortable: true },
-  { id: 'center', label: 'Center', sortable: true },
-  { id: 'level', label: 'Level', sortable: true },
-  { id: 'qualification', label: 'Qualification', sortable: true },
-  {
-    id: 'status',
-    label: 'Status',
-    sortable: true,
-    cellRenderer: StatusCell,
-  },
-  { id: 'joiningDate', label: 'Date of Joining', sortable: true },
-  {
-    id: 'actions',
-    label: 'Action',
-    sortable: false,
-    cellRenderer: ActionCell,
-  },
-];
+import type { ColumnDefsProps } from '../../types';
 
 const Staff: React.FC = () => {
   const {
@@ -49,12 +21,49 @@ const Staff: React.FC = () => {
     handleSort,
     handleRowPerPageChange,
     handleGridSort,
+    handleEdit,
+    handleDelete,
+    handleView,
+    handleAddStaff,
   } = useStaff();
-  const navigate = useNavigate();
 
-  const handleAddStaff = () => {
-    navigate('/AddStaff');
-  };
+  const Column = useMemo<ColumnDefsProps[]>(
+    () => [
+      { id: 'staffId', label: 'Staff ID', sortable: true },
+      {
+        id: 'name',
+        label: 'Name',
+        sortable: true,
+        cellRenderer: NameCell as (props: any) => React.ReactNode,
+        align: 'left' as const,
+      },
+      { id: 'gender', label: 'Gender', sortable: true },
+      { id: 'center', label: 'Center', sortable: true },
+      { id: 'level', label: 'Level', sortable: true },
+      { id: 'qualification', label: 'Qualification', sortable: true },
+      {
+        id: 'status',
+        label: 'Status',
+        sortable: true,
+        cellRenderer: StatusCell as (props: any) => React.ReactNode,
+      },
+      { id: 'joiningDate', label: 'Date of Joining', sortable: true },
+      {
+        id: 'actions',
+        label: 'Action',
+        sortable: false,
+        cellRenderer: (cellProps: any) => (
+          <ActionCell
+            {...cellProps}
+            onClickEdit={handleEdit}
+            onClickDelete={handleDelete}
+            onClickView={handleView}
+          />
+        ),
+      },
+    ],
+    [handleEdit, handleDelete, handleView],
+  );
 
   return (
     <Box display="flex" flexDirection="column">

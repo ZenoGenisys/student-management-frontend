@@ -67,7 +67,7 @@ export default function Appbar({
   };
 
   const navigate = useNavigate();
-  const { logout, email, role } = useAuth();
+  const { logout, name, role } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -78,13 +78,7 @@ export default function Appbar({
 
   const menuId = 'account-menu';
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      id={menuId}
-      keepMounted
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
+    <Menu anchorEl={anchorEl} id={menuId} keepMounted open={isMenuOpen} onClose={handleMenuClose}>
       <MenuItem onClick={handleMenuClose}>
         <Box
           sx={{
@@ -94,30 +88,29 @@ export default function Appbar({
             width: '100%',
           }}
         >
+          <Avatar alt="profile" src="/src/assets/images/profile-photo.jpg" sx={{ mr: 1 }} />
+          <Box>
           <Avatar
             alt="profile"
             src=""
-            {...getAvatarProps(`${email}`)}
+            {...getAvatarProps(`${name}`)}
           />
           <Box ml={1}>
             <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-              {email}
+              {name}
             </Typography>
             <Typography variant="body2" color="primary">
               {role}
             </Typography>
           </Box>
         </Box>
+        </Box>
       </MenuItem>
       <MenuItem onClick={handleLogout}>
         <Button
           variant="outlined"
           color="error"
-          endIcon={
-            <ExitToAppOutlinedIcon
-              sx={{ color: theme.palette.error.main || 'red' }}
-            />
-          }
+          endIcon={<ExitToAppOutlinedIcon sx={{ color: theme.palette.error.main || 'red' }} />}
           sx={{ fontSize: '1rem', width: '100%' }}
         >
           Logout
@@ -168,7 +161,7 @@ export default function Appbar({
               <Avatar
                 alt="profile"
                 src=""
-                {...getAvatarProps(`${email}`)}
+                {...getAvatarProps(`${name}`)}
               />
             </MenuItem>
           </Box>

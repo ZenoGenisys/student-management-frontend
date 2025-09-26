@@ -22,7 +22,6 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address }) => {
   const theme = useTheme();
   return (
     <Box display={'flex'} flexDirection="column" gap={2}>
-
       <Grid container spacing={2} columns={12}>
         {/* Address */}
         <Grid size={12}>
@@ -40,9 +39,7 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address }) => {
               }}
             >
               <CottageOutlinedIcon />
-              <Typography variant="body1">
-                {address}
-              </Typography>
+              <Typography variant="body1">{address}</Typography>
             </CardContent>
           </Card>
         </Grid>
