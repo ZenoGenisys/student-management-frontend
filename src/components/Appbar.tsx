@@ -17,6 +17,7 @@ import { PATH } from '../routes/path';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { getAvatarProps } from '../utils/avatar';
+import logo from "../assets/images/logo.png";
 
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'isMobile',
@@ -95,10 +96,10 @@ export default function Appbar({
         >
           <Avatar
             alt="profile"
-            src="/src/assets/images/profile-photo.jpg"
-            sx={{ mr: 1 }}
+            src=""
+            {...getAvatarProps(`${email}`)}
           />
-          <Box>
+          <Box ml={1}>
             <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
               {email}
             </Typography>
@@ -149,7 +150,7 @@ export default function Appbar({
           >
             <Avatar
               alt="logo"
-              src="/src/assets/images/logo.png"
+              src={logo}
               sx={{
                 width: 40,
                 height: 40,
