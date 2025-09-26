@@ -154,9 +154,7 @@ const StaffDetails: React.FC = () => {
                   <Grid size={6}>
                     <b>Date of Birth:</b>
                   </Grid>
-                  <Grid size={6}>
-                    {staff?.dateOfBirth?.split('-').reverse().join('-')}
-                  </Grid>
+                  <Grid size={6}>{staff?.dateOfBirth?.split('-').reverse().join('-')}</Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
@@ -174,9 +172,7 @@ const StaffDetails: React.FC = () => {
                   <Grid size={6}>
                     <b>Date of Joining:</b>
                   </Grid>
-                  <Grid size={6}>
-                    {staff?.joiningDate?.split('-').reverse().join('-')}
-                  </Grid>
+                  <Grid size={6}>{staff?.joiningDate?.split('-').reverse().join('-')}</Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
@@ -251,7 +247,12 @@ const StaffDetails: React.FC = () => {
             </Tabs>
 
             {/* Tab 1 Details */}
-            {tabValue === 0 && <StaffDetailsTab address={staff?.address} />}
+            {tabValue === 0 && (
+              <StaffDetailsTab
+                address={staff?.address}
+                additionalDetails={staff?.additionalDetails}
+              />
+            )}
 
             {/* Tab 2 Attendance */}
             {tabValue === 1 && <StaffAttendanceTab />}

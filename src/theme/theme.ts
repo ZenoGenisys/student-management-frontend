@@ -266,6 +266,37 @@ const baseTheme = createTheme({
         },
       },
     },
+    MuiCardHeader: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#E9EDF4',
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        root: {
+          border: '1px solid #E3E8EE',
+          borderRadius: 6,
+          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
+          transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#E9EDF4',
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          padding: '16px !important',
+        },
+      },
+    },
     MuiAppBar: {
       styleOverrides: {
         root: {

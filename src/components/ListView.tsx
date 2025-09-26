@@ -117,21 +117,12 @@ const ListView = <T extends Row = Row>({
         borderTop: 'none',
       }}
     >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={2}
-      >
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Box display="flex" alignItems="center" gap={1}>
           <Typography variant="body1" color="textSecondary">
             Row Per Page
           </Typography>
-          <Select
-            size="small"
-            value={rowsPerPage}
-            onChange={handleChangeRowsPerPage}
-          >
+          <Select size="small" value={rowsPerPage} onChange={handleChangeRowsPerPage}>
             {[25, 50, 75, 100].map((n) => (
               <MenuItem key={n} value={n}>
                 {n}
@@ -167,10 +158,7 @@ const ListView = <T extends Row = Row>({
                 <TableCell padding="checkbox">
                   <Checkbox
                     color="primary"
-                    indeterminate={
-                      selectedRows.length > 0 &&
-                      selectedRows.length < rows.length
-                    }
+                    indeterminate={selectedRows.length > 0 && selectedRows.length < rows.length}
                     checked={selectedRows.length === rows.length}
                     onChange={handleSelectAllClick}
                     inputProps={{
@@ -220,10 +208,7 @@ const ListView = <T extends Row = Row>({
                 {columns.map((column) => {
                   if (typeof column.cellRenderer === 'function') {
                     return (
-                      <TableCell
-                        key={column.id}
-                        align={column.align || 'center'}
-                      >
+                      <TableCell key={column.id} align={column.align || 'center'}>
                         {column.cellRenderer({ column, row, rows })}
                       </TableCell>
                     );
@@ -243,12 +228,7 @@ const ListView = <T extends Row = Row>({
 
       {/* Pagination */}
       <Box display="flex" justifyContent="flex-end" alignItems="center" mt={2}>
-        <Button
-          size="large"
-          variant="text"
-          onClick={handlePrevPage}
-          disabled={page === 1}
-        >
+        <Button size="large" variant="text" onClick={handlePrevPage} disabled={page === 1}>
           Prev
         </Button>
         <Typography mx={1}>

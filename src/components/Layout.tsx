@@ -3,11 +3,7 @@ import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Appbar from './Appbar';
-import {
-  DRAWER_WIDTH,
-  MOBILE_BREAKPOINT,
-  APPBAR_HEIGHT,
-} from '../constants/layout';
+import { DRAWER_WIDTH, MOBILE_BREAKPOINT, APPBAR_HEIGHT } from '../constants/layout';
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;

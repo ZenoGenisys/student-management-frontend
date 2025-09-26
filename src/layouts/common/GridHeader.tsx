@@ -87,9 +87,7 @@ const GridHeader: React.FC<GridHeaderProps> = ({
             Export as PDF
           </MenuItem>
           <MenuItem onClick={handleExcel} disableRipple>
-            <RiFileExcel2Line
-              style={{ marginRight: 12, width: 16, height: 16 }}
-            />
+            <RiFileExcel2Line style={{ marginRight: 12, width: 16, height: 16 }} />
             Export as Excel
           </MenuItem>
         </StyledMenu>

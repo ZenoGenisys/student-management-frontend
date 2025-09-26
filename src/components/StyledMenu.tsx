@@ -35,10 +35,7 @@ const StyledMenu = styled((props: MenuProps) => (
         }),
       },
       '&:active': {
-        backgroundColor: alpha(
-          theme.palette.primary.main,
-          theme.palette.action.selectedOpacity,
-        ),
+        backgroundColor: alpha(theme.palette.primary.main, theme.palette.action.selectedOpacity),
       },
     },
     ...theme.applyStyles('dark', {

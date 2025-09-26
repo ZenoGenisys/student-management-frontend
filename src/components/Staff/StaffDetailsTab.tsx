@@ -16,19 +16,18 @@ import { FaDownload } from 'react-icons/fa6';
 
 interface StaffdataProps {
   address: string | undefined;
+  additionalDetails: string | undefined;
 }
 
-const StaffDetailsTab: React.FC<StaffdataProps> = ({ address }) => {
+const StaffDetailsTab: React.FC<StaffdataProps> = ({ address, additionalDetails }) => {
   const theme = useTheme();
   return (
     <Box display={'flex'} flexDirection="column" gap={2}>
-
       <Grid container spacing={2} columns={12}>
         {/* Address */}
         <Grid size={12}>
           <Card>
             <CardHeader
-              sx={{ background: '#E9EDF4' }}
               title={<Typography variant="h5">Address</Typography>}
             />
             <CardContent
@@ -40,9 +39,7 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address }) => {
               }}
             >
               <CottageOutlinedIcon />
-              <Typography variant="body1">
-                {address}
-              </Typography>
+              <Typography variant="body1">{address}</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -51,7 +48,6 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address }) => {
       {/* Documents */}
       <Card>
         <CardHeader
-          sx={{ background: '#E9EDF4' }}
           title={<Typography variant="h5">Documents</Typography>}
         />
         <CardContent
@@ -110,7 +106,6 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address }) => {
       {/* Notes */}
       <Card>
         <CardHeader
-          sx={{ background: '#E9EDF4' }}
           title={<Typography variant="h5">Notes</Typography>}
         />
         <CardContent
@@ -122,7 +117,7 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address }) => {
             maxRows={4}
             aria-label="Text area"
             placeholder="Add additional notes here..."
-            defaultValue=""
+            defaultValue={additionalDetails}
             style={{
               width: '100%',
               minHeight: 100,
