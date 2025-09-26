@@ -18,12 +18,18 @@ function stringToColor(string: string) {
   return color;
 }
 
-export function getAvatarProps(name: string) {
+export function getAvatarProps(
+  name: string,
+  customStyles: object = {},
+  variant: 'circular' | 'rounded' | 'square' = 'circular'
+) {
   const nameParts = name.split(' ');
   return {
     sx: {
       bgcolor: stringToColor(name),
+      ...customStyles,
     },
+    variant,
     children:
       nameParts.length > 1
         ? `${nameParts[0][0]}${nameParts[1][0]}`

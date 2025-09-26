@@ -3,13 +3,10 @@ import {
   Button,
   Card,
   CardContent,
-  CardHeader,
   Divider,
   Grid,
-  IconButton,
   Tab,
   Tabs,
-  TextareaAutosize,
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -21,15 +18,16 @@ import SensorOccupiedOutlinedIcon from '@mui/icons-material/SensorOccupiedOutlin
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
-import MessageOutlinedIcon from '@mui/icons-material/MessageOutlined';
-import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
-import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
-import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
-import PhoneAndroidOutlinedIcon from '@mui/icons-material/PhoneAndroidOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
-import { GrDocumentPdf } from 'react-icons/gr';
-import { FaDownload, FaWhatsapp } from 'react-icons/fa6';
 import { getStaffById } from '../../repositories/StaffRepository';
+import {
+  StaffAcademicTab,
+  StaffAttendanceTab,
+  StaffSalaryTab,
+  StaffDetailsTab,
+  StaffContactDetails,
+} from '../../components';
+import { getAvatarProps } from '../../utils/avatar';
 
 const StaffDetails: React.FC = () => {
   const theme = useTheme();
@@ -43,16 +41,9 @@ const StaffDetails: React.FC = () => {
     }
   }, [staffId]);
 
-  const handleTabChange = useCallback(
-    (_: React.SyntheticEvent, newValue: number) => {
-      setTabValue(newValue);
-    },
-    [],
-  );
-
-  if (!staff) {
-    return <Typography>Loading...</Typography>;
-  }
+  const handleTabChange = useCallback((_: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  }, []);
 
   return (
     <Box display="flex" flexDirection="column">
@@ -67,16 +58,11 @@ const StaffDetails: React.FC = () => {
         paddingRight={0}
       >
         <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold' }}>
-          Student Details
+          Staff Details
         </Typography>
         <Box display={'flex'} gap={2}>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            startIcon={<EditOutlinedIcon />}
-          >
-            Edit Student
+          <Button variant="outlined" color="primary" size="large" startIcon={<EditOutlinedIcon />}>
+            Edit Staff
           </Button>
           <Button
             variant="contained"
@@ -104,27 +90,34 @@ const StaffDetails: React.FC = () => {
                 gap={2}
               >
                 <Avatar
-                  src="https://via.placeholder.com/120"
+                  src=""
+                  {...getAvatarProps(`${staff?.name}`, { width: 80, height: 80 })}
                   variant="square"
-                  sx={{ width: 78, height: 78, borderRadius: 1 }}
                 />
                 <Box>
                   <Typography variant="h4" mb={1}>
-                    {staff?.name || 'Staff Name Not Available'}
+                    {staff?.name}
                   </Typography>
                   <Typography
                     variant="body2"
-                    color={theme.palette.success.main}
+                    color={
+                      staff?.status === 'Active'
+                        ? theme.palette.success.main
+                        : theme.palette.error.main
+                    }
                     sx={{
                       fontWeight: theme.typography.fontWeightBold,
-                      backgroundColor: theme.palette.success.light,
+                      backgroundColor:
+                        staff?.status === 'Active'
+                          ? theme.palette.success.light
+                          : theme.palette.error.light,
                       px: 1,
                       py: 0.5,
                       borderRadius: 1,
                       width: 'fit-content',
                     }}
                   >
-                    Active
+                    {staff?.status}
                   </Typography>
                 </Box>
               </Box>
@@ -135,121 +128,80 @@ const StaffDetails: React.FC = () => {
               <Box>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
-                    <b>Roll No:</b>
+                    <b>Staff Id:</b>
                   </Grid>
-                  <Grid size={6}>35013</Grid>
+                  <Grid size={6}>{staff?.staffId}</Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
                     <b>Gender:</b>
                   </Grid>
-                  <Grid size={6}>Female</Grid>
+                  <Grid size={6}>{staff?.gender}</Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
                     <b>Date of Birth:</b>
                   </Grid>
-                  <Grid size={6}>25 Jan 2008</Grid>
+                  <Grid size={6}>
+                    {staff?.dateOfBirth?.split('-').reverse().join('-')}
+                  </Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
                     <b>Age:</b>
                   </Grid>
-                  <Grid size={6}>25</Grid>
+                  <Grid size={6}>{staff?.age}</Grid>
+                </Grid>
+                <Grid container spacing={2} columns={12} mb={1}>
+                  <Grid size={6}>
+                    <b>Marital Status:</b>
+                  </Grid>
+                  <Grid size={6}>{staff?.maritalStatus}</Grid>
+                </Grid>
+                <Grid container spacing={2} columns={12} mb={1}>
+                  <Grid size={6}>
+                    <b>Date of Joining:</b>
+                  </Grid>
+                  <Grid size={6}>
+                    {staff?.joiningDate?.split('-').reverse().join('-')}
+                  </Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
                     <b>Blood Group:</b>
                   </Grid>
-                  <Grid size={6}>B+</Grid>
+                  <Grid size={6}>{staff?.bloodGroup}</Grid>
+                </Grid>
+                <Grid container spacing={2} columns={12} mb={1}>
+                  <Grid size={6}>
+                    <b>Qualification:</b>
+                  </Grid>
+                  <Grid size={6}>{staff?.qualification}</Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
                     <b>Learning Level:</b>
                   </Grid>
-                  <Grid size={6}>1</Grid>
+                  <Grid size={6}>{staff?.level}</Grid>
+                </Grid>
+                <Grid container spacing={2} columns={12} mb={1}>
+                  <Grid size={6}>
+                    <b>Experience:</b>
+                  </Grid>
+                  <Grid size={6}>{staff?.experience} Years</Grid>
                 </Grid>
                 <Grid container spacing={2} columns={12} mb={1}>
                   <Grid size={6}>
                     <b>Center:</b>
                   </Grid>
-                  <Grid size={6}>Puliyur</Grid>
-                </Grid>
-                <Grid container spacing={2} columns={12} mb={1}>
-                  <Grid size={6}>
-                    <b>Batch:</b>
-                  </Grid>
-                  <Grid size={6}>Tuesday</Grid>
-                </Grid>
-                <Grid container spacing={2} columns={12} mb={1}>
-                  <Grid size={6}>
-                    <b>Student Type:</b>
-                  </Grid>
-                  <Grid size={6}>Regular</Grid>
+                  <Grid size={6}>{staff?.center}</Grid>
                 </Grid>
               </Box>
             </CardContent>
           </Card>
 
           {/* Primary Contact details */}
-          <Card>
-            <CardHeader
-            sx={{ background: '#E9EDF4' }}
-              title={
-                <Typography variant="h5">Primary Contact Details</Typography>
-              }
-            />
-            <CardContent
-              sx={{
-                borderTop: `1px solid ${theme.palette.divider}`,
-              }}
-            >
-              <Box
-                display={'flex'}
-                flexDirection="row"
-                alignItems="center"
-                justifyContent={'space-between'}
-                gap={2}
-              >
-                <Box
-                  display={'flex'}
-                  flexDirection="row"
-                  alignItems="center"
-                  gap={2}
-                >
-                  <PhoneAndroidOutlinedIcon />
-                  <Box>
-                    <Typography variant="h6">Phone</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      9843833458
-                    </Typography>
-                  </Box>
-                </Box>
-                <Box>
-                  <IconButton
-                    aria-label="Call"
-                    sx={{
-                      border: `1px solid ${theme.palette.divider}`,
-                      borderRadius: 5,
-                      mr: 1,
-                    }}
-                  >
-                    <CallOutlinedIcon />
-                  </IconButton>
-                  <IconButton
-                    aria-label="Call"
-                    sx={{
-                      border: `1px solid ${theme.palette.divider}`,
-                      borderRadius: 5,
-                      mr: 1,
-                    }}
-                  >
-                    <FaWhatsapp />
-                  </IconButton>
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
+          <StaffContactDetails contactNumber={staff?.contactNumber} email={staff?.email} />
         </Grid>
 
         {/* Right Side - Tabs and Content */}
@@ -267,7 +219,7 @@ const StaffDetails: React.FC = () => {
               <Tab
                 icon={<SchoolOutlinedIcon fontSize="medium" />}
                 iconPosition="start"
-                label="Student Details"
+                label="Staff Details"
               />
               <Tab
                 icon={<EventNoteOutlinedIcon fontSize="medium" />}
@@ -277,7 +229,7 @@ const StaffDetails: React.FC = () => {
               <Tab
                 icon={<PaidOutlinedIcon fontSize="medium" />}
                 iconPosition="start"
-                label="Fees"
+                label="Salary"
               />
               <Tab
                 icon={<LocalLibraryOutlinedIcon fontSize="medium" />}
@@ -287,353 +239,16 @@ const StaffDetails: React.FC = () => {
             </Tabs>
 
             {/* Tab 1 Details */}
-            {tabValue === 0 && (
-              <Box display={'flex'} flexDirection="column" gap={2}>
-                {/* Parent Details */}
-                <Card>
-                  <CardHeader
-                  sx={{ background: '#E9EDF4' }}
-                    title={
-                      <Typography variant="h5">Parents Information</Typography>
-                    }
-                  />
-                  <CardContent
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 2,
-                      borderTop: `1px solid ${theme.palette.divider}`,
-                    }}
-                  >
-                    <Grid
-                      container
-                      alignItems="center"
-                      spacing={2}
-                      p={2}
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 1,
-                      }}
-                      size={12}
-                    >
-                      <Grid
-                        display="flex"
-                        flexDirection="row"
-                        alignItems="center"
-                        gap={1}
-                        size={3}
-                      >
-                        <Avatar variant="square" sx={{ borderRadius: 1 }}>
-                          B
-                        </Avatar>
-                        <Box>
-                          <Typography variant="h6">Balachandar</Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Father
-                          </Typography>
-                        </Box>
-                      </Grid>
-
-                      <Grid size={3}>
-                        <Typography variant="h6">Phone</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          9843833458
-                        </Typography>
-                      </Grid>
-
-                      <Grid
-                        display={'flex'}
-                        flexDirection="row"
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        gap={0.5}
-                        size={6}
-                      >
-                        <Box>
-                          <Typography variant="h6">Email</Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            balachander123@gmail.com
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <IconButton
-                            aria-label="Call"
-                            size="small"
-                            sx={{
-                              border: `1px solid ${theme.palette.divider}`,
-                              borderRadius: 5,
-                              mr: 1,
-                            }}
-                          >
-                            <CallOutlinedIcon />
-                          </IconButton>
-                          <IconButton
-                            aria-label="Message"
-                            size="small"
-                            sx={{
-                              border: `1px solid ${theme.palette.divider}`,
-                              borderRadius: 5,
-                              mr: 1,
-                            }}
-                          >
-                            <MessageOutlinedIcon />
-                          </IconButton>
-                          <IconButton
-                            aria-label="Mail"
-                            size="small"
-                            sx={{
-                              border: `1px solid ${theme.palette.divider}`,
-                              borderRadius: 5,
-                            }}
-                          >
-                            <MailOutlineOutlinedIcon />
-                          </IconButton>
-                        </Box>
-                      </Grid>
-                    </Grid>
-
-                    <Grid
-                      container
-                      alignItems="center"
-                      spacing={2}
-                      p={2}
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 1,
-                      }}
-                      size={12}
-                    >
-                      <Grid
-                        display="flex"
-                        flexDirection="row"
-                        alignItems="center"
-                        gap={1}
-                        size={3}
-                      >
-                        <Avatar variant="square" sx={{ borderRadius: 1 }}>
-                          S
-                        </Avatar>
-                        <Box>
-                          <Typography variant="h6">Sneha</Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            Mother
-                          </Typography>
-                        </Box>
-                      </Grid>
-
-                      <Grid size={3}>
-                        <Typography variant="h6">Phone</Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          9159748978
-                        </Typography>
-                      </Grid>
-
-                      <Grid
-                        display={'flex'}
-                        flexDirection="row"
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        gap={0.5}
-                        size={6}
-                      >
-                        <Box>
-                          <Typography variant="h6">Email</Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            sneha345@gmail.com
-                          </Typography>
-                        </Box>
-                        <Box>
-                          <IconButton
-                            aria-label="Call"
-                            size="small"
-                            sx={{
-                              border: `1px solid ${theme.palette.divider}`,
-                              borderRadius: 5,
-                              mr: 1,
-                            }}
-                          >
-                            <CallOutlinedIcon />
-                          </IconButton>
-                          <IconButton
-                            aria-label="Message"
-                            size="small"
-                            sx={{
-                              border: `1px solid ${theme.palette.divider}`,
-                              borderRadius: 5,
-                              mr: 1,
-                            }}
-                          >
-                            <MessageOutlinedIcon />
-                          </IconButton>
-                          <IconButton
-                            aria-label="Mail"
-                            size="small"
-                            sx={{
-                              border: `1px solid ${theme.palette.divider}`,
-                              borderRadius: 5,
-                            }}
-                          >
-                            <MailOutlineOutlinedIcon />
-                          </IconButton>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                </Card>
-
-                <Grid container spacing={2} columns={12}>
-                  {/* Address */}
-                  <Grid size={12}>
-                    <Card>
-                      <CardHeader
-                        sx={{ background: '#E9EDF4' }}
-                        title={<Typography variant="h5">Address</Typography>}
-                      />
-                      <CardContent
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: 2,
-                          borderTop: `1px solid ${theme.palette.divider}`,
-                        }}
-                      >
-                        <CottageOutlinedIcon />
-                        <Typography variant="body1">
-                          123, Main Street, Puliyur, Tamil Nadu, India - 639117
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-
-                  {/* School Details */}
-                  <Grid size={12}>
-                    <Card>
-                      <CardHeader
-                      sx={{ background: '#E9EDF4' }}
-                        title={
-                          <Typography variant="h5">School Details</Typography>
-                        }
-                      />
-                      <CardContent
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row',
-                          gap: 2,
-                          borderTop: `1px solid ${theme.palette.divider}`,
-                        }}
-                      >
-                        <SchoolOutlinedIcon />
-                        <Typography variant="body1">
-                          ABC Matriculation Higher Secondary School
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                </Grid>
-
-                {/* Documents */}
-                <Card>
-                  <CardHeader
-                  sx={{ background: '#E9EDF4' }}
-                    title={<Typography variant="h5">Documents</Typography>}
-                  />
-                  <CardContent
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      gap: 2,
-                      borderTop: `1px solid ${theme.palette.divider}`,
-                    }}
-                  >
-                    <Grid
-                      container
-                      flexDirection={'row'}
-                      alignItems="center"
-                      justifyContent={'space-between'}
-                      spacing={2}
-                      p={1}
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 1,
-                      }}
-                      size={6}
-                    >
-                      <Box display="flex" alignItems={'center'} gap={1}>
-                        <GrDocumentPdf />
-                        <Typography variant="body1">
-                          Birth Certificate.pdf
-                        </Typography>
-                      </Box>
-                      <IconButton aria-label="download" size="medium">
-                        <FaDownload />
-                      </IconButton>
-                    </Grid>
-
-                    <Grid
-                      container
-                      alignItems="center"
-                      justifyContent={'space-between'}
-                      spacing={2}
-                      p={1}
-                      sx={{
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 1,
-                      }}
-                      size={6}
-                    >
-                      <Box display="flex" alignItems={'center'} gap={1}>
-                        <GrDocumentPdf />
-                        <Typography variant="body1">
-                          Competition Certificate.pdf
-                        </Typography>
-                      </Box>
-                      <IconButton aria-label="download" size="medium">
-                        <FaDownload />
-                      </IconButton>
-                    </Grid>
-                  </CardContent>
-                </Card>
-
-                {/* Notes */}
-                <Card>
-                  <CardHeader
-                  sx={{ background: '#E9EDF4' }}
-                    title={<Typography variant="h5">Notes</Typography>}
-                  />
-                  <CardContent
-                    sx={{
-                      borderTop: `1px solid ${theme.palette.divider}`,
-                    }}
-                  >
-                    <TextareaAutosize
-                      maxRows={4}
-                      aria-label="Text area"
-                      placeholder="Add additional notes here..."
-                      defaultValue=""
-                      style={{
-                        width: '100%',
-                        minHeight: 100,
-                        resize: 'vertical',
-                        border: `1px solid ${theme.palette.divider}`,
-                        borderRadius: 4,
-                        padding: 8,
-                      }}
-                    />
-                  </CardContent>
-                </Card>
-              </Box>
-            )}
+            {tabValue === 0 && <StaffDetailsTab address={staff?.address} />}
 
             {/* Tab 2 Attendance */}
-            {tabValue === 1 && <Box>Attendance will show here!</Box>}
+            {tabValue === 1 && <StaffAttendanceTab />}
 
             {/* Tab 3 Fees */}
-            {tabValue === 2 && (
-              <Box>Fees details will show here!</Box>
-            )}
+            {tabValue === 2 && <StaffSalaryTab />}
 
             {/* Tab 4 Fees */}
-            {tabValue === 3 && <Box>Academic details will show here!</Box>}
+            {tabValue === 3 && <StaffAcademicTab />}
           </Box>
         </Grid>
       </Grid>

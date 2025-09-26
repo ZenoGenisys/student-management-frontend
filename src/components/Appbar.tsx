@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,8 +16,6 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '../routes/path';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'isMobile',
@@ -67,7 +65,7 @@ export default function Appbar({
   };
 
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, email, role } = useAuth();
 
   const handleLogout = () => {
     logout();
@@ -101,10 +99,10 @@ export default function Appbar({
           />
           <Box>
             <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-              John Doe
+              {email}
             </Typography>
             <Typography variant="body2" color="primary">
-              Admin
+              {role}
             </Typography>
           </Box>
         </Box>
