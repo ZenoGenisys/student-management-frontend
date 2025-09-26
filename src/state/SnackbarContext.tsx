@@ -1,8 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { Snackbar, Alert, Slide, IconButton } from '@mui/material';
+import { Snackbar, Alert, Slide } from '@mui/material';
 import type { AlertColor } from '@mui/material';
 import { SnackbarContext, type SnackbarOptions } from './useSnackbar';
-import CloseIcon from '@mui/icons-material/Close';
 
 function SlideTransition(props: any) {
   return <Slide {...props} direction="down" />;
