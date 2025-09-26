@@ -9,3 +9,7 @@ export const getStaff = (params: GetStaffRequest): Promise<StaffResponse> => {
 export const getStaffById = (staffId: string): Promise<StaffResponse> => {
   return getHttpClient(`${API_PATH.STAFF}/${staffId}`, 'GET');
 };
+
+export const createStaff = (staffData: any): Promise<StaffResponse> => {
+  return getHttpClient(API_PATH.STAFF, 'POST', staffData);
+};

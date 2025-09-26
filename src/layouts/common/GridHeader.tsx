@@ -93,15 +93,17 @@ const GridHeader: React.FC<GridHeaderProps> = ({
             Export as Excel
           </MenuItem>
         </StyledMenu>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<AddIcon />}
-          onClick={onClickAdd}
-        >
-          Add {title}
-        </Button>
+        {onClickAdd && (
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            startIcon={<AddIcon />}
+            onClick={onClickAdd}
+          >
+            Add {title}
+          </Button>
+        )}
       </Box>
     </Box>
   );

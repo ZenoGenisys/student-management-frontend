@@ -5,6 +5,7 @@ import ListView from '../../components/ListView';
 import { useStaff } from '../../hooks';
 import { GridFilter, GridHeader } from '../../layouts';
 import { ActionCell, NameCell, StatusCell } from '../../components';
+import { useNavigate } from 'react-router-dom';
 
 const Column = [
   { id: 'staffId', label: 'Staff ID', sortable: true },
@@ -49,10 +50,15 @@ const Staff: React.FC = () => {
     handleRowPerPageChange,
     handleGridSort,
   } = useStaff();
+  const navigate = useNavigate();
+
+  const handleAddStaff = () => {
+    navigate('/AddStaff');
+  };
 
   return (
     <Box display="flex" flexDirection="column">
-      <GridHeader title="Staff" />
+      <GridHeader title="Staff" onClickAdd={handleAddStaff} />
       <GridFilter
         title="Staff"
         activeView={activeView}
