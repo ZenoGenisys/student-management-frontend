@@ -10,6 +10,9 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useCallback, useState } from 'react';
 import DeleteConfirmation from '../DeleteConfirmation';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
 type ActionCellProps = CellRender<StaffType> & {
   onClickView: (row: StaffType) => void;
@@ -98,9 +101,9 @@ const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCell
           },
         }}
       >
-        <MenuItem onClick={() => onClickView(row)}>View</MenuItem>
-        <MenuItem onClick={() => onClickEdit(row)}>Edit</MenuItem>
-        <MenuItem onClick={() => setOpenDeleteConfirm(true)}>Delete</MenuItem>
+        <MenuItem onClick={() => onClickView(row)}><VisibilityOutlinedIcon />View</MenuItem>
+        <MenuItem onClick={() => onClickEdit(row)}><EditOutlinedIcon />Edit</MenuItem>
+        <MenuItem onClick={() => setOpenDeleteConfirm(true)}><DeleteOutlinedIcon />Delete</MenuItem>
       </Menu>
       <DeleteConfirmation
         open={openDeleteConfirm}

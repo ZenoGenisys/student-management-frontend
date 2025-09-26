@@ -47,6 +47,8 @@ const AddStaff: React.FC = () => {
     center: '',
     level: '',
     status: '',
+    bloodGroup: '',
+    additionalDetails: '',
   });
 
   useEffect(() => {
@@ -107,7 +109,6 @@ const AddStaff: React.FC = () => {
       {/* Persional Information */}
       <Card>
         <CardHeader
-          sx={{ background: '#E9EDF4' }}
           title={
             <Typography variant="h4" display={'flex'} alignItems={'center'}>
               <InfoOutlinedIcon
@@ -222,14 +223,19 @@ const AddStaff: React.FC = () => {
               </FormControl>
             </Grid>
 
-            {/* <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+            <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
               <FormControl fullWidth>
                 <Typography mb={1} variant="h6">
                   Blood Group
                 </Typography>
-                <TextField id="name" size="small" />
+                <TextField
+                  id="bloodGroup"
+                  size="small"
+                  value={staffData.bloodGroup}
+                  onChange={(e) => setStaffData({ ...staffData, bloodGroup: e.target.value })}
+                />
               </FormControl>
-            </Grid> */}
+            </Grid>
 
             <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
               <FormControl fullWidth>
@@ -396,7 +402,7 @@ const AddStaff: React.FC = () => {
             </Grid>
           </Grid>
 
-          {/* <Grid container spacing={2} mt={2}>
+          <Grid container spacing={2} mt={2}>
             <Grid size={{ xs: 12, md: 12, lg: 6, xl: 6 }}>
               <FormControl fullWidth>
                 <Typography mb={1} variant="h6">
@@ -404,9 +410,10 @@ const AddStaff: React.FC = () => {
                 </Typography>
                 <TextareaAutosize
                   maxRows={4}
-                  aria-label="Text area"
+                  aria-label="Additional details Text area"
                   placeholder="Add additional notes here..."
-                  defaultValue=""
+                  value={staffData.additionalDetails}
+                  onChange={(e) => setStaffData({ ...staffData, additionalDetails: e.target.value })}
                   style={{
                     width: '100%',
                     minHeight: 100,
@@ -418,14 +425,13 @@ const AddStaff: React.FC = () => {
                 />
               </FormControl>
             </Grid>
-          </Grid> */}
+          </Grid>
         </CardContent>
       </Card>
 
       {/* Address */}
       <Card>
         <CardHeader
-          sx={{ background: '#E9EDF4' }}
           title={
             <Typography variant="h4" display={'flex'} alignItems={'center'}>
               <HomeOutlinedIcon
@@ -470,7 +476,6 @@ const AddStaff: React.FC = () => {
       {/* Upload Document */}
       {/* <Card>
         <CardHeader
-          sx={{ background: '#E9EDF4' }}
           title={
             <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
               <Typography variant="h4" display={'flex'} alignItems={'center'}>

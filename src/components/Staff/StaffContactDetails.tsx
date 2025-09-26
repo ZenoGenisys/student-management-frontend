@@ -17,7 +17,6 @@ const StaffContactDetails: React.FC<StaffContactDetailsProps> = ({ contactNumber
   return (
     <Card>
       <CardHeader
-        sx={{ background: '#E9EDF4' }}
         title={<Typography variant="h5">Primary Contact Details</Typography>}
       />
       <CardContent

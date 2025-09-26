@@ -247,7 +247,12 @@ const StaffDetails: React.FC = () => {
             </Tabs>
 
             {/* Tab 1 Details */}
-            {tabValue === 0 && <StaffDetailsTab address={staff?.address} />}
+            {tabValue === 0 && (
+              <StaffDetailsTab
+                address={staff?.address}
+                additionalDetails={staff?.additionalDetails}
+              />
+            )}
 
             {/* Tab 2 Attendance */}
             {tabValue === 1 && <StaffAttendanceTab />}
