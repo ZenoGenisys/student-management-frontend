@@ -18,10 +18,12 @@ const DeleteConfirmation = ({ open, onClose, onConfirm }: DeleteConfirmationProp
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">Are you sure you want to delete this record?</DialogTitle>
+      <DialogTitle id="alert-dialog-title">
+        Are you sure you want to delete this record?
+      </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-           This action cannot be undone.
+          This action cannot be undone.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
