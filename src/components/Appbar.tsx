@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '../routes/path';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import { getAvatarProps } from '../utils/avatar';
 
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'open' && prop !== 'isMobile',
@@ -165,7 +166,8 @@ export default function Appbar({
             <MenuItem onClick={handleProfileMenuOpen}>
               <Avatar
                 alt="profile"
-                src="/src/assets/images/profile-photo.jpg"
+                src=""
+                {...getAvatarProps(`${email}`)}
               />
             </MenuItem>
           </Box>

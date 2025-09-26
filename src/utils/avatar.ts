@@ -23,16 +23,20 @@ export function getAvatarProps(
   customStyles: object = {},
   variant: 'circular' | 'rounded' | 'square' = 'circular'
 ) {
-  const nameParts = name.split(' ');
+  const nameParts = name.split(' ').filter(Boolean);
+  let children = '';
+  if (nameParts.length > 1) {
+    children = `${nameParts[0][0]}${nameParts[1][0]}`.toUpperCase();
+  } else if (nameParts.length === 1) {
+    children = `${nameParts[0][0]}`.toUpperCase();
+  }
+
   return {
     sx: {
       bgcolor: stringToColor(name),
       ...customStyles,
     },
     variant,
-    children:
-      nameParts.length > 1
-        ? `${nameParts[0][0]}${nameParts[1][0]}`
-        : `${nameParts[0][0]}`,
+    children,
   };
 }
