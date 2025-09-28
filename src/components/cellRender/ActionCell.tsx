@@ -40,7 +40,7 @@ const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCell
   }, [onClickDelete, row, handleClose]);
 
   return (
-    <Box>
+    <Box display="flex" justifyContent="center" gap={1}>
       {/* Call button: uses tel: link */}
       <IconButton
         aria-label="Call"
