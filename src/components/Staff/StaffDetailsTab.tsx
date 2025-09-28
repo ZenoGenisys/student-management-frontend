@@ -27,9 +27,7 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address, additionalDetails 
         {/* Address */}
         <Grid size={12}>
           <Card>
-            <CardHeader
-              title={<Typography variant="h5">Address</Typography>}
-            />
+            <CardHeader title={<Typography variant="h5">Address</Typography>} />
             <CardContent
               sx={{
                 display: 'flex',
@@ -47,67 +45,66 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address, additionalDetails 
 
       {/* Documents */}
       <Card>
-        <CardHeader
-          title={<Typography variant="h5">Documents</Typography>}
-        />
+        <CardHeader title={<Typography variant="h5">Documents</Typography>} />
         <CardContent
           sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 2,
             borderTop: `1px solid ${theme.palette.divider}`,
           }}
         >
           <Grid
             container
+            spacing={2}
             flexDirection={'row'}
             alignItems="center"
-            justifyContent={'space-between'}
-            spacing={2}
-            p={1}
-            sx={{
-              border: `1px solid ${theme.palette.divider}`,
-              borderRadius: 1,
-            }}
-            size={6}
           >
-            <Box display="flex" alignItems={'center'} gap={1}>
-              <GrDocumentPdf />
-              <Typography variant="body1">Birth Certificate.pdf</Typography>
-            </Box>
-            <IconButton aria-label="download" size="medium">
-              <FaDownload />
-            </IconButton>
-          </Grid>
+            <Grid
+              p={1}
+              sx={{
+                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+              size={{ xs: 12, sm: 12, md: 6, lg: 6, xl: 4 }}
+            >
+              <Box display="flex" alignItems={'center'} gap={1}>
+                <GrDocumentPdf />
+                <Typography variant="body1">Birth Certificate.pdf</Typography>
+              </Box>
+              <IconButton aria-label="download" size="medium">
+                <FaDownload />
+              </IconButton>
+            </Grid>
 
-          <Grid
-            container
-            alignItems="center"
-            justifyContent={'space-between'}
-            spacing={2}
-            p={1}
-            sx={{
-              border: `1px solid ${theme.palette.divider}`,
-              borderRadius: 1,
-            }}
-            size={6}
-          >
-            <Box display="flex" alignItems={'center'} gap={1}>
-              <GrDocumentPdf />
-              <Typography variant="body1">Competition Certificate.pdf</Typography>
-            </Box>
-            <IconButton aria-label="download" size="medium">
-              <FaDownload />
-            </IconButton>
+            <Grid
+              p={1}
+              sx={{
+                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+              size={{ xs: 12, sm: 12, md: 6, lg: 6, xl: 4 }}
+            >
+              <Box display="flex" alignItems={'center'} gap={1}>
+                <GrDocumentPdf />
+                <Typography variant="body1">Competition Certificate.pdf</Typography>
+              </Box>
+              <IconButton aria-label="download" size="medium">
+                <FaDownload />
+              </IconButton>
+            </Grid>
           </Grid>
         </CardContent>
       </Card>
 
       {/* Notes */}
       <Card>
-        <CardHeader
-          title={<Typography variant="h5">Notes</Typography>}
-        />
+        <CardHeader title={<Typography variant="h5">Notes</Typography>} />
         <CardContent
           sx={{
             borderTop: `1px solid ${theme.palette.divider}`,
