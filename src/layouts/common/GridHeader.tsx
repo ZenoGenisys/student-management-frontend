@@ -47,13 +47,18 @@ const GridHeader: React.FC<GridHeaderProps> = ({
     <Box
       flexGrow={1}
       display={'flex'}
+      flexWrap={'wrap'}
       justifyContent="space-between"
       alignItems="center"
       padding={2}
       paddingLeft={0}
       paddingRight={0}
     >
-      <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold' }}>
+      <Typography
+        variant="h3"
+        component="h1"
+        sx={{ fontWeight: 'bold', pb: { xs: '10px', sm: '0px', md: '0px', lg: '0px', xl: '0px' } }}
+      >
         All {title}
       </Typography>
       <Box display={'flex'} gap={2}>

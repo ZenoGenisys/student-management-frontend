@@ -51,16 +51,23 @@ const GridFilter = ({
   return (
     <Box
       display={'flex'}
+      flexWrap={'wrap'}
       alignItems={'center'}
       justifyContent={'space-between'}
       flexGrow={1}
       p={2}
       sx={{ bgcolor: '#fff', border: '1px solid #E3E8EE' }}
     >
-      <Typography sx={{ fontWeight: 'bold', fontSize: 16 }}>
+      <Typography
+        sx={{
+          fontWeight: 'bold',
+          fontSize: 16,
+          pb: { xs: '10px', sm: '0px', md: '0px', lg: '0px', xl: '0px' },
+        }}
+      >
         {title} {activeView === 'grid' ? 'Grid' : 'List'}
       </Typography>
-      <Box display={'flex'} gap={2}>
+      <Box display={'flex'} flexWrap={'wrap'} gap={2}>
         <Search search={search} onChange={handleSearch} />
         {activeView === 'grid' && (
           <Button
