@@ -7,11 +7,11 @@ import StatusCell from './cellRender/StatusCell';
 import ActionCell from './cellRender/ActionCell';
 import NameCell from './cellRender/NameCell';
 
-import StaffAttendanceTab from './Staff/AttendanceTab';
-import StaffDetailsTab from './Staff/DetailsTab';
-import StaffSalaryTab from './Staff/SalaryTab';
-import StaffAcademicTab from './Staff/AcademicTab';
-import StaffContactDetails from './Staff/ContactDetails';
+import StaffAttendanceTab from './Staff/StaffAttendanceTab';
+import StaffDetailsTab from './Staff/StaffDetailsTab';
+import StaffSalaryTab from './Staff/StaffSalaryTab';
+import StaffAcademicTab from './Staff/StaffAcademicTab';
+import StaffContactDetails from './Staff/StaffContactDetails';
 
 export {
   Layout,

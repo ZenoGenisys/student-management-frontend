@@ -88,17 +88,14 @@ export default function Appbar({
             width: '100%',
           }}
         >
-          <Avatar alt="profile" src="/src/assets/images/profile-photo.jpg" sx={{ mr: 1 }} />
-          <Box>
-            <Avatar alt="profile" src="" {...getAvatarProps(`${name}`)} />
-            <Box ml={1}>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                {name}
-              </Typography>
-              <Typography variant="body2" color="primary">
-                {role}
-              </Typography>
-            </Box>
+          <Avatar alt="profile" src="" {...getAvatarProps(`${name}`)} />
+          <Box ml={1}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+              {name}
+            </Typography>
+            <Typography variant="body2" color="primary">
+              {role}
+            </Typography>
           </Box>
         </Box>
       </MenuItem>

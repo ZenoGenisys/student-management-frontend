@@ -72,7 +72,7 @@ const useStaff = () => {
   }, []);
 
   const handleAddStaff = useCallback(() => {
-    navigate('/AddStaff');
+    navigate('/add-staff');
   }, [navigate]);
 
   const handleView = useCallback(

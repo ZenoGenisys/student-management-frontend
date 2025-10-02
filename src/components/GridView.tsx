@@ -24,7 +24,7 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
     <Box marginTop={3}>
       <Grid container spacing={2}>
         {rows.map((row, index) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={`Grid${row?.staffId || index}`}>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4, xl: 3}} key={`Grid${row?.staffId || index}`}>
             <Card sx={{ border: `1px solid ${theme.palette.divider}` }}>
               <CardHeader
                 title={
