@@ -413,7 +413,9 @@ const AddStaff: React.FC = () => {
                   aria-label="Additional details Text area"
                   placeholder="Add additional notes here..."
                   value={staffData.additionalDetails}
-                  onChange={(e) => setStaffData({ ...staffData, additionalDetails: e.target.value })}
+                  onChange={(e) =>
+                    setStaffData({ ...staffData, additionalDetails: e.target.value })
+                  }
                   style={{
                     width: '100%',
                     minHeight: 100,

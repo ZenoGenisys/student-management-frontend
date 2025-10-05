@@ -3,15 +3,14 @@ import { deleteStaff, getStaff } from '../repositories';
 import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
-import type { StaffType } from '../types';
 import { useSnackbar } from '../state';
 
 const useStaff = () => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
-  const [search, setSearch] = useState<string | undefined>();
-  const [debouncedSearch, setDebouncedSearch] = useState<string | undefined>();
+  const [search, setSearch] = useState<string | null | undefined>(null);
+  const [debouncedSearch, setDebouncedSearch] = useState<string | null | undefined>(null);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [sort, setSort] = useState<{
@@ -36,7 +35,7 @@ const useStaff = () => {
       getStaff({
         page: page,
         size: rowsPerPage,
-        search: debouncedSearch,
+        search: debouncedSearch as string | undefined,
         ...(sort
           ? {
               sortBy: sort.orderBy,
@@ -76,23 +75,23 @@ const useStaff = () => {
   }, [navigate]);
 
   const handleView = useCallback(
-    (row: StaffType) => {
-      navigate(`/staff/${row.staffId}`);
+    (id: number) => {
+      navigate(`/staff/${id}`);
     },
     [navigate],
   );
 
   const handleEdit = useCallback(
-    (row: StaffType) => {
-      navigate(`/edit-staff/${row.staffId}`);
+    (id: number) => {
+      navigate(`/edit-staff/${id}`);
     },
     [navigate],
   );
 
   const handleDelete = useCallback(
-    async (row: StaffType) => {
+    async (id: number) => {
       try {
-        await deleteStaff(row.staffId);
+        await deleteStaff(id);
         refetch();
         showSnackbar({
           message: 'Staff deleted successfully!',

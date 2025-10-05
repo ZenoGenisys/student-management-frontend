@@ -51,12 +51,7 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address, additionalDetails 
             borderTop: `1px solid ${theme.palette.divider}`,
           }}
         >
-          <Grid
-            container
-            spacing={2}
-            flexDirection={'row'}
-            alignItems="center"
-          >
+          <Grid container spacing={2} flexDirection={'row'} alignItems="center">
             <Grid
               p={1}
               sx={{

@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
 import {
-  Box,
   Table,
   TableBody,
   TableCell,
@@ -8,49 +6,28 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Typography,
-  Button,
-  Select,
-  MenuItem,
   Checkbox,
   TableSortLabel,
 } from '@mui/material';
-import type { SelectChangeEvent } from '@mui/material/Select';
 import type { ListViewProps, Row } from '../types';
 import { useTheme } from '@mui/material/styles';
+import { useCallback, useEffect, useState } from 'react';
 
 const ListView = <T extends Row = Row>({
   columns,
   rows,
-  pagination = {
-    currentPage: 1,
-    totalPages: 1,
-    totalRows: rows.length,
-  },
   showCheckbox = true,
-  page = 1,
-  rowsPerPage = 50,
   sort = null,
-  handleRowPerPageChange,
   handleSort,
   onChangeSelectedRows,
-  handlePageChange,
-  getRowId = (row: T) => (row as any).id, // Default to `id` field
-}: ListViewProps<T> & { getRowId?: (row: T) => string }) => {
+  getRowId = (row: T) => (row as Row).id,
+}: ListViewProps<T>) => {
   const theme = useTheme();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
   useEffect(() => {
     onChangeSelectedRows?.(selectedRows);
   }, [selectedRows, onChangeSelectedRows]);
-
-  const handleChangeRowsPerPage = useCallback(
-    (event: SelectChangeEvent<number>) => {
-      const newRowsPerPage = Number(event.target.value);
-      handleRowPerPageChange?.(newRowsPerPage);
-    },
-    [handleRowPerPageChange],
-  );
 
   const handleSelectAllClick = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,20 +71,6 @@ const ListView = <T extends Row = Row>({
     [handleSort],
   );
 
-  const handlePrevPage = useCallback(() => {
-    if (page > 0) {
-      const newPage = Math.max(page - 1, 0);
-      handlePageChange?.(newPage);
-    }
-  }, [page, handlePageChange]);
-
-  const handleNextPage = useCallback(() => {
-    if (page < pagination?.totalPages) {
-      const newPage = Math.min(page + 1, pagination?.totalPages);
-      handlePageChange?.(newPage);
-    }
-  }, [page, pagination?.totalPages, handlePageChange]);
-
   return (
     <Paper
       sx={{
@@ -117,24 +80,6 @@ const ListView = <T extends Row = Row>({
         borderTop: 'none',
       }}
     >
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Box display="flex" alignItems="center" gap={1}>
-          <Typography variant="body1" color="textSecondary">
-            Row Per Page
-          </Typography>
-          <Select size="small" value={rowsPerPage} onChange={handleChangeRowsPerPage}>
-            {[25, 50, 75, 100].map((n) => (
-              <MenuItem key={n} value={n}>
-                {n}
-              </MenuItem>
-            ))}
-          </Select>
-          <Typography variant="body1" color="textSecondary">
-            Entries
-          </Typography>
-        </Box>
-      </Box>
-
       {/* Table */}
       <TableContainer>
         <Table
@@ -225,24 +170,6 @@ const ListView = <T extends Row = Row>({
           </TableBody>
         </Table>
       </TableContainer>
-
-      {/* Pagination */}
-      <Box display="flex" justifyContent="flex-end" alignItems="center" mt={2}>
-        <Button size="large" variant="text" onClick={handlePrevPage} disabled={page === 1}>
-          Prev
-        </Button>
-        <Typography mx={1}>
-          {page} / {pagination?.totalPages}
-        </Typography>
-        <Button
-          size="large"
-          variant="text"
-          onClick={handleNextPage}
-          disabled={page >= pagination?.totalPages}
-        >
-          Next
-        </Button>
-      </Box>
     </Paper>
   );
 };

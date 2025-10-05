@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { useTheme } from '@mui/material/styles';
 import { Box, Paper, Typography } from '@mui/material';
 import type { ColumnDefsProps } from '../../types';
 import ListView from '../ListView';
@@ -21,7 +20,6 @@ const mockSalaryData = [
 ];
 
 const StaffAcademicTab: React.FC = () => {
-  const theme = useTheme();
   const Column = useMemo<ColumnDefsProps[]>(
     () => [
       { id: 'sno', label: 'SNO', sortable: true },
@@ -44,7 +42,7 @@ const StaffAcademicTab: React.FC = () => {
         justifyContent="space-between"
         alignItems="center"
         padding={2}
-        sx={{ border: '1px solid #E3E8EE', backgroundColor: '#E9EDF4', }}
+        sx={{ border: '1px solid #E3E8EE', backgroundColor: '#E9EDF4' }}
       >
         <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold' }}>
           Academic Details

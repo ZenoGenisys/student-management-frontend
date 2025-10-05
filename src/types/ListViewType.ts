@@ -1,4 +1,4 @@
-export type PaginationProps = {
+export type PaginationType = {
   currentPage: number;
   totalPages: number;
   totalRows: number;
@@ -29,17 +29,16 @@ export type ListViewProps<T extends Row = Row> = {
   columns: ColumnDefsProps[];
   rows: T[];
   showCheckbox?: boolean;
-  pagination?: PaginationProps;
-  page?: number;
-  rowsPerPage?: number;
   sort?: { orderBy: string; order?: 'asc' | 'desc' } | null;
-  handleRowPerPageChange?: (rowsPerPage: number) => void;
   handleSort?: (orderBy: string, order?: 'asc' | 'desc') => void;
   onChangeSelectedRows?: (selectedRows: string[]) => void;
-  handlePageChange?: (page: number) => void;
+  getRowId?: (row: T) => string;
 };
 
 export type GridViewProps<T extends Row = Row> = {
   type: 'STAFF' | 'STUDENT';
   rows: T[];
+  onClickEdit?: (id: number) => void;
+  onClickDelete?: (id: number) => void;
+  onClickView?: (id: number) => void;
 };

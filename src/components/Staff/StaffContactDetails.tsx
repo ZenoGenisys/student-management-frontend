@@ -16,9 +16,7 @@ const StaffContactDetails: React.FC<StaffContactDetailsProps> = ({ contactNumber
   const theme = useTheme();
   return (
     <Card>
-      <CardHeader
-        title={<Typography variant="h5">Primary Contact Details</Typography>}
-      />
+      <CardHeader title={<Typography variant="h5">Primary Contact Details</Typography>} />
       <CardContent
         sx={{
           borderTop: `1px solid ${theme.palette.divider}`,

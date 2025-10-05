@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import type { ColumnDefsProps } from '../../types';
-import Search from '../Search';
 import ListView from '../ListView';
+import Search from '../Search';
 
 const mockSalaryData = [
   {
