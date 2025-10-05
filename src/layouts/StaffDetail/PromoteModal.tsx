@@ -20,9 +20,9 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  borderRadius: 2,
 };
 
 type PromoteModalProps = {
@@ -115,7 +115,7 @@ const PromoteModal = ({ open, onClose, role, staffId, onPromoteSuccess }: Promot
                   fullWidth
                 />
               </FormControl>
-              <Box mt={2} display="flex" justifyContent="flex-end">
+              <Box mt={2} display="flex" justifyContent="flex-end" gap={2}>
                 <Button variant="outlined" color="primary" onClick={onClose}>
                   Cancel
                 </Button>
