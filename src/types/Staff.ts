@@ -26,11 +26,8 @@ export type StaffType = {
   level: number;
   bloodGroup: string;
   additionalDetails: string;
-  createdAt: string;
-  createdBy: string;
-  updatedAt: string;
-  updatedBy: string | null;
   status: 'Active' | 'Inactive';
+  role: 'ADMIN' | 'STAFF' | null;
 };
 
 export type CreateStaff = {

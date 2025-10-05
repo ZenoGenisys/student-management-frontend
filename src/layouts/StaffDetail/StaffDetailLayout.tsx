@@ -39,6 +39,7 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
             'Learning Level': data?.level,
             Experience: `${data?.experience} years`,
             Center: data?.center,
+            Role: data?.role ?? '-',
           }}
         />
       </Grid>

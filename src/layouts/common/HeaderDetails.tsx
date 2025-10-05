@@ -6,11 +6,20 @@ import SensorOccupiedOutlinedIcon from '@mui/icons-material/SensorOccupiedOutlin
 
 type HeaderProps = {
   title: string;
+  showRevoke?: boolean;
   editLabel?: string;
   onClickEdit: () => void;
   onClickPromote?: () => void;
+  onClickRevoke?: () => void;
 };
-const HeaderDetails = ({ title, editLabel = 'Edit', onClickEdit, onClickPromote }: HeaderProps) => {
+const HeaderDetails = ({
+  title,
+  showRevoke,
+  editLabel = 'Edit',
+  onClickEdit,
+  onClickPromote,
+  onClickRevoke,
+}: HeaderProps) => {
   return (
     <Box
       flexGrow={1}
@@ -43,6 +52,17 @@ const HeaderDetails = ({ title, editLabel = 'Edit', onClickEdit, onClickPromote 
         >
           Promote
         </Button>
+        {showRevoke && (
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            startIcon={<SensorOccupiedOutlinedIcon />}
+            onClick={onClickRevoke}
+          >
+            Revoke Promotion
+          </Button>
+        )}
       </Box>
     </Box>
   );

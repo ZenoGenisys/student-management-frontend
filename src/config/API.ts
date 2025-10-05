@@ -3,4 +3,6 @@ export const API_PATH = {
   STUDENT: '/student/getAllStudents',
   STAFF: '/staff',
   STAFF_SALARY: '/salary',
+  PROMOTE_STAFF: '/promote-user',
+  REVOKE_STAFF_PROMOTION: '/delete-user',
 };

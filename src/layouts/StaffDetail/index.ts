@@ -1,3 +1,4 @@
 import StaffDetailLayout from './StaffDetailLayout';
+import PromoteModal from './PromoteModal';
 
-export default StaffDetailLayout;
+export { StaffDetailLayout, PromoteModal };
