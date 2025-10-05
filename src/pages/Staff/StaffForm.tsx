@@ -193,7 +193,7 @@ const StaffForm: React.FC = () => {
                 </Box>
 
                 <Grid container spacing={2}>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Name
@@ -209,7 +209,7 @@ const StaffForm: React.FC = () => {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Gender
@@ -237,7 +237,7 @@ const StaffForm: React.FC = () => {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography variant="h6">Date of Birth</Typography>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -257,7 +257,7 @@ const StaffForm: React.FC = () => {
                       </LocalizationProvider>
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Blood Group
@@ -273,7 +273,7 @@ const StaffForm: React.FC = () => {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography variant="h6">Joining Date</Typography>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -293,7 +293,7 @@ const StaffForm: React.FC = () => {
                       </LocalizationProvider>
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Contact Number
@@ -309,7 +309,7 @@ const StaffForm: React.FC = () => {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Email
@@ -325,7 +325,7 @@ const StaffForm: React.FC = () => {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Marital Status
@@ -352,7 +352,7 @@ const StaffForm: React.FC = () => {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Qualification
@@ -368,7 +368,7 @@ const StaffForm: React.FC = () => {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Experience
@@ -384,7 +384,7 @@ const StaffForm: React.FC = () => {
                       />
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Level
@@ -414,7 +414,7 @@ const StaffForm: React.FC = () => {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Center
@@ -441,7 +441,7 @@ const StaffForm: React.FC = () => {
                       )}
                     </FormControl>
                   </Grid>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Status
@@ -471,7 +471,7 @@ const StaffForm: React.FC = () => {
                 </Grid>
 
                 <Grid container spacing={2} mt={2}>
-                  <Grid size={12}>
+                  <Grid size={{ xs: 12, md: 12, lg: 6, xl: 6 }}>
                     <FormControl fullWidth>
                       <Typography mb={1} variant="h6">
                         Additional Details
@@ -516,7 +516,7 @@ const StaffForm: React.FC = () => {
               <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
                 <Box>
                   <Grid container spacing={2} mt={2}>
-                    <Grid size={12}>
+                    <Grid size={{ xs: 12, md: 12, lg: 6, xl: 6 }}>
                       <FormControl fullWidth>
                         <textarea
                           name="address"

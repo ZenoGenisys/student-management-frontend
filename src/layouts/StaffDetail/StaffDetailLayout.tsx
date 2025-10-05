@@ -29,6 +29,7 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
           email={data?.email}
           data={{
             'Staff Id': data?.staffId,
+            'Email Id': data?.email,
             Gender: data?.gender,
             'Date of Birth': data?.dateOfBirth?.split('-').reverse().join('-'),
             Age: data?.age,
