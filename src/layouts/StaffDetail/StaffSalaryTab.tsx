@@ -21,9 +21,6 @@ const StaffSalaryTab = () => {
     handleSort,
     handleRowPerPageChange,
     handleGridSort,
-    handleEdit,
-    handleDelete,
-    handleView,
   } = useStaffSalary();
 
   const Column = useMemo<ColumnDefsProps[]>(
@@ -80,13 +77,7 @@ const StaffSalaryTab = () => {
       >
         <Box flexGrow={1}>
           {activeView === 'grid' ? (
-            <GridView
-              type="STAFF"
-              rows={data?.data ?? []}
-              onClickEdit={handleEdit}
-              onClickDelete={handleDelete}
-              onClickView={handleView}
-            />
+            <GridView type="STAFF" rows={data?.data ?? []} />
           ) : (
             <ListView
               columns={Column}

@@ -1,13 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import { deleteStaff, getStaffSalary } from '../repositories';
+import { getStaffSalary } from '../repositories';
 import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSnackbar } from '../state';
-import { PATH } from '../routes';
+import { useParams } from 'react-router-dom';
 
 const useStaffSalary = () => {
-  const navigate = useNavigate();
   const { staffId } = useParams<{ staffId: string }>();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
@@ -19,7 +16,6 @@ const useStaffSalary = () => {
     orderBy: string;
     order: 'asc' | 'desc';
   } | null>(null);
-  const { showSnackbar } = useSnackbar();
 
   // Debounce search input
   useEffect(() => {
@@ -31,7 +27,7 @@ const useStaffSalary = () => {
     };
   }, [search]);
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['staffSalary', staffId, debouncedSearch, page, rowsPerPage, sort],
     queryFn: () =>
       getStaffSalary({
@@ -73,36 +69,6 @@ const useStaffSalary = () => {
     setSort({ orderBy: 'name', order });
   }, []);
 
-  const handleView = useCallback(
-    (id: number) => {
-      navigate(PATH.STAFF_DETAILS.replace(':staffId', id.toString()));
-    },
-    [navigate],
-  );
-
-  const handleEdit = useCallback(() => {
-    // navigate(PATH.EDIT_STAFF.replace(':staffId', id.toString()));
-  }, []);
-
-  const handleDelete = useCallback(
-    async (id: number) => {
-      try {
-        await deleteStaff(id);
-        refetch();
-        showSnackbar({
-          message: 'Staff salary deleted successfully!',
-          severity: 'success',
-        });
-      } catch (error) {
-        showSnackbar({
-          message: (error as Error).message || 'Failed to delete staff salary.',
-          severity: 'error',
-        });
-      }
-    },
-    [showSnackbar, refetch],
-  );
-
   return {
     data,
     isLoading,
@@ -118,9 +84,6 @@ const useStaffSalary = () => {
     handleSort,
     handleSearch,
     handleGridSort,
-    handleView,
-    handleEdit,
-    handleDelete,
   };
 };
 export default useStaffSalary;
