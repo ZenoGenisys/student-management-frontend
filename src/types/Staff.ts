@@ -1,3 +1,5 @@
+import type { Dayjs } from 'dayjs';
+
 export type GetStaffRequest = {
   page: number;
   size: number;
@@ -34,8 +36,8 @@ export type CreateStaff = {
   staffId?: number;
   name: string;
   gender: string;
-  joiningDate: string;
-  dateOfBirth: string;
+  joiningDate: Dayjs | null;
+  dateOfBirth: Dayjs | null;
   maritalStatus: string;
   contactNumber: string;
   email: string;

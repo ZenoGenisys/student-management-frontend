@@ -10,11 +10,11 @@ export const getStaffById = (staffId: string): Promise<StaffType> => {
   return getHttpClient(`${API_PATH.STAFF}/${staffId}`, 'GET');
 };
 
-export const createStaff = (staffData: CreateStaff): Promise<StaffResponse> => {
+export const createStaff = (staffData: CreateStaff): Promise<StaffType> => {
   return getHttpClient(API_PATH.STAFF, 'POST', staffData);
 };
 
-export const updateStaff = (staffData: CreateStaff): Promise<StaffResponse> => {
+export const updateStaff = (staffData: CreateStaff): Promise<StaffType> => {
   return getHttpClient(API_PATH.STAFF, 'PUT', staffData);
 };
 
