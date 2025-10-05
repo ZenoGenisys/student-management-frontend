@@ -1,4 +1,5 @@
 import type { Dayjs } from 'dayjs';
+import type { PaginationType } from './ListViewType';
 
 export type GetStaffRequest = {
   page: number;
@@ -53,9 +54,32 @@ export type CreateStaff = {
 
 export type StaffResponse = {
   data: StaffType[];
-  pagination: {
-    totalRows: number;
-    totalPages: number;
-    currentPage: number;
-  };
+  pagination: PaginationType;
+};
+
+export type getStaffSalaryRequest = {
+  page: number;
+  size: number;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  staffId?: number;
+  dateFrom?: string;
+  dateTo?: string;
+};
+
+export type StaffSalaryType = {
+  feesId: number;
+  staffId: number;
+  name: string;
+  email: string;
+  mode: string;
+  amount: number;
+  date: string;
+  updatedBy: string | null;
+};
+
+export type StaffSalaryResponse = {
+  data: StaffSalaryType[];
+  pagination: PaginationType;
 };

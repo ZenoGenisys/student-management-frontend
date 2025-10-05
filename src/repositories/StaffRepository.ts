@@ -1,7 +1,15 @@
 import { API_PATH } from '../config';
-import type { CreateStaff, GetStaffRequest, StaffResponse, StaffType } from '../types';
+import type {
+  CreateStaff,
+  GetStaffRequest,
+  getStaffSalaryRequest,
+  StaffResponse,
+  StaffSalaryResponse,
+  StaffType,
+} from '../types';
 import { getHttpClient } from './AxiosClient';
 
+// Staff APIs
 export const getStaff = (params: GetStaffRequest): Promise<StaffResponse> => {
   return getHttpClient(API_PATH.STAFF, 'GET', null, params);
 };
@@ -20,4 +28,9 @@ export const updateStaff = (staffData: CreateStaff): Promise<StaffType> => {
 
 export const deleteStaff = (staffId: number): Promise<string> => {
   return getHttpClient(`${API_PATH.STAFF}/${staffId}`, 'DELETE');
+};
+
+// Staff Salary APIs
+export const getStaffSalary = (params: getStaffSalaryRequest): Promise<StaffSalaryResponse> => {
+  return getHttpClient(`${API_PATH.STAFF_SALARY}`, 'GET', null, params);
 };

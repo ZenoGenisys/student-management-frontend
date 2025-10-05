@@ -1,45 +1,57 @@
-import React, { useMemo } from 'react';
-import { Box, Paper, Typography } from '@mui/material';
-import type { ColumnDefsProps } from '../../types';
+import { Box, Paper } from '@mui/material';
 import ListView from '../../components/ListView';
-import Search from '../../components/Search';
+import { useStaffSalary } from '../../hooks';
+import { MenuCell, NameCell, Pagination } from '../../components';
+import type { CellRender, ColumnDefsProps, StaffSalaryType } from '../../types';
+import { useMemo } from 'react';
+import GridView from '../../components/GridView';
+import { GridFilter } from '../common';
 
-const mockSalaryData = [
-  {
-    paymentId: 'PAY-001',
-    salaryFor: 'January 2024',
-    date: '2024-02-01',
-    status: 'Paid',
-    paymentMethod: 'Bank Transfer',
-    netSalary: 5000,
-  },
-  {
-    paymentId: 'PAY-002',
-    salaryFor: 'January 2025',
-    date: '2024-02-01',
-    status: 'Pending',
-    paymentMethod: '-',
-    netSalary: 5000,
-  },
-];
+const StaffSalaryTab = () => {
+  const {
+    data,
+    activeView,
+    search,
+    sort,
+    page,
+    rowsPerPage,
+    handleSearch,
+    handleViewToggle,
+    handlePageChange,
+    handleSort,
+    handleRowPerPageChange,
+    handleGridSort,
+    handleEdit,
+    handleDelete,
+    handleView,
+  } = useStaffSalary();
 
-const StaffSalaryTab: React.FC = () => {
   const Column = useMemo<ColumnDefsProps[]>(
     () => [
-      { id: 'paymentId', label: 'Payment ID', sortable: true },
-      { id: 'salaryFor', label: 'Salary For', sortable: true },
+      { id: 'feesId', label: 'Fees ID', sortable: true },
+      {
+        id: 'name',
+        label: 'Name',
+        sortable: true,
+        cellRenderer: NameCell,
+        align: 'left' as const,
+      },
+      { id: 'email', label: 'Email', sortable: true },
+      { id: 'mode', label: 'Mode', sortable: true },
       { id: 'date', label: 'Date', sortable: true },
-      { id: 'status', label: 'Status', sortable: true },
-      { id: 'paymentMethod', label: 'Payment Method', sortable: true },
-      { id: 'netSalary', label: 'Net Salary', sortable: true },
+      { id: 'amount', label: 'Amount', sortable: true },
       {
         id: 'actions',
         label: 'Action',
         sortable: false,
+        cellRenderer: (cellProps: CellRender<StaffSalaryType>) => (
+          <MenuCell id={cellProps.row?.staffId} />
+        ),
       },
     ],
     [],
   );
+
   return (
     <Paper>
       <Box
@@ -50,12 +62,43 @@ const StaffSalaryTab: React.FC = () => {
         padding={2}
         sx={{ border: '1px solid #E3E8EE', backgroundColor: '#E9EDF4' }}
       >
-        <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold' }}>
-          Salary
-        </Typography>
-        <Search search={''} />
+        <GridFilter
+          title="Staff Salary"
+          activeView={activeView}
+          search={search as string | undefined}
+          handleViewToggle={handleViewToggle}
+          handleSearch={handleSearch}
+          handleSortChange={handleGridSort}
+        />
       </Box>
-      <ListView columns={Column} rows={mockSalaryData} getRowId={(row) => row.paymentId} />
+      <Pagination
+        page={page}
+        pagination={data?.pagination}
+        rowsPerPage={rowsPerPage}
+        handlePageChange={handlePageChange}
+        handleRowPerPageChange={handleRowPerPageChange}
+      >
+        <Box flexGrow={1}>
+          {activeView === 'grid' ? (
+            <GridView
+              type="STAFF"
+              rows={data?.data ?? []}
+              onClickEdit={handleEdit}
+              onClickDelete={handleDelete}
+              onClickView={handleView}
+            />
+          ) : (
+            <ListView
+              columns={Column}
+              rows={data?.data ?? []}
+              sort={sort}
+              showCheckbox={false}
+              handleSort={handleSort}
+              getRowId={(row) => row.staffId.toString()}
+            />
+          )}
+        </Box>
+      </Pagination>
     </Paper>
   );
 };
