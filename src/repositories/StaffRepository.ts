@@ -1,12 +1,12 @@
 import { API_PATH } from '../config';
-import type { CreateStaff, GetStaffRequest, StaffResponse } from '../types';
+import type { CreateStaff, GetStaffRequest, StaffResponse, StaffType } from '../types';
 import { getHttpClient } from './AxiosClient';
 
 export const getStaff = (params: GetStaffRequest): Promise<StaffResponse> => {
   return getHttpClient(API_PATH.STAFF, 'GET', null, params);
 };
 
-export const getStaffById = (staffId: string): Promise<StaffResponse> => {
+export const getStaffById = (staffId: string): Promise<StaffType> => {
   return getHttpClient(`${API_PATH.STAFF}/${staffId}`, 'GET');
 };
 

@@ -1,4 +1,5 @@
 import useStaff from './useStaff';
 import useStudent from './useStudent';
+import useStaffDetails from './useStaffDetails';
 
-export { useStaff, useStudent };
+export { useStaff, useStudent, useStaffDetails };

@@ -4,6 +4,7 @@ import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from '../state';
+import { PATH } from '../routes';
 
 const useStaff = () => {
   const navigate = useNavigate();
@@ -71,19 +72,19 @@ const useStaff = () => {
   }, []);
 
   const handleAddStaff = useCallback(() => {
-    navigate('/add-staff');
+    navigate(PATH.ADD_STAFF);
   }, [navigate]);
 
   const handleView = useCallback(
     (id: number) => {
-      navigate(`/staff/${id}`);
+      navigate(PATH.STAFF_DETAILS.replace(':staffId', id.toString()));
     },
     [navigate],
   );
 
   const handleEdit = useCallback(
     (id: number) => {
-      navigate(`/edit-staff/${id}`);
+      navigate(PATH.EDIT_STAFF.replace(':staffId', id.toString()));
     },
     [navigate],
   );

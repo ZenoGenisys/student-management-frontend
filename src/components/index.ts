@@ -9,12 +9,6 @@ import NameCell from './cellRender/NameCell';
 import MenuCell from './cellRender/MenuCell';
 import Pagination from './Pagination';
 
-import StaffAttendanceTab from './Staff/StaffAttendanceTab';
-import StaffDetailsTab from './Staff/StaffDetailsTab';
-import StaffSalaryTab from './Staff/StaffSalaryTab';
-import StaffAcademicTab from './Staff/StaffAcademicTab';
-import StaffContactDetails from './Staff/StaffContactDetails';
-
 export {
   Layout,
   Sidebar,
@@ -24,11 +18,6 @@ export {
   StatusCell,
   ActionCell,
   NameCell,
-  StaffAcademicTab,
-  StaffAttendanceTab,
-  StaffDetailsTab,
-  StaffSalaryTab,
-  StaffContactDetails,
   MenuCell,
   Pagination,
 };

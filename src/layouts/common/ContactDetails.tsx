@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Card, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 import { FaWhatsapp } from 'react-icons/fa6';
 import { useTheme } from '@mui/material/styles';
@@ -7,12 +6,12 @@ import PhoneAndroidOutlinedIcon from '@mui/icons-material/PhoneAndroidOutlined';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import ForwardToInboxOutlinedIcon from '@mui/icons-material/ForwardToInboxOutlined';
 
-interface StaffContactDetailsProps {
-  contactNumber: string | undefined;
-  email: string | undefined;
-}
+type ContactDetailsProps = {
+  contactNumber?: string;
+  email?: string;
+};
 
-const StaffContactDetails: React.FC<StaffContactDetailsProps> = ({ contactNumber, email }) => {
+const ContactDetails = ({ contactNumber, email }: ContactDetailsProps) => {
   const theme = useTheme();
   return (
     <Card>
@@ -116,4 +115,4 @@ const StaffContactDetails: React.FC<StaffContactDetailsProps> = ({ contactNumber
   );
 };
 
-export default StaffContactDetails;
+export default ContactDetails;

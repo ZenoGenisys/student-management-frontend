@@ -19,12 +19,15 @@ export type StaffType = {
   address: string;
   qualification: string;
   experience: number;
-  status: string;
-  role: string;
   center: string;
   level: number;
   bloodGroup: string;
   additionalDetails: string;
+  createdAt: string;
+  createdBy: string;
+  updatedAt: string;
+  updatedBy: string | null;
+  status: 'Active' | 'Inactive';
 };
 
 export type CreateStaff = {
