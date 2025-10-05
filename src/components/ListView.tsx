@@ -74,7 +74,6 @@ const ListView = <T extends Row = Row>({
   return (
     <Paper
       sx={{
-        p: 2,
         borderRadius: 0,
         border: `1px solid ${theme.palette.divider}`,
         borderTop: 'none',

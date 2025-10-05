@@ -71,15 +71,15 @@ const Staff: React.FC = () => {
       <GridFilter
         title="Staff"
         activeView={activeView}
-        search={search as string | undefined}
         handleViewToggle={handleViewToggle}
-        handleSearch={handleSearch}
         handleSortChange={handleGridSort}
       />
       <Pagination
         page={page}
         pagination={data?.pagination}
         rowsPerPage={rowsPerPage}
+        search={search as string | undefined}
+        handleSearch={handleSearch}
         handlePageChange={handlePageChange}
         handleRowPerPageChange={handleRowPerPageChange}
       >

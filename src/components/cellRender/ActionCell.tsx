@@ -24,7 +24,7 @@ const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCell
         sx={{
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: 5,
-          mr: 1,
+          p: '8px',
         }}
         component="a"
         href={row.contactNumber ? `tel:${row.contactNumber}` : undefined}
@@ -39,7 +39,7 @@ const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCell
         sx={{
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: 5,
-          mr: 1,
+          p: '8px',
         }}
         component="a"
         href={row.contactNumber ? `https://wa.me/${row.contactNumber}` : undefined}
@@ -56,6 +56,7 @@ const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCell
         sx={{
           border: `1px solid ${theme.palette.divider}`,
           borderRadius: 5,
+          p: '8px',
         }}
         component="a"
         href={row.email ? `mailto:${row.email}` : undefined}

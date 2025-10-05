@@ -27,7 +27,7 @@ const GridView: React.FC<GridViewProps> = ({
   const navigate = useNavigate();
 
   return (
-    <Box marginTop={3}>
+    <Box>
       <Grid container spacing={2}>
         {rows.map((row, index) => (
           <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4, xl: 3 }} key={`Grid${row?.staffId || index}`}>

@@ -50,21 +50,17 @@ const StaffSalaryTab = () => {
   );
 
   return (
-    <Paper>
+    <Box>
       <Box
         flexGrow={1}
         display={'flex'}
         justifyContent="space-between"
         alignItems="center"
-        padding={2}
-        sx={{ border: '1px solid #E3E8EE', backgroundColor: '#E9EDF4' }}
       >
         <GridFilter
           title="Staff Salary"
           activeView={activeView}
-          search={search as string | undefined}
           handleViewToggle={handleViewToggle}
-          handleSearch={handleSearch}
           handleSortChange={handleGridSort}
         />
       </Box>
@@ -72,6 +68,8 @@ const StaffSalaryTab = () => {
         page={page}
         pagination={data?.pagination}
         rowsPerPage={rowsPerPage}
+        search={search as string | undefined}
+        handleSearch={handleSearch}
         handlePageChange={handlePageChange}
         handleRowPerPageChange={handleRowPerPageChange}
       >
@@ -90,7 +88,7 @@ const StaffSalaryTab = () => {
           )}
         </Box>
       </Pagination>
-    </Paper>
+    </Box>
   );
 };
 

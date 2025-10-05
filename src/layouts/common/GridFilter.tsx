@@ -6,7 +6,6 @@ import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
 import ListAltOutlinedIcon from '@mui/icons-material/ListAltOutlined';
 import IconButton from '@mui/material/IconButton';
-import { Search } from '../../components';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
@@ -18,19 +17,15 @@ const StyledMenu = styled(Menu)``;
 type GridFilterProps = {
   title: string;
   activeView: 'grid' | 'list';
-  search?: string;
   enableFilter?: boolean;
   handleViewToggle: (view: 'grid' | 'list') => void;
-  handleSearch?: (value: string) => void;
   handleSortChange: (order: 'asc' | 'desc') => void;
 };
 const GridFilter = ({
   title,
   activeView,
-  search,
   enableFilter = false,
   handleViewToggle,
-  handleSearch,
   handleSortChange,
 }: GridFilterProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -68,7 +63,6 @@ const GridFilter = ({
         {title} {activeView === 'grid' ? 'Grid' : 'List'}
       </Typography>
       <Box display={'flex'} flexWrap={'wrap'} gap={2}>
-        <Search search={search} onChange={handleSearch} />
         {activeView === 'grid' && (
           <Button
             variant="outlined"

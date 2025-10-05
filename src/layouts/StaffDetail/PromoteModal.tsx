@@ -1,6 +1,8 @@
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
@@ -9,21 +11,20 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { useCallback } from 'react';
 import { useSnackbar } from '../../state';
 import { promoteStaff } from '../../repositories';
+import React, { useCallback } from 'react';
+import { type TransitionProps } from '@mui/material/transitions';
+import { Slide } from '@mui/material';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 400,
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 2,
-};
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement;
+  },
+  ref: React.Ref<unknown>,
+) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
 
 type PromoteModalProps = {
   staffId: number;
@@ -60,26 +61,28 @@ const PromoteModal = ({ open, onClose, role, staffId, onPromoteSuccess }: Promot
   );
 
   return (
-    <Modal
+    <Dialog
       open={open}
       onClose={onClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
+      TransitionComponent={Transition}
+      aria-labelledby="promote-dialog-title"
+      aria-describedby="promote-dialog-description"
     >
-      <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2" mb={2}>
-          Promote Staff
-        </Typography>
-        <Formik
-          initialValues={{
-            role: role ?? 'STAFF',
-            password: '',
-          }}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
-            <Form>
+      <DialogTitle id="promote-dialog-title" variant="h5">
+        Promote Staff
+      </DialogTitle>
+
+      <Formik
+        initialValues={{
+          role: role ?? 'STAFF',
+          password: '',
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
+          <Form>
+            <DialogContent>
               <FormControl fullWidth margin="normal">
                 <InputLabel id="role-select-label">Role</InputLabel>
                 <Select
@@ -115,19 +118,19 @@ const PromoteModal = ({ open, onClose, role, staffId, onPromoteSuccess }: Promot
                   fullWidth
                 />
               </FormControl>
-              <Box mt={2} display="flex" justifyContent="flex-end" gap={2}>
-                <Button variant="outlined" color="primary" onClick={onClose}>
+              <DialogActions>
+                <Button variant="outlined" onClick={onClose}>
                   Cancel
                 </Button>
-                <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
+                <Button variant="contained" type="submit" disabled={isSubmitting}>
                   Save
                 </Button>
-              </Box>
-            </Form>
-          )}
-        </Formik>
-      </Box>
-    </Modal>
+              </DialogActions>
+            </DialogContent>
+          </Form>
+        )}
+      </Formik>
+    </Dialog>
   );
 };
 

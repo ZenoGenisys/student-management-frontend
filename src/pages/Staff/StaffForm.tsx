@@ -80,6 +80,7 @@ const StaffForm: React.FC = () => {
       try {
         if (data) {
           await updateStaff({ ...values, staffId: data.staffId });
+          navigate(`/staff/${data.staffId}`);
         } else {
           await createStaff(values);
           navigate(PATH.STAFF);
@@ -239,7 +240,7 @@ const StaffForm: React.FC = () => {
                   </Grid>
                   <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
-                      <Typography variant="h6">Date of Birth</Typography>
+                      <Typography mb={1} variant="h6">Date of Birth</Typography>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           value={values.dateOfBirth}
@@ -275,7 +276,7 @@ const StaffForm: React.FC = () => {
                   </Grid>
                   <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
                     <FormControl fullWidth>
-                      <Typography variant="h6">Joining Date</Typography>
+                      <Typography mb={1} variant="h6">Joining Date</Typography>
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                           value={values.joiningDate}
@@ -516,7 +517,7 @@ const StaffForm: React.FC = () => {
               <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
                 <Box>
                   <Grid container spacing={2} mt={2}>
-                    <Grid size={{ xs: 12, md: 12, lg: 6, xl: 6 }}>
+                    <Grid size={{ xs: 12, md: 12, lg: 12, xl: 12 }}>
                       <FormControl fullWidth>
                         <textarea
                           name="address"

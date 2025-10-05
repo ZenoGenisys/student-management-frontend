@@ -36,15 +36,18 @@ const MenuCell = ({ id, onClickView, onClickEdit, onClickDelete }: MenuCellProps
 
   const handleView = useCallback(() => {
     onClickView?.(id);
-  }, [id, onClickView]);
+    handleClose();
+  }, [id, onClickView, handleClose]);
 
   const handleEdit = useCallback(() => {
     onClickEdit?.(id);
-  }, [id, onClickEdit]);
+    handleClose();
+  }, [id, onClickEdit, handleClose]);
 
   const handleDeleteModal = useCallback(() => {
     setOpenDeleteConfirm((prev) => !prev);
-  }, []);
+    handleClose();
+  }, [handleClose]);
 
   return (
     <>

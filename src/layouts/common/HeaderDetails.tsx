@@ -6,6 +6,7 @@ import SensorOccupiedOutlinedIcon from '@mui/icons-material/SensorOccupiedOutlin
 
 type HeaderProps = {
   title: string;
+  showPromote?: boolean;
   showRevoke?: boolean;
   editLabel?: string;
   onClickEdit: () => void;
@@ -14,6 +15,7 @@ type HeaderProps = {
 };
 const HeaderDetails = ({
   title,
+  showPromote,
   showRevoke,
   editLabel = 'Edit',
   onClickEdit,
@@ -54,7 +56,7 @@ const HeaderDetails = ({
         </Button>
         {showRevoke && (
           <Button
-            variant="outlined"
+            variant="contained"
             color="primary"
             size="large"
             startIcon={<SensorOccupiedOutlinedIcon />}

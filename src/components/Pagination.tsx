@@ -5,16 +5,20 @@ import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useCallback } from 'react';
 import type { PaginationType } from '../types';
+import { Search } from '../components';
 
 type PaginationProps = {
   children: React.ReactNode;
   page: number;
   rowsPerPage: number;
+  search?: string;
   pagination?: PaginationType;
   handlePageChange?: (page: number) => void;
   handleRowPerPageChange?: (rowsPerPage: number) => void;
+  handleSearch?: (value: string) => void;
 };
 const Pagination = ({
+  search,
   children,
   page = 1,
   rowsPerPage = 50,
@@ -23,6 +27,7 @@ const Pagination = ({
     totalPages: 1,
     totalRows: 1,
   },
+  handleSearch,
   handlePageChange,
   handleRowPerPageChange,
 }: PaginationProps) => {
@@ -49,7 +54,12 @@ const Pagination = ({
   );
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        p={2}
+      >
         <Box display="flex" alignItems="center" gap={1}>
           <Typography variant="body1" color="textSecondary">
             Row Per Page
@@ -65,6 +75,7 @@ const Pagination = ({
             Entries
           </Typography>
         </Box>
+        <Search search={search} onChange={handleSearch} />
       </Box>
       {children}
       <Box display="flex" justifyContent="flex-end" alignItems="center" mt={2}>
