@@ -12,7 +12,7 @@ const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Student = lazy(() => import('../pages/Student/Student'));
 const Staff = lazy(() => import('../pages/Staff/Staff'));
 const PageNotFound = lazy(() => import('../pages/PageNotFound'));
-const AddStaff = lazy(() => import('../pages/Staff/AddStaff'));
+const StaffForm = lazy(() => import('../pages/Staff/StaffForm'));
 const StaffDetails = lazy(() => import('../pages/Staff/StaffDetails'));
 
 const Router = () => {
@@ -56,8 +56,8 @@ const Router = () => {
           <Route path={PATH.STUDENT} element={<Student />} />
           <Route path={PATH.STAFF_DETAILS} element={<StaffDetails />} />
           <Route path={PATH.STAFF} element={<Staff />} />
-          <Route path={PATH.ADD_STAFF} element={<AddStaff />} />
-          <Route path={PATH.EDIT_STAFF} element={<AddStaff />} />
+          <Route path={PATH.ADD_STAFF} element={<StaffForm />} />
+          <Route path={PATH.EDIT_STAFF} element={<StaffForm />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

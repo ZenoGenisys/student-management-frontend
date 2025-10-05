@@ -1,13 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import { deleteStaff, getStaff } from '../repositories';
+import { getStaffSalary } from '../repositories';
 import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useNavigate } from 'react-router-dom';
-import { useSnackbar } from '../state';
-import { PATH } from '../routes';
+import { useParams } from 'react-router-dom';
 
-const useStaff = () => {
-  const navigate = useNavigate();
+const useStaffSalary = () => {
+  const { staffId } = useParams<{ staffId: string }>();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const [search, setSearch] = useState<string | null | undefined>(null);
@@ -18,7 +16,6 @@ const useStaff = () => {
     orderBy: string;
     order: 'asc' | 'desc';
   } | null>(null);
-  const { showSnackbar } = useSnackbar();
 
   // Debounce search input
   useEffect(() => {
@@ -30,13 +27,14 @@ const useStaff = () => {
     };
   }, [search]);
 
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['staff', debouncedSearch, page, rowsPerPage, sort],
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['staffSalary', staffId, debouncedSearch, page, rowsPerPage, sort],
     queryFn: () =>
-      getStaff({
+      getStaffSalary({
         page: page,
         size: rowsPerPage,
         search: debouncedSearch as string | undefined,
+        staffId: Number(staffId),
         ...(sort
           ? {
               sortBy: sort.orderBy,
@@ -71,43 +69,6 @@ const useStaff = () => {
     setSort({ orderBy: 'name', order });
   }, []);
 
-  const handleAddStaff = useCallback(() => {
-    navigate(PATH.ADD_STAFF);
-  }, [navigate]);
-
-  const handleView = useCallback(
-    (id: number) => {
-      navigate(PATH.STAFF_DETAILS.replace(':staffId', id.toString()));
-    },
-    [navigate],
-  );
-
-  const handleEdit = useCallback(
-    (id: number) => {
-      navigate(PATH.EDIT_STAFF.replace(':staffId', id.toString()));
-    },
-    [navigate],
-  );
-
-  const handleDelete = useCallback(
-    async (id: number) => {
-      try {
-        await deleteStaff(id);
-        refetch();
-        showSnackbar({
-          message: 'Staff deleted successfully!',
-          severity: 'success',
-        });
-      } catch (error) {
-        showSnackbar({
-          message: (error as Error).message || 'Failed to delete staff.',
-          severity: 'error',
-        });
-      }
-    },
-    [showSnackbar, refetch],
-  );
-
   return {
     data,
     isLoading,
@@ -123,10 +84,6 @@ const useStaff = () => {
     handleSort,
     handleSearch,
     handleGridSort,
-    handleAddStaff,
-    handleView,
-    handleEdit,
-    handleDelete,
   };
 };
-export default useStaff;
+export default useStaffSalary;

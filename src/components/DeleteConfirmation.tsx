@@ -10,7 +10,7 @@ import { Slide } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
-    children: React.ReactElement<any, any>;
+    children: React.ReactElement;
   },
   ref: React.Ref<unknown>,
 ) {
@@ -31,18 +31,21 @@ const DeleteConfirmation = ({ open, onClose, onConfirm }: DeleteConfirmationProp
       aria-labelledby="delete-dialog-title"
       aria-describedby="delete-dialog-description"
     >
-      <DialogTitle id="delete-dialog-title" variant='h5'>Confirm Deletion</DialogTitle>
+      <DialogTitle id="delete-dialog-title" variant="h5">
+        Confirm Deletion
+      </DialogTitle>
       <DialogContent>
-        <DialogContentText id="delete-dialog-description" variant='body1'>
-           Are you sure you want to delete this record.
-           This action cannot be undone.
+        <DialogContentText id="delete-dialog-description" variant="body1">
+          Are you sure you want to delete this record. This action cannot be undone.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} autoFocus variant='outlined'>
+        <Button onClick={onClose} autoFocus variant="outlined">
           Cancel
         </Button>
-        <Button onClick={onConfirm} variant='outlined' color='error'>Yes, Delete</Button>
+        <Button onClick={onConfirm} variant="outlined" color="error">
+          Yes, Delete
+        </Button>
       </DialogActions>
     </Dialog>
   );

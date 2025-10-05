@@ -1,37 +1,31 @@
 import React, { useMemo } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import type { ColumnDefsProps } from '../../types';
-import Search from '../Search';
-import ListView from '../ListView';
+import ListView from '../../components/ListView';
+import Search from '../../components/Search';
 
 const mockSalaryData = [
   {
-    paymentId: 'PAY-001',
-    salaryFor: 'January 2024',
+    sno: '01',
+    level: '1',
+    status: 'Completed',
     date: '2024-02-01',
-    status: 'Paid',
-    paymentMethod: 'Bank Transfer',
-    netSalary: 5000,
   },
   {
-    paymentId: 'PAY-002',
-    salaryFor: 'January 2025',
-    date: '2024-02-01',
+    sno: '02',
+    level: '2',
     status: 'Pending',
-    paymentMethod: '-',
-    netSalary: 5000,
+    date: '-',
   },
 ];
 
-const StaffSalaryTab: React.FC = () => {
+const StaffAcademicTab: React.FC = () => {
   const Column = useMemo<ColumnDefsProps[]>(
     () => [
-      { id: 'paymentId', label: 'Payment ID', sortable: true },
-      { id: 'salaryFor', label: 'Salary For', sortable: true },
-      { id: 'date', label: 'Date', sortable: true },
+      { id: 'sno', label: 'SNO', sortable: true },
+      { id: 'level', label: 'Level', sortable: true },
       { id: 'status', label: 'Status', sortable: true },
-      { id: 'paymentMethod', label: 'Payment Method', sortable: true },
-      { id: 'netSalary', label: 'Net Salary', sortable: true },
+      { id: 'date', label: 'Date', sortable: true },
       {
         id: 'actions',
         label: 'Action',
@@ -51,13 +45,13 @@ const StaffSalaryTab: React.FC = () => {
         sx={{ border: '1px solid #E3E8EE', backgroundColor: '#E9EDF4' }}
       >
         <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold' }}>
-          Salary
+          Academic Details
         </Typography>
         <Search search={''} />
       </Box>
-      <ListView columns={Column} rows={mockSalaryData} getRowId={(row) => row.paymentId} />
+      <ListView columns={Column} rows={mockSalaryData} />
     </Paper>
   );
 };
 
-export default StaffSalaryTab;
+export default StaffAcademicTab;

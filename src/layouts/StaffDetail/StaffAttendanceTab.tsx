@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import '../../utils/attendanceCalendar.css'
+import '../../utils/attendanceCalendar.css';
 
 // Define types for tileClassName properties
 interface TileClassNameProps {

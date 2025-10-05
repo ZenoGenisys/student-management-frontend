@@ -1,3 +1,6 @@
+import type { Dayjs } from 'dayjs';
+import type { PaginationType } from './ListViewType';
+
 export type GetStaffRequest = {
   page: number;
   size: number;
@@ -19,20 +22,20 @@ export type StaffType = {
   address: string;
   qualification: string;
   experience: number;
-  status: string;
-  role: string;
   center: string;
   level: number;
   bloodGroup: string;
   additionalDetails: string;
+  status: 'Active' | 'Inactive';
+  role: 'ADMIN' | 'STAFF' | null;
 };
 
 export type CreateStaff = {
   staffId?: number;
   name: string;
   gender: string;
-  joiningDate: string;
-  dateOfBirth: string;
+  joiningDate: Dayjs | null;
+  dateOfBirth: Dayjs | null;
   maritalStatus: string;
   contactNumber: string;
   email: string;
@@ -48,9 +51,32 @@ export type CreateStaff = {
 
 export type StaffResponse = {
   data: StaffType[];
-  pagination: {
-    totalRows: number;
-    totalPages: number;
-    currentPage: number;
-  };
+  pagination: PaginationType;
+};
+
+export type getStaffSalaryRequest = {
+  page: number;
+  size: number;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  staffId?: number;
+  dateFrom?: string;
+  dateTo?: string;
+};
+
+export type StaffSalaryType = {
+  feesId: number;
+  staffId: number;
+  name: string;
+  email: string;
+  mode: string;
+  amount: number;
+  date: string;
+  updatedBy: string | null;
+};
+
+export type StaffSalaryResponse = {
+  data: StaffSalaryType[];
+  pagination: PaginationType;
 };
