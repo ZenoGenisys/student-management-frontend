@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material';
+import { Box } from '@mui/material';
 import ListView from '../../components/ListView';
 import { useStaffSalary } from '../../hooks';
 import { MenuCell, NameCell, Pagination } from '../../components';
@@ -51,12 +51,7 @@ const StaffSalaryTab = () => {
 
   return (
     <Box>
-      <Box
-        flexGrow={1}
-        display={'flex'}
-        justifyContent="space-between"
-        alignItems="center"
-      >
+      <Box flexGrow={1} display={'flex'} justifyContent="space-between" alignItems="center">
         <GridFilter
           title="Staff Salary"
           activeView={activeView}
