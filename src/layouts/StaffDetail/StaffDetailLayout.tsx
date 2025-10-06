@@ -3,12 +3,11 @@ import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import { Box, Grid, Tab, Tabs } from '@mui/material';
-import { BasicDetails } from '../common';
+import { BasicDetails, AcademicDetails } from '../common';
 import type { StaffType } from '../../types';
 import StaffDetailsTab from './StaffDetailsTab';
 import StaffAttendanceTab from './StaffAttendanceTab';
 import StaffSalaryTab from './StaffSalaryTab';
-import StaffAcademicTab from './StaffAcademicTab';
 
 type StaffDetailLayoutProps = {
   data: StaffType;
@@ -91,7 +90,7 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
           {tabValue === 2 && <StaffSalaryTab />}
 
           {/* Tab 4 Fees */}
-          {tabValue === 3 && <StaffAcademicTab />}
+          {tabValue === 3 && <AcademicDetails data={data?.levelDetails} />}
         </Box>
       </Grid>
     </Grid>
