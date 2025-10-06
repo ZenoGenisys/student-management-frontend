@@ -9,6 +9,13 @@ export type GetStaffRequest = {
   sortOrder?: 'ASC' | 'DESC';
 };
 
+export type LevelDetails = {
+  level: number;
+  date: Dayjs | null;
+  document: string;
+  remarks: string;
+};
+
 export type StaffType = {
   staffId: number;
   name: string;
@@ -28,6 +35,7 @@ export type StaffType = {
   additionalDetails: string;
   status: 'Active' | 'Inactive';
   role: 'ADMIN' | 'STAFF' | null;
+  levelDetails?: LevelDetails[];
 };
 
 export type CreateStaff = {
@@ -43,10 +51,10 @@ export type CreateStaff = {
   qualification: string;
   experience: number;
   center: string;
-  level: number;
   status: 'Active' | 'Inactive';
   bloodGroup: string;
   additionalDetails: string;
+  levelDetails?: LevelDetails[];
 };
 
 export type StaffResponse = {

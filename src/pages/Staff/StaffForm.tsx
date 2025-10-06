@@ -25,11 +25,14 @@ import dayjs from 'dayjs';
 import { createStaff, updateStaff } from '../../repositories/StaffRepository';
 import { useStaffDetails } from '../../hooks';
 import type { CreateStaff } from '../../types';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FastField, type FieldProps, type FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { useSnackbar } from '../../state';
 import { PATH } from '../../routes';
+import LevelForm from '../../layouts/common/LevelForm';
+import AddBoxTwoToneIcon from '@mui/icons-material/AddBoxTwoTone';
 
+// ✅ memoized validation schema
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   gender: Yup.string().required('Gender is required'),
@@ -41,10 +44,20 @@ const validationSchema = Yup.object({
   maritalStatus: Yup.string().required('Marital Status is required'),
   qualification: Yup.string().required('Qualification is required'),
   experience: Yup.string().required('Experience is required'),
-  level: Yup.number().required('Level is required'),
   center: Yup.string().required('Center is required'),
   status: Yup.string().required('Status is required'),
   address: Yup.string().required('Address is required'),
+  levelDetails: Yup.array()
+    .of(
+      Yup.object({
+        level: Yup.number().required(),
+        date: Yup.date().nullable().required('Date is required'),
+        document: Yup.string().required('Document is required'),
+        remarks: Yup.string().required('Remarks are required'),
+      }),
+    )
+    .min(1, 'At least one level is required')
+    .max(8, 'Maximum 8 levels allowed'),
 });
 
 const StaffForm: React.FC = () => {
@@ -53,6 +66,12 @@ const StaffForm: React.FC = () => {
   const { data } = useStaffDetails();
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
+
+  // ✅ memoized options
+  const genderOptions = useMemo(() => ['Male', 'Female', 'Other'], []);
+  const maritalOptions = useMemo(() => ['Single', 'Married'], []);
+  const centerOptions = useMemo(() => ['Puliyur', 'Karur'], []);
+  const statusOptions = useMemo(() => ['Active', 'Inactive'], []);
 
   const initialValues: CreateStaff = useMemo(
     () => ({
@@ -66,11 +85,11 @@ const StaffForm: React.FC = () => {
       maritalStatus: data?.maritalStatus ?? '',
       qualification: data?.qualification ?? '',
       experience: data?.experience ?? 0,
-      level: data?.level ?? 1,
       center: data?.center ?? '',
       status: data?.status ?? 'Active',
       address: data?.address ?? '',
       additionalDetails: data?.additionalDetails ?? '',
+      levelDetails: data?.levelDetails ?? [],
     }),
     [data],
   );
@@ -99,465 +118,528 @@ const StaffForm: React.FC = () => {
     [data, showSnackbar, navigate],
   );
 
+  const addLevel = useCallback(
+    (values: CreateStaff, setFieldValue: FormikHelpers<CreateStaff>['setFieldValue']) => {
+      if ((values.levelDetails?.length ?? 0) < 8) {
+        setFieldValue('levelDetails', [
+          ...(values.levelDetails ?? []),
+          { level: (values.levelDetails?.length ?? 0) + 1, date: null, document: '', remarks: '' },
+        ]);
+      }
+    },
+    [],
+  );
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       enableReinitialize
       onSubmit={handleSubmit}
+      validateOnChange={false}
+      validateOnBlur={true}
     >
-      {({ values, errors, touched, handleChange, setFieldValue }) => (
-        <Form>
-          <Box display="flex" flexDirection="column" gap={2}>
-            {/* Header */}
-            <Box
-              flexGrow={1}
-              display={'flex'}
-              justifyContent="space-between"
-              alignItems="center"
-              padding={2}
-              paddingLeft={0}
-              paddingRight={0}
-            >
-              <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold' }}>
-                {data ? 'Edit Staff' : 'Add Staff'}
-              </Typography>
-            </Box>
+      {({ values, setFieldValue, touched, errors }) => {
+        return (
+          <Form>
+            <Box display="flex" flexDirection="column" gap={2}>
+              {/* Header */}
+              <Box display="flex" justifyContent="space-between" alignItems="center" p={2} px={0}>
+                <Typography variant="h3" fontWeight="bold">
+                  {data ? 'Edit Staff' : 'Add Staff'}
+                </Typography>
+              </Box>
 
-            {/* Personal Information */}
-            <Card>
-              <CardHeader
-                title={
-                  <Typography variant="h4" display={'flex'} alignItems={'center'}>
-                    <InfoOutlinedIcon
-                      sx={{ mr: 1, background: '#fff', padding: '2px', borderRadius: '5px' }}
-                    />
-                    Personal Information
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
-                {/* Photo Section */}
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    flexDirection: 'row',
-                    gap: 1,
-                  }}
-                  mb={3}
-                >
-                  <Avatar
-                    alt=""
-                    src="/static/images/avatar/1.jpg"
-                    sx={{ width: 80, height: 80 }}
-                    variant="square"
-                  />
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'space-evenly',
-                      alignItems: 'flex-start',
-                      flexDirection: 'column',
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-start',
-                        alignItems: 'flex-start',
-                        flexDirection: 'row',
-                        gap: 1,
-                      }}
-                    >
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        size="medium"
-                        sx={{ p: '4px 8px' }}
-                      >
-                        Upload
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="medium"
-                        sx={{ p: '4px 8px' }}
-                      >
-                        Remove
-                      </Button>
-                    </Box>
-                    <Typography variant="caption">
-                      Upload image size 4MB, Format JPG, PNG
+              {/* Personal Information */}
+              <Card>
+                <CardHeader
+                  title={
+                    <Typography variant="h4" display="flex" alignItems="center">
+                      <InfoOutlinedIcon
+                        sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
+                      />
+                      Personal Information
                     </Typography>
-                  </Box>
-                </Box>
+                  }
+                />
+                <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
+                  {/* Avatar Upload (memoized subcomponent) */}
+                  <AvatarUpload />
 
-                <Grid container spacing={2}>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Name
-                      </Typography>
-                      <TextField
-                        id="name"
-                        name="name"
-                        size="small"
-                        value={values.name}
-                        onChange={handleChange}
-                        error={touched.name && Boolean(errors.name)}
-                        helperText={touched.name && errors.name}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Gender
-                      </Typography>
-                      <Select
-                        id="gender"
-                        name="gender"
-                        value={values.gender}
-                        onChange={handleChange}
-                        size="small"
-                        displayEmpty
-                        error={touched.gender && Boolean(errors.gender)}
-                      >
-                        <MenuItem value="" disabled>
-                          <em>Select</em>
-                        </MenuItem>
-                        <MenuItem value={'Male'}>Male</MenuItem>
-                        <MenuItem value={'Female'}>Female</MenuItem>
-                        <MenuItem value={'Other'}>Other</MenuItem>
-                      </Select>
-                      {touched.gender && errors.gender && (
-                        <Typography color="error" variant="caption">
-                          {errors.gender}
-                        </Typography>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">Date of Birth</Typography>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={values.dateOfBirth}
-                          onChange={(value) => setFieldValue('dateOfBirth', value)}
-                          slotProps={{
-                            textField: {
-                              fullWidth: true,
-                              size: 'small',
-                              error: touched.dateOfBirth && Boolean(errors.dateOfBirth),
-                              helperText: touched.dateOfBirth && errors.dateOfBirth,
-                            },
-                          }}
-                          views={isMobile ? ['year', 'month', 'day'] : undefined}
-                        />
-                      </LocalizationProvider>
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Blood Group
-                      </Typography>
-                      <TextField
-                        id="bloodGroup"
-                        name="bloodGroup"
-                        size="small"
-                        value={values.bloodGroup}
-                        onChange={handleChange}
-                        error={touched.bloodGroup && Boolean(errors.bloodGroup)}
-                        helperText={touched.bloodGroup && errors.bloodGroup}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">Joining Date</Typography>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                          value={values.joiningDate}
-                          onChange={(value) => setFieldValue('joiningDate', value)}
-                          slotProps={{
-                            textField: {
-                              fullWidth: true,
-                              size: 'small',
-                              error: touched.joiningDate && Boolean(errors.joiningDate),
-                              helperText: touched.joiningDate && errors.joiningDate,
-                            },
-                          }}
-                          views={isMobile ? ['year', 'month', 'day'] : undefined}
-                        />
-                      </LocalizationProvider>
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Contact Number
-                      </Typography>
-                      <TextField
-                        id="contactNumber"
-                        name="contactNumber"
-                        size="small"
-                        value={values.contactNumber}
-                        onChange={handleChange}
-                        error={touched.contactNumber && Boolean(errors.contactNumber)}
-                        helperText={touched.contactNumber && errors.contactNumber}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Email
-                      </Typography>
-                      <TextField
-                        id="email"
-                        name="email"
-                        size="small"
-                        value={values.email}
-                        onChange={handleChange}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Marital Status
-                      </Typography>
-                      <Select
-                        id="maritalStatus"
-                        name="maritalStatus"
-                        value={values.maritalStatus}
-                        onChange={handleChange}
-                        size="small"
-                        displayEmpty
-                        error={touched.maritalStatus && Boolean(errors.maritalStatus)}
-                      >
-                        <MenuItem value="" disabled>
-                          <em>Select</em>
-                        </MenuItem>
-                        <MenuItem value={'Single'}>Single</MenuItem>
-                        <MenuItem value={'Married'}>Married</MenuItem>
-                      </Select>
-                      {touched.maritalStatus && errors.maritalStatus && (
-                        <Typography color="error" variant="caption">
-                          {errors.maritalStatus}
-                        </Typography>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Qualification
-                      </Typography>
-                      <TextField
-                        id="qualification"
-                        name="qualification"
-                        size="small"
-                        value={values.qualification}
-                        onChange={handleChange}
-                        error={touched.qualification && Boolean(errors.qualification)}
-                        helperText={touched.qualification && errors.qualification}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Experience
-                      </Typography>
-                      <TextField
-                        id="experience"
-                        name="experience"
-                        size="small"
-                        value={values.experience}
-                        onChange={handleChange}
-                        error={touched.experience && Boolean(errors.experience)}
-                        helperText={touched.experience && errors.experience}
-                      />
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Level
-                      </Typography>
-                      <Select
-                        id="level"
-                        name="level"
-                        value={values.level}
-                        onChange={handleChange}
-                        size="small"
-                        displayEmpty
-                        error={touched.level && Boolean(errors.level)}
-                      >
-                        <MenuItem value="" disabled>
-                          <em>Select</em>
-                        </MenuItem>
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map((lvl) => (
-                          <MenuItem key={lvl} value={lvl}>
-                            {lvl}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      {touched.level && errors.level && (
-                        <Typography color="error" variant="caption">
-                          {errors.level}
-                        </Typography>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Center
-                      </Typography>
-                      <Select
-                        id="center"
-                        name="center"
-                        value={values.center}
-                        onChange={handleChange}
-                        size="small"
-                        displayEmpty
-                        error={touched.center && Boolean(errors.center)}
-                      >
-                        <MenuItem value="" disabled>
-                          <em>Select</em>
-                        </MenuItem>
-                        <MenuItem value={'Puliyur'}>Puliyur</MenuItem>
-                        <MenuItem value={'Karur'}>Karur</MenuItem>
-                      </Select>
-                      {touched.center && errors.center && (
-                        <Typography color="error" variant="caption">
-                          {errors.center}
-                        </Typography>
-                      )}
-                    </FormControl>
-                  </Grid>
-                  <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Status
-                      </Typography>
-                      <Select
-                        id="status"
-                        name="status"
-                        value={values.status}
-                        onChange={handleChange}
-                        size="small"
-                        displayEmpty
-                        error={touched.status && Boolean(errors.status)}
-                      >
-                        <MenuItem value="" disabled>
-                          <em>Select</em>
-                        </MenuItem>
-                        <MenuItem value={'Active'}>Active</MenuItem>
-                        <MenuItem value={'Inactive'}>Inactive</MenuItem>
-                      </Select>
-                      {touched.status && errors.status && (
-                        <Typography color="error" variant="caption">
-                          {errors.status}
-                        </Typography>
-                      )}
-                    </FormControl>
-                  </Grid>
-                </Grid>
-
-                <Grid container spacing={2} mt={2}>
-                  <Grid size={{ xs: 12, md: 12, lg: 6, xl: 6 }}>
-                    <FormControl fullWidth>
-                      <Typography mb={1} variant="h6">
-                        Additional Details
-                      </Typography>
-                      <textarea
-                        name="additionalDetails"
-                        value={values.additionalDetails}
-                        onChange={handleChange}
-                        style={{
-                          width: '100%',
-                          minHeight: 100,
-                          resize: 'vertical',
-                          border: `1px solid ${theme.palette.divider}`,
-                          borderRadius: 4,
-                          padding: 8,
-                        }}
-                        placeholder="Add additional notes here..."
-                      />
-                      {touched.additionalDetails && errors.additionalDetails && (
-                        <Typography color="error" variant="caption">
-                          {errors.additionalDetails}
-                        </Typography>
-                      )}
-                    </FormControl>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-
-            {/* Address */}
-            <Card>
-              <CardHeader
-                title={
-                  <Typography variant="h4" display={'flex'} alignItems={'center'}>
-                    <HomeOutlinedIcon
-                      sx={{ mr: 1, background: '#fff', padding: '2px', borderRadius: '5px' }}
-                    />
-                    Address
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
-                <Box>
-                  <Grid container spacing={2} mt={2}>
-                    <Grid size={{ xs: 12, md: 12, lg: 12, xl: 12 }}>
-                      <FormControl fullWidth>
-                        <textarea
-                          name="address"
-                          value={values.address}
-                          onChange={handleChange}
-                          style={{
-                            width: '100%',
-                            minHeight: 100,
-                            resize: 'vertical',
-                            border: `1px solid ${theme.palette.divider}`,
-                            borderRadius: 4,
-                            padding: 8,
-                          }}
-                          placeholder="Address..."
-                        />
-                        {touched.address && errors.address && (
-                          <Typography color="error" variant="caption">
-                            {errors.address}
-                          </Typography>
+                  <Grid container spacing={2}>
+                    {/* Example FastField usage */}
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="name">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Name
+                            </Typography>
+                            <TextField
+                              {...field}
+                              size="small"
+                              error={meta.touched && Boolean(meta.error)}
+                              helperText={meta.touched && meta.error}
+                            />
+                          </FormControl>
                         )}
-                      </FormControl>
+                      </FastField>
+                    </Grid>
+
+                    {/* Gender */}
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="gender">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Gender
+                            </Typography>
+                            <Select
+                              {...field}
+                              size="small"
+                              displayEmpty
+                              error={meta.touched && Boolean(meta.error)}
+                            >
+                              <MenuItem value="" disabled>
+                                <em>Select</em>
+                              </MenuItem>
+                              {genderOptions.map((g) => (
+                                <MenuItem key={g} value={g}>
+                                  {g}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                            {meta.touched && meta.error && (
+                              <Typography color="error" variant="caption">
+                                {meta.error}
+                              </Typography>
+                            )}
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    {/* Date of Birth */}
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="dateOfBirth">
+                        {({ field, form, meta }: FieldProps<Date>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Date of Birth
+                            </Typography>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                value={dayjs(field.value)}
+                                onChange={(v) => form.setFieldValue(field.name, v)}
+                                slotProps={{
+                                  textField: {
+                                    fullWidth: true,
+                                    size: 'small',
+                                    error: meta.touched && Boolean(meta.error),
+                                    helperText: meta.touched && meta.error,
+                                  },
+                                }}
+                              />
+                            </LocalizationProvider>
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="bloodGroup">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Blood Group
+                            </Typography>
+                            <TextField
+                              {...field}
+                              size="small"
+                              error={meta.touched && Boolean(meta.error)}
+                              helperText={meta.touched && meta.error}
+                            />
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    {/* Joining Date */}
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="joiningDate">
+                        {({ field, form, meta }: FieldProps<Date>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Joining Date
+                            </Typography>
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                              <DatePicker
+                                value={dayjs(field.value)}
+                                onChange={(v) => form.setFieldValue(field.name, v)}
+                                slotProps={{
+                                  textField: {
+                                    fullWidth: true,
+                                    size: 'small',
+                                    error: meta.touched && Boolean(meta.error),
+                                    helperText: meta.touched && meta.error,
+                                  },
+                                }}
+                              />
+                            </LocalizationProvider>
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="contactNumber">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Contact Number
+                            </Typography>
+                            <TextField
+                              {...field}
+                              size="small"
+                              error={meta.touched && Boolean(meta.error)}
+                              helperText={meta.touched && meta.error}
+                            />
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="email">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Email
+                            </Typography>
+                            <TextField
+                              {...field}
+                              size="small"
+                              error={meta.touched && Boolean(meta.error)}
+                              helperText={meta.touched && meta.error}
+                            />
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="maritalStatus">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Marital Status
+                            </Typography>
+                            <Select
+                              {...field}
+                              size="small"
+                              displayEmpty
+                              error={meta.touched && Boolean(meta.error)}
+                            >
+                              <MenuItem value="" disabled>
+                                <em>Select</em>
+                              </MenuItem>
+                              {maritalOptions.map((status) => (
+                                <MenuItem key={status} value={status}>
+                                  {status}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                            {meta.touched && meta.error && (
+                              <Typography color="error" variant="caption">
+                                {meta.error}
+                              </Typography>
+                            )}
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="qualification">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Qualification
+                            </Typography>
+                            <TextField
+                              {...field}
+                              size="small"
+                              error={meta.touched && Boolean(meta.error)}
+                              helperText={meta.touched && meta.error}
+                            />
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="experience">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Experience
+                            </Typography>
+                            <TextField
+                              {...field}
+                              size="small"
+                              error={meta.touched && Boolean(meta.error)}
+                              helperText={meta.touched && meta.error}
+                            />
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="center">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Center
+                            </Typography>
+                            <Select
+                              {...field}
+                              size="small"
+                              displayEmpty
+                              error={meta.touched && Boolean(meta.error)}
+                            >
+                              <MenuItem value="" disabled>
+                                <em>Select</em>
+                              </MenuItem>
+                              {centerOptions.map((status) => (
+                                <MenuItem key={status} value={status}>
+                                  {status}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                            {meta.touched && meta.error && (
+                              <Typography color="error" variant="caption">
+                                {meta.error}
+                              </Typography>
+                            )}
+                          </FormControl>
+                        )}
+                      </FastField>
+                    </Grid>
+
+                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+                      <FastField name="status">
+                        {({ field, meta }: FieldProps<string>) => (
+                          <FormControl fullWidth>
+                            <Typography mb={1} variant="h6">
+                              Status
+                            </Typography>
+                            <Select
+                              {...field}
+                              size="small"
+                              displayEmpty
+                              error={meta.touched && Boolean(meta.error)}
+                            >
+                              <MenuItem value="" disabled>
+                                <em>Select</em>
+                              </MenuItem>
+                              {statusOptions.map((status) => (
+                                <MenuItem key={status} value={status}>
+                                  {status}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                            {meta.touched && meta.error && (
+                              <Typography color="error" variant="caption">
+                                {meta.error}
+                              </Typography>
+                            )}
+                          </FormControl>
+                        )}
+                      </FastField>
                     </Grid>
                   </Grid>
-                </Box>
-              </CardContent>
-            </Card>
 
-            <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} gap={2}>
-              <Button variant="outlined" color="primary" size="large" onClick={() => navigate(-1)}>
-                Cancel
-              </Button>
-              <Button variant="contained" color="primary" size="large" type="submit">
-                Save
-              </Button>
+                  {/* Additional Details */}
+                  <AdditionalDetailsSection />
+                </CardContent>
+              </Card>
+
+              {/* Qualification Level */}
+              <Card>
+                <CardHeader
+                  title={
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                      width="100%"
+                    >
+                      <Typography variant="h4" display="flex" alignItems="center">
+                        <HomeOutlinedIcon
+                          sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
+                        />
+                        Qualification Level
+                      </Typography>
+                      <AddBoxTwoToneIcon
+                        sx={{
+                          mr: 1,
+                          background: '#fff',
+                          p: '2px',
+                          borderRadius: '5px',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => addLevel(values, setFieldValue)}
+                      />
+                    </Box>
+                  }
+                />
+                <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}` }}>
+                  <Grid container spacing={2} mt={2}>
+                    {values.levelDetails?.map((levelDetail, idx) => (
+                      <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={idx}>
+                        <MemoizedLevelForm
+                          index={idx}
+                          values={levelDetail}
+                          touched={
+                            Array.isArray(touched.levelDetails) ? touched.levelDetails[idx] : {}
+                          }
+                          errors={
+                            Array.isArray(errors.levelDetails) ? errors.levelDetails[idx] : {}
+                          }
+                          isMobile={isMobile}
+                          levelDetails={values.levelDetails ?? []}
+                          setFieldValue={setFieldValue}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </CardContent>
+              </Card>
+
+              {touched.levelDetails && errors.levelDetails && (
+                <Typography color="error" variant="caption">
+                  {' '}
+                  {errors.levelDetails}{' '}
+                </Typography>
+              )}
+
+              {/* Address */}
+              <AddressSection />
+
+              {/* Buttons */}
+              <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
+                </Button>
+                <Button variant="contained" color="primary" size="large" type="submit">
+                  Save
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        </Form>
-      )}
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
 
-export default StaffForm;
+const AvatarUpload = React.memo(() => (
+  <Box display="flex" gap={1} mb={3}>
+    <Avatar src="/static/images/avatar/1.jpg" sx={{ width: 80, height: 80 }} variant="square" />
+    <Box display="flex" flexDirection="column" gap={1}>
+      <Box display="flex" gap={1}>
+        <Button variant="outlined" color="primary" size="medium" sx={{ p: '4px 8px' }}>
+          Upload
+        </Button>
+        <Button variant="contained" color="primary" size="medium" sx={{ p: '4px 8px' }}>
+          Remove
+        </Button>
+      </Box>
+      <Typography variant="caption">Upload image size 4MB, Format JPG, PNG</Typography>
+    </Box>
+  </Box>
+));
+
+const AdditionalDetailsSection = React.memo(() => (
+  <Grid container spacing={2} mt={2}>
+    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+      <FastField name="additionalDetails">
+        {({ field, meta }: FieldProps<string>) => (
+          <FormControl fullWidth>
+            <Typography mb={1} variant="h6">
+              Additional Details
+            </Typography>
+            <textarea
+              {...field}
+              style={{
+                width: '100%',
+                minHeight: 100,
+                resize: 'vertical',
+                border: '1px solid #ccc',
+                borderRadius: 4,
+                padding: 8,
+              }}
+              placeholder="Add additional notes here..."
+            />
+            {meta.touched && meta.error && (
+              <Typography color="error" variant="caption">
+                {meta.error}
+              </Typography>
+            )}
+          </FormControl>
+        )}
+      </FastField>
+    </Grid>
+  </Grid>
+));
+
+const AddressSection = React.memo(() => (
+  <Card>
+    <CardHeader
+      title={
+        <Typography variant="h4" display="flex" alignItems="center">
+          <HomeOutlinedIcon sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }} />
+          Address
+        </Typography>
+      }
+    />
+    <CardContent>
+      <Grid container spacing={2} mt={2}>
+        <Grid size={{ xs: 12 }}>
+          <FastField name="address">
+            {({ field, meta }: FieldProps<string>) => (
+              <FormControl fullWidth>
+                <textarea
+                  {...field}
+                  style={{
+                    width: '100%',
+                    minHeight: 100,
+                    resize: 'vertical',
+                    border: '1px solid #ccc',
+                    borderRadius: 4,
+                    padding: 8,
+                  }}
+                  placeholder="Address..."
+                />
+                {meta.touched && meta.error && (
+                  <Typography color="error" variant="caption">
+                    {meta.error}
+                  </Typography>
+                )}
+              </FormControl>
+            )}
+          </FastField>
+        </Grid>
+      </Grid>
+    </CardContent>
+  </Card>
+));
+
+const MemoizedLevelForm = React.memo(LevelForm);
+export default React.memo(StaffForm);
