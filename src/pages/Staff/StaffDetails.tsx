@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { HeaderDetails, PromoteModal, StaffDetailLayout } from '../../layouts';
+import { HeaderDetails, PromoteModal, RevokeConfirmationModal, StaffDetailLayout } from '../../layouts';
 import { useStaffDetails } from '../../hooks';
 
 const StaffDetails = () => {
@@ -7,9 +7,11 @@ const StaffDetails = () => {
     data,
     tabValue,
     showPromote,
+    showRevoke,
     handleTabChange,
     handleEdit,
     handlePromote,
+    handleToggleRevoke,
     handlePromoteSuccess,
     handleRevoke,
   } = useStaffDetails();
@@ -23,7 +25,7 @@ const StaffDetails = () => {
         showRevoke={Boolean(data?.role)}
         onClickEdit={handleEdit}
         onClickPromote={handlePromote}
-        onClickRevoke={handleRevoke}
+        onClickRevoke={handleToggleRevoke}
       />
 
       {/* Staff Details Layout */}
@@ -40,6 +42,8 @@ const StaffDetails = () => {
           onPromoteSuccess={handlePromoteSuccess}
         />
       )}
+
+      {showRevoke && <RevokeConfirmationModal open={showRevoke} onClose={handleToggleRevoke} onConfirm={handleRevoke} />}
     </Box>
   );
 };

@@ -11,6 +11,7 @@ const useStaffDetails = () => {
   const { staffId } = useParams<{ staffId: string }>();
   const [tabValue, setTabValue] = useState(0);
   const [showPromote, setShowPromote] = useState(false);
+  const [showRevoke, setShowRevoke] = useState(false);
 
   const handleTabChange = useCallback((_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -41,6 +42,10 @@ const useStaffDetails = () => {
     setShowPromote(false);
   }, [refetch]);
 
+  const handleToggleRevoke = useCallback(() => {
+    setShowRevoke((prev) => !prev);
+  }, []);
+
   const handleRevoke = useCallback(async () => {
     try {
       await revokeStaffPromotion(Number(staffId));
@@ -48,6 +53,7 @@ const useStaffDetails = () => {
         message: 'Staff revoked successfully!',
         severity: 'success',
       });
+      setShowRevoke(false);
       refetch();
     } catch (error) {
       showSnackbar({
@@ -64,10 +70,12 @@ const useStaffDetails = () => {
       error,
       tabValue,
       showPromote,
+      showRevoke,
       handleTabChange,
       handleEdit,
       handlePromote,
       handlePromoteSuccess,
+      handleToggleRevoke,
       handleRevoke,
     }),
     [
@@ -76,10 +84,12 @@ const useStaffDetails = () => {
       error,
       tabValue,
       showPromote,
+      showRevoke,
       handleTabChange,
       handleEdit,
       handlePromote,
       handlePromoteSuccess,
+      handleToggleRevoke,
       handleRevoke,
     ],
   );
