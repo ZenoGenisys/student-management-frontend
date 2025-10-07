@@ -30,7 +30,7 @@ import * as Yup from 'yup';
 import { useSnackbar } from '../../state';
 import { PATH } from '../../routes';
 import LevelForm from '../../layouts/common/LevelForm';
-import AddBoxTwoToneIcon from '@mui/icons-material/AddBoxTwoTone';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 
 // ✅ memoized validation schema
@@ -480,9 +480,9 @@ const StaffForm: React.FC = () => {
                         <LocalLibraryOutlinedIcon
                           sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
                         />
-                        Accademic Level
+                        Academic Level
                       </Typography>
-                      <AddBoxTwoToneIcon
+                      <AddCircleOutlineOutlinedIcon
                         sx={{
                           mr: 1,
                           background: '#fff',

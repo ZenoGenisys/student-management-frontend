@@ -36,7 +36,7 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
             'Date of Joining': data?.joiningDate?.split('-').reverse().join('-'),
             'Blood Group': data?.bloodGroup,
             Qualification: data?.qualification,
-            'Learning Level': data?.level,
+            'Academic Level': data?.level,
             Experience: `${data?.experience} years`,
             Center: data?.center,
             Role: data?.role ?? '-',
