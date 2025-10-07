@@ -3,10 +3,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SensorOccupiedOutlinedIcon from '@mui/icons-material/SensorOccupiedOutlined';
+import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
 
 type HeaderProps = {
   title: string;
-  showPromote?: boolean;
   showRevoke?: boolean;
   editLabel?: string;
   onClickEdit: () => void;
@@ -15,7 +15,6 @@ type HeaderProps = {
 };
 const HeaderDetails = ({
   title,
-  showPromote,
   showRevoke,
   editLabel = 'Edit',
   onClickEdit,
@@ -56,13 +55,13 @@ const HeaderDetails = ({
         </Button>
         {showRevoke && (
           <Button
-            variant="contained"
-            color="primary"
+            variant="outlined"
+            color="error"
             size="large"
-            startIcon={<SensorOccupiedOutlinedIcon />}
+            startIcon={<PersonRemoveOutlinedIcon />}
             onClick={onClickRevoke}
           >
-            Revoke Promotion
+            Delete Role
           </Button>
         )}
       </Box>

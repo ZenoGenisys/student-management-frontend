@@ -31,6 +31,7 @@ import { useSnackbar } from '../../state';
 import { PATH } from '../../routes';
 import LevelForm from '../../layouts/common/LevelForm';
 import AddBoxTwoToneIcon from '@mui/icons-material/AddBoxTwoTone';
+import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 
 // ✅ memoized validation schema
 const validationSchema = Yup.object({
@@ -476,10 +477,10 @@ const StaffForm: React.FC = () => {
                       width="100%"
                     >
                       <Typography variant="h4" display="flex" alignItems="center">
-                        <HomeOutlinedIcon
+                        <LocalLibraryOutlinedIcon
                           sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
                         />
-                        Qualification Level
+                        Accademic Level
                       </Typography>
                       <AddBoxTwoToneIcon
                         sx={{
@@ -517,10 +518,9 @@ const StaffForm: React.FC = () => {
                 </CardContent>
               </Card>
 
-              {touched.levelDetails && errors.levelDetails && (
+              {touched.levelDetails && typeof errors.levelDetails === 'string' && (
                 <Typography color="error" variant="caption">
-                  {' '}
-                  {errors.levelDetails}{' '}
+                  {errors.levelDetails}
                 </Typography>
               )}
 

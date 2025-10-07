@@ -110,6 +110,7 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address, additionalDetails 
             aria-label="Text area"
             placeholder="Add additional notes here..."
             defaultValue={additionalDetails}
+            disabled
             style={{
               width: '100%',
               minHeight: 100,

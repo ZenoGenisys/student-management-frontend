@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { useTheme } from '@mui/material/styles';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import DeleteOutlineTwoToneIcon from '@mui/icons-material/DeleteOutlineTwoTone';
@@ -16,6 +15,7 @@ import type { LevelDetails } from '../../types';
 import type { FormikErrors, FormikTouched } from 'formik/dist/types';
 import { useCallback } from 'react';
 import dayjs from 'dayjs';
+import NumbersOutlinedIcon from '@mui/icons-material/NumbersOutlined';
 
 type LevelFormProps = {
   index: number;
@@ -77,7 +77,7 @@ const LevelForm = ({
             }}
           >
             <Typography variant="h4" display={'flex'} alignItems={'center'}>
-              <HomeOutlinedIcon
+              <NumbersOutlinedIcon
                 sx={{
                   mr: 1,
                   background: '#fff',
