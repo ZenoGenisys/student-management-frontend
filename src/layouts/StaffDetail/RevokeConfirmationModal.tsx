@@ -28,11 +28,17 @@ const RevokeConfirmationModal = ({ open, onClose, onConfirm }: RevokeConfirmatio
     <Dialog open={open} onClose={onClose} TransitionComponent={Transition}>
       <DialogTitle variant="h5">Confirm Role Deletion</DialogTitle>
       <DialogContent>
-        <DialogContentText>Are you sure you want to delete this staff member's role? This action cannot be undone.</DialogContentText>
+        <DialogContentText>
+          Are you sure you want to delete this staff member's role? This action cannot be undone.
+        </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={onClose}>Cancel</Button>
-        <Button variant="contained" color="error" onClick={onConfirm}>Delete</Button>
+        <Button variant="outlined" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="contained" color="error" onClick={onConfirm}>
+          Delete
+        </Button>
       </DialogActions>
     </Dialog>
   );
