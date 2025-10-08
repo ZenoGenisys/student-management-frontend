@@ -278,11 +278,12 @@ const baseTheme = createTheme({
     },
     MuiDialog: {
       styleOverrides: {
-        root: {
+        paper: {
           border: '1px solid #E3E8EE',
           borderRadius: 6,
           boxShadow: '0 2px 4px rgba(0, 0, 0, 0.08)',
           transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',
+          minWidth: '300px'
         },
       },
     },

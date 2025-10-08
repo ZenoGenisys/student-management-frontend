@@ -1,4 +1,4 @@
-import { Box, FormControl, MenuItem, Typography } from '@mui/material';
+import { Box, Button, FormControl, MenuItem, Typography } from '@mui/material';
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
@@ -7,8 +7,9 @@ import * as React from 'react';
 import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import { useTheme } from '@mui/material/styles';
 import { IoCalendarNumber } from 'react-icons/io5';
-import { FaUserCheck } from "react-icons/fa";
-import { FaUserXmark } from "react-icons/fa6";
+import { FaUserCheck } from 'react-icons/fa';
+import { FaUserXmark } from 'react-icons/fa6';
+import AttendanceDialog from '../../components/AttendanceDialog';
 
 // Define types for tileClassName properties
 interface TileClassNameProps {
@@ -18,12 +19,57 @@ interface TileClassNameProps {
 
 export default function StaffAttendanceTab() {
   const theme = useTheme();
-  const [attendance] = useState<{ [key: string]: string }>({
+  const [attendance, setAttendance] = useState<{ [key: string]: string }>({
     '2025-09-01': 'present',
     '2025-09-02': 'absent',
     '2025-09-04': 'present',
     '2025-09-06': 'absent',
   });
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [currentAttendance, setCurrentAttendance] = useState<string | null>(null);
+
+  const handleDateClick = (date: Date) => {
+    const dateStr = date.toLocaleDateString('en-CA');
+    setCurrentAttendance(attendance[dateStr] || null);
+    setSelectedDate(date);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleOpenDialog = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClearAttendance = () => {
+    if (selectedDate) {
+      const dateStr = selectedDate.toLocaleDateString('en-CA');
+      setAttendance((prev) => {
+        const { [dateStr]: _, ...rest } = prev;
+        return rest;
+      });
+      setCurrentAttendance(null);
+    }
+  };
+
+  const handleSaveAttendance = (status: string) => {
+    if (selectedDate) {
+      const dateStr = selectedDate.toLocaleDateString('en-CA');
+      if (status) {
+        setAttendance((prev) => ({ ...prev, [dateStr]: status }));
+        setCurrentAttendance(status);
+      } else {
+        setAttendance((prev) => {
+          const { [dateStr]: _, ...rest } = prev;
+          return rest;
+        });
+        setCurrentAttendance(null);
+      }
+    }
+    handleCloseDialog();
+  };
 
   // function to add custom class to each tile
   const tileClassName = ({ date, view }: TileClassNameProps): string | null => {
@@ -104,8 +150,12 @@ export default function StaffAttendanceTab() {
             <IoCalendarNumber fontSize={'24px'} color={`${theme.palette.primary.dark}`} />
           </Box>
           <Box>
-            <Typography variant='body1' color='textSecondary'>Total Working Days</Typography>
-            <Typography variant='h6' color='textPrimary'>240</Typography>
+            <Typography variant='body1' color='textSecondary'>
+              Total Working Days
+            </Typography>
+            <Typography variant='h6' color='textPrimary'>
+              240
+            </Typography>
           </Box>
         </Box>
 
@@ -126,8 +176,12 @@ export default function StaffAttendanceTab() {
             <FaUserCheck fontSize={'24px'} color={`${theme.palette.success.dark}`} />
           </Box>
           <Box>
-            <Typography variant='body1' color='textSecondary'>Total Present</Typography>
-            <Typography variant='h6' color='textPrimary'>210</Typography>
+            <Typography variant='body1' color='textSecondary'>
+              Total Present
+            </Typography>
+            <Typography variant='h6' color='textPrimary'>
+              210
+            </Typography>
           </Box>
         </Box>
 
@@ -148,12 +202,40 @@ export default function StaffAttendanceTab() {
             <FaUserXmark fontSize={'24px'} color={`${theme.palette.error.dark}`} />
           </Box>
           <Box>
-            <Typography variant='body1' color='textSecondary'>Total Absent</Typography>
-            <Typography variant='h6' color='textPrimary'>30</Typography>
+            <Typography variant='body1' color='textSecondary'>
+              Total Absent
+            </Typography>
+            <Typography variant='h6' color='textPrimary'>
+              30
+            </Typography>
           </Box>
         </Box>
       </Box>
-      <Calendar tileClassName={tileClassName} next2Label={null} prev2Label={null} />
+      <Calendar
+        tileClassName={tileClassName}
+        next2Label={null}
+        prev2Label={null}
+        onClickDay={handleDateClick}
+      />
+      <Box display="flex" justifyContent="flex-start" gap={2} mt={2}>
+        <Button variant="contained" onClick={handleOpenDialog} disabled={!selectedDate}>
+          {currentAttendance ? 'Edit' : 'Add'} Attendance
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={handleClearAttendance}
+          disabled={!selectedDate || !currentAttendance}
+        >
+          Clear Attendance
+        </Button>
+      </Box>
+      <AttendanceDialog
+        open={isDialogOpen}
+        onClose={handleCloseDialog}
+        onSave={handleSaveAttendance}
+        attendanceStatus={currentAttendance}
+        date={selectedDate}
+      />
     </Box>
   );
 }
