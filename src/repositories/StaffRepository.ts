@@ -1,8 +1,11 @@
 import { API_PATH } from '../config';
 import type {
   CreateStaff,
+  GetStaffAttendanceRequest,
   GetStaffRequest,
   getStaffSalaryRequest,
+  MarkAttendanceRequest,
+  StaffAttendanceResponse,
   StaffResponse,
   StaffSalaryResponse,
   StaffType,
@@ -33,4 +36,19 @@ export const deleteStaff = (staffId: number): Promise<string> => {
 // Staff Salary APIs
 export const getStaffSalary = (params: getStaffSalaryRequest): Promise<StaffSalaryResponse> => {
   return getHttpClient(`${API_PATH.STAFF_SALARY}`, 'GET', null, params);
+};
+
+// Staff Attendance APIs
+export const getStaffAttendance = (
+  params?: GetStaffAttendanceRequest,
+): Promise<StaffAttendanceResponse> => {
+  return getHttpClient(`${API_PATH.STAFF_ATTENDANCE}`, 'GET', null, params);
+};
+
+export const markAttendance = (data: MarkAttendanceRequest[]): Promise<{ message: string }> => {
+  return getHttpClient(`${API_PATH.STAFF_ATTENDANCE}`, 'POST', data);
+};
+
+export const deleteStaffAttendance = (attendanceIds?: number[]): Promise<string> => {
+  return getHttpClient(`${API_PATH.STAFF_ATTENDANCE}`, 'DELETE', null, { attendanceIds });
 };

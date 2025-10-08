@@ -24,10 +24,12 @@ export const setUserSessionToken = (token?: string | null) => {
 export const getHttpClient = <T>(
   path: string,
   method: Method,
-  data: Data | null = null,
+  data: Data | Data[] | null = null,
   params: Param | null = null,
 ): Promise<T> => {
-  const query = !isNil(params) ? '?' + qs.stringify(params, { allowDots: true }) : '';
+  const query = !isNil(params)
+    ? '?' + qs.stringify(params, { arrayFormat: 'repeat', skipNulls: true })
+    : '';
   const urlPath = path + query;
 
   return asyncOperation(
@@ -42,7 +44,7 @@ export const getHttpClient = <T>(
 export const postMultiPart = <T>(
   path: string,
   method: string,
-  data: Data | null,
+  data: Data | Data[] | null,
   params: Param | null = null,
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
 ): Promise<T> => {

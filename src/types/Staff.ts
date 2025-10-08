@@ -88,3 +88,36 @@ export type StaffSalaryResponse = {
   data: StaffSalaryType[];
   pagination: PaginationType;
 };
+
+export type GetStaffAttendanceRequest = {
+  page?: number;
+  size?: number;
+  staffId?: number;
+  search?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+};
+
+export type StaffAttendanceType = {
+  staffAttendanceId: number;
+  staffId: number;
+  name: string;
+  email: string;
+  center: string;
+  date: string;
+  attendance: boolean;
+};
+
+export type StaffAttendanceResponse = {
+  data: StaffAttendanceType[];
+  pagination: PaginationType;
+};
+
+export type MarkAttendanceRequest = {
+  staffAttendanceId?: number;
+  staffId: number;
+  date: string;
+  attendance: boolean;
+};
