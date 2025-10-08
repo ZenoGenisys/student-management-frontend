@@ -23,6 +23,7 @@ export default function StaffAttendanceTab() {
     handleActiveStartDateChange,
     handleDateClick,
     handleDialog,
+    handleClearSelection,
   } = useStaffAttendance();
   const [attendanceFilter, setAttendanceFilter] = React.useState('year');
 
@@ -168,10 +169,19 @@ export default function StaffAttendanceTab() {
         </Button>
         <Button
           variant="outlined"
+          color="error"
           onClick={handleClearAttendance}
           disabled={!enableClearAttendance}
         >
           Clear Attendance
+        </Button>
+        <Button
+          variant="outlined"
+          color="warning"
+          onClick={handleClearSelection}
+          disabled={!selected || selected.length === 0}
+        >
+          Clear Selection
         </Button>
       </Box>
       <AttendanceDialog

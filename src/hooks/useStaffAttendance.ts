@@ -168,6 +168,10 @@ const useStaffAttendance = () => {
     [selected, refetch, handleDialog, showSnackbar],
   );
 
+  const handleClearSelection = useCallback(() => {
+    setSelected(null);
+  }, []);
+
   return useMemo(
     () => ({
       isLoading,
@@ -181,6 +185,7 @@ const useStaffAttendance = () => {
       handleDateClick,
       handleClearAttendance,
       handleDialog,
+      handleClearSelection,
     }),
     [
       isLoading,
@@ -194,6 +199,7 @@ const useStaffAttendance = () => {
       handleDateClick,
       handleClearAttendance,
       handleDialog,
+      handleClearSelection,
     ],
   );
 };
