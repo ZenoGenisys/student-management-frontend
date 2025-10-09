@@ -69,6 +69,16 @@ const useStaffSalary = () => {
     setSort({ orderBy: 'name', order });
   }, []);
 
+  const handleEdit = useCallback((id: number) => {
+    // TODO: Implement edit functionality
+    console.log('Edit staff salary with id:', id);
+  }, []);
+
+  const handleDelete = useCallback((id: number) => {
+    // TODO: Implement delete functionality
+    console.log('Delete staff salary with id:', id);
+  }, []);
+
   return {
     data,
     isLoading,
@@ -84,6 +94,8 @@ const useStaffSalary = () => {
     handleSort,
     handleSearch,
     handleGridSort,
+    handleEdit,
+    handleDelete,
   };
 };
 export default useStaffSalary;

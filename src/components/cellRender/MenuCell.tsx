@@ -49,6 +49,10 @@ const MenuCell = ({ id, onClickView, onClickEdit, onClickDelete }: MenuCellProps
     handleClose();
   }, [handleClose]);
 
+  if (!onClickView && !onClickEdit && !onClickDelete) {
+    return null;
+  }
+
   return (
     <>
       <IconButton aria-label="settings" onClick={handleClick}>
@@ -65,24 +69,32 @@ const MenuCell = ({ id, onClickView, onClickEdit, onClickDelete }: MenuCellProps
           },
         }}
       >
-        <MenuItem onClick={handleView}>
-          <VisibilityOutlinedIcon />
-          View
-        </MenuItem>
-        <MenuItem onClick={handleEdit}>
-          <EditOutlinedIcon />
-          Edit
-        </MenuItem>
-        <MenuItem onClick={handleDeleteModal}>
-          <DeleteOutlinedIcon />
-          Delete
-        </MenuItem>
+        {onClickView && (
+          <MenuItem onClick={handleView}>
+            <VisibilityOutlinedIcon />
+            View
+          </MenuItem>
+        )}
+        {onClickEdit && (
+          <MenuItem onClick={handleEdit}>
+            <EditOutlinedIcon />
+            Edit
+          </MenuItem>
+        )}
+        {onClickDelete && (
+          <MenuItem onClick={handleDeleteModal}>
+            <DeleteOutlinedIcon />
+            Delete
+          </MenuItem>
+        )}
       </Menu>
-      <DeleteConfirmation
-        open={openDeleteConfirm}
-        onClose={handleDeleteModal}
-        onConfirm={handleConfirm}
-      />
+      {onClickDelete && (
+        <DeleteConfirmation
+          open={openDeleteConfirm}
+          onClose={handleDeleteModal}
+          onConfirm={handleConfirm}
+        />
+      )}
     </>
   );
 };

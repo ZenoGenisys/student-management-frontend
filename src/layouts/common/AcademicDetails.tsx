@@ -39,7 +39,6 @@ const AcademicDetails = ({ data = [] }: AcademicDetailsProps) => {
         <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold' }}>
           Academic Details
         </Typography>
-        <Search search={''} />
       </Box>
       <ListView columns={Column} rows={row} showCheckbox={false} />
     </Paper>
