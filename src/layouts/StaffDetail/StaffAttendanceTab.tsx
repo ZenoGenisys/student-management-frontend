@@ -3,13 +3,14 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../utils/attendanceCalendar.css';
 import * as React from 'react';
-import Select, { type SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { useTheme } from '@mui/material/styles';
 import { IoCalendarNumber } from 'react-icons/io5';
 import { FaUserCheck } from 'react-icons/fa';
 import { FaUserXmark } from 'react-icons/fa6';
 import AttendanceDialog from '../../components/AttendanceDialog';
 import { useStaffAttendance } from '../../hooks';
+import { getFormattedDate } from '../../utils';
 
 export default function StaffAttendanceTab() {
   const theme = useTheme();
@@ -17,6 +18,8 @@ export default function StaffAttendanceTab() {
     enableClearAttendance,
     selected,
     showDialog,
+    attendanceFilter,
+    attendanceSummary,
     handleSaveAttendance,
     handleClearAttendance,
     tileClassName,
@@ -24,12 +27,8 @@ export default function StaffAttendanceTab() {
     handleDateClick,
     handleDialog,
     handleClearSelection,
+    handleChange,
   } = useStaffAttendance();
-  const [attendanceFilter, setAttendanceFilter] = React.useState('year');
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAttendanceFilter(event.target.value);
-  };
 
   const selectedDates = React.useMemo(() => {
     if (!selected) {
@@ -59,7 +58,9 @@ export default function StaffAttendanceTab() {
           Staff Attendance
         </Typography>
         <Box display={'flex'} alignItems={'center'} gap={2}>
-          <Typography>Last Updated on: 25 Oct 2025</Typography>
+          <Typography>
+            Last Updated on: {getFormattedDate(attendanceSummary?.lastAttendanceDate)}
+          </Typography>
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <Select id="attendance-filter" value={attendanceFilter} onChange={handleChange}>
               <MenuItem value={'year'}>This Year</MenuItem>
@@ -99,7 +100,7 @@ export default function StaffAttendanceTab() {
               Total Working Days
             </Typography>
             <Typography variant="h6" color="textPrimary">
-              240
+              {attendanceSummary?.totalCount}
             </Typography>
           </Box>
         </Box>
@@ -125,7 +126,7 @@ export default function StaffAttendanceTab() {
               Total Present
             </Typography>
             <Typography variant="h6" color="textPrimary">
-              210
+              {attendanceSummary?.presentCount}
             </Typography>
           </Box>
         </Box>
@@ -151,7 +152,7 @@ export default function StaffAttendanceTab() {
               Total Absent
             </Typography>
             <Typography variant="h6" color="textPrimary">
-              30
+              {attendanceSummary?.absentCount}
             </Typography>
           </Box>
         </Box>

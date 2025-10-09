@@ -132,3 +132,16 @@ export type MarkAttendanceRequest = {
   date: string;
   attendance: boolean;
 };
+
+export type StaffAttendanceSummaryRequest = {
+  staffId: number;
+  startDate?: Date | string;
+  endDate?: Date | string;
+};
+
+export type StaffAttendanceSummaryResponse = {
+  presentCount: number;
+  absentCount: number;
+  totalCount: number;
+  lastAttendanceDate: Date;
+};

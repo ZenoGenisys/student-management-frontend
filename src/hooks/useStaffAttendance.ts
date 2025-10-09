@@ -1,11 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
-import { deleteStaffAttendance, getStaffAttendance, markAttendance } from '../repositories';
+import {
+  deleteStaffAttendance,
+  getStaffAttendance,
+  getStaffAttendanceSummary,
+  markAttendance,
+} from '../repositories';
 import { useParams } from 'react-router-dom';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { MarkAttendanceRequest, StaffAttendanceType } from '../types';
 import type { CalendarProps } from 'react-calendar';
 import { useSnackbar } from '../state';
 import dayjs from 'dayjs';
+import type { SelectChangeEvent } from '@mui/material';
 
 type BooleanMap = { [key: string]: boolean };
 
@@ -21,6 +27,33 @@ const useStaffAttendance = () => {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [selected, setSelected] = useState<MarkAttendanceRequest[] | null>(null);
   const [showDialog, setShowDialog] = useState(false);
+  const [attendanceFilter, setAttendanceFilter] = useState('year');
+
+  const handleChange = useCallback((event: SelectChangeEvent) => {
+    setAttendanceFilter(event.target.value);
+  }, []);
+
+  const { data: attendanceSummary, refetch: summaryRefetch } = useQuery({
+    queryKey: ['staff-attendance-summary', staffId, attendanceFilter],
+    queryFn: () => {
+      let startDate: dayjs.Dayjs;
+      let endDate: dayjs.Dayjs;
+      if (attendanceFilter === 'year') {
+        const year = dayjs().year(); // current year
+        startDate = dayjs(`${year}-01-01`);
+        endDate = dayjs(`${year}-12-31`);
+      } else {
+        const now = dayjs();
+        startDate = now.startOf('month'); // 1st day of current month
+        endDate = now.endOf('month'); // last day of current month
+      }
+      return getStaffAttendanceSummary({
+        staffId: Number(staffId),
+        startDate: startDate.format('YYYY-MM-DD'),
+        endDate: endDate.format('YYYY-MM-DD'),
+      });
+    },
+  });
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['staff-attendance', staffId, currentYear],
@@ -127,6 +160,7 @@ const useStaffAttendance = () => {
           severity: 'success',
         });
         refetch();
+        summaryRefetch();
       }
     } catch (error) {
       showSnackbar({
@@ -134,7 +168,7 @@ const useStaffAttendance = () => {
         severity: 'error',
       });
     }
-  }, [selected, showSnackbar, refetch]);
+  }, [selected, showSnackbar, refetch, summaryRefetch]);
 
   const handleDialog = useCallback(() => {
     setShowDialog((prev) => !prev);
@@ -157,6 +191,7 @@ const useStaffAttendance = () => {
         });
         setSelected(null);
         refetch();
+        summaryRefetch();
         handleDialog();
       } catch (error) {
         showSnackbar({
@@ -165,7 +200,7 @@ const useStaffAttendance = () => {
         });
       }
     },
-    [selected, refetch, handleDialog, showSnackbar],
+    [selected, refetch, summaryRefetch, handleDialog, showSnackbar],
   );
 
   const handleClearSelection = useCallback(() => {
@@ -179,6 +214,7 @@ const useStaffAttendance = () => {
       enableClearAttendance,
       selected,
       showDialog,
+      attendanceSummary,
       handleSaveAttendance,
       tileClassName,
       handleActiveStartDateChange,
@@ -186,6 +222,8 @@ const useStaffAttendance = () => {
       handleClearAttendance,
       handleDialog,
       handleClearSelection,
+      attendanceFilter,
+      handleChange,
     }),
     [
       isLoading,
@@ -193,6 +231,7 @@ const useStaffAttendance = () => {
       enableClearAttendance,
       selected,
       showDialog,
+      attendanceSummary,
       handleSaveAttendance,
       tileClassName,
       handleActiveStartDateChange,
@@ -200,6 +239,8 @@ const useStaffAttendance = () => {
       handleClearAttendance,
       handleDialog,
       handleClearSelection,
+      attendanceFilter,
+      handleChange,
     ],
   );
 };

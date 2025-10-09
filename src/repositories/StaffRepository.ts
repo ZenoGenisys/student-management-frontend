@@ -11,6 +11,8 @@ import type {
   StaffType,
   StaffSalaryType,
   StaffSalaryRequest,
+  StaffAttendanceSummaryRequest,
+  StaffAttendanceSummaryResponse,
 } from '../types';
 import { getHttpClient } from './AxiosClient';
 
@@ -57,6 +59,12 @@ export const getStaffAttendance = (
   params?: GetStaffAttendanceRequest,
 ): Promise<StaffAttendanceResponse> => {
   return getHttpClient(`${API_PATH.STAFF_ATTENDANCE}`, 'GET', null, params);
+};
+
+export const getStaffAttendanceSummary = (
+  params?: StaffAttendanceSummaryRequest,
+): Promise<StaffAttendanceSummaryResponse> => {
+  return getHttpClient(`${API_PATH.STAFF_ATTENDANCE_SUMMARY}`, 'GET', null, params);
 };
 
 export const markAttendance = (data: MarkAttendanceRequest[]): Promise<{ message: string }> => {
