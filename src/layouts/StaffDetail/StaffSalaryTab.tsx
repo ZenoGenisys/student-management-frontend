@@ -3,8 +3,9 @@ import ListView from '../../components/ListView';
 import { useStaffSalary } from '../../hooks';
 import { MenuCell, Pagination } from '../../components';
 import type { CellRender, ColumnDefsProps, StaffSalaryType } from '../../types';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import AddSalaryModal from './AddSalaryModal';
 
 const StaffSalaryTab = () => {
   const {
@@ -20,6 +21,11 @@ const StaffSalaryTab = () => {
     handleEdit,
     handleDelete,
   } = useStaffSalary();
+  const [open, setOpen] = useState(false);
+
+  const handleToggleModal = () => {
+    setOpen(!open);
+  };
 
   const Column = useMemo<ColumnDefsProps[]>(
     () => [
@@ -66,7 +72,12 @@ const StaffSalaryTab = () => {
         </Typography>
         <Box display={'flex'} alignItems={'center'} gap={2}>
           <Typography>Last Updated on: 25 Oct 2025</Typography>
-          <Button variant="contained" color='primary' startIcon={<AddCircleOutlineOutlinedIcon />}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddCircleOutlineOutlinedIcon />}
+            onClick={handleToggleModal}
+          >
             Add Salary
           </Button>
         </Box>
@@ -91,6 +102,7 @@ const StaffSalaryTab = () => {
           />
         </Box>
       </Pagination>
+      <AddSalaryModal open={open} onClose={handleToggleModal} />
     </Box>
   );
 };
