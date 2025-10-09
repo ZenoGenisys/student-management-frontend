@@ -53,9 +53,9 @@ const StaffSalaryTab = () => {
     () => [
       { id: 'feesId', label: 'Fees ID', sortable: true },
       { id: 'salaryFor', label: 'Salary For', sortable: true },
-      { id: 'date', label: 'Date', sortable: true },
-      { id: 'mode', label: 'Mode', sortable: true },
       { id: 'amount', label: 'Net Salary', sortable: true },
+      { id: 'mode', label: 'Mode', sortable: true },
+      { id: 'date', label: 'Payment Date', sortable: true },
       {
         id: 'actions',
         label: 'Action',

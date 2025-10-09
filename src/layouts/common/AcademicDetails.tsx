@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import type { ColumnDefsProps, LevelDetails } from '../../types';
 import ListView from '../../components/ListView';
-import Search from '../../components/Search';
 import dayjs from 'dayjs';
 
 type AcademicDetailsProps = {
