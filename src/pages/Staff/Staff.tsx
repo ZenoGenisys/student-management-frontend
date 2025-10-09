@@ -47,7 +47,7 @@ const Staff: React.FC = () => {
         sortable: true,
         cellRenderer: StatusCell,
       },
-      { id: 'joiningDate', label: 'Date of Joining', sortable: true },
+      { id: 'joiningDate', label: 'Date of Joining', sortable: true, dateFormat: true },
       {
         id: 'actions',
         label: 'Action',

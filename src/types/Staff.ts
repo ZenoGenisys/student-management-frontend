@@ -73,14 +73,26 @@ export type getStaffSalaryRequest = {
   dateTo?: string;
 };
 
+export type Payment = 'Online' | 'Cash';
+
+export type StaffSalaryRequest = {
+  feesId?: number;
+  staffId?: number;
+  mode: Payment;
+  amount: number;
+  paymentDate: Date | null;
+  salaryMonth: string;
+};
+
 export type StaffSalaryType = {
   feesId: number;
   staffId: number;
-  mode: string;
+  mode: Payment;
   salaryFor: string;
   amount: number;
-  date: string;
-  updatedBy: string | null;
+  paymentDate: Date | null;
+  salaryMonth: string;
+  updatedBy?: string;
 };
 
 export type StaffSalaryResponse = {

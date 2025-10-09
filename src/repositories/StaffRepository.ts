@@ -10,6 +10,7 @@ import type {
   StaffSalaryResponse,
   StaffType,
   StaffSalaryType,
+  StaffSalaryRequest,
 } from '../types';
 import { getHttpClient } from './AxiosClient';
 
@@ -39,11 +40,11 @@ export const getStaffSalary = (params: getStaffSalaryRequest): Promise<StaffSala
   return getHttpClient(`${API_PATH.STAFF_SALARY}`, 'GET', null, params);
 };
 
-export const addStaffSalary = (salaryData: StaffSalaryType): Promise<StaffSalaryType> => {
+export const addStaffSalary = (salaryData: StaffSalaryRequest): Promise<StaffSalaryType> => {
   return getHttpClient(API_PATH.STAFF_SALARY, 'POST', salaryData);
 };
 
-export const updateStaffSalary = (salaryData: StaffSalaryType): Promise<StaffSalaryType> => {
+export const updateStaffSalary = (salaryData: StaffSalaryRequest): Promise<StaffSalaryType> => {
   return getHttpClient(API_PATH.STAFF_SALARY, 'PUT', salaryData);
 };
 

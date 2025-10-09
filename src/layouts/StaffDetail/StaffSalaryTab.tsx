@@ -2,8 +2,8 @@ import { Box, Button, Typography } from '@mui/material';
 import ListView from '../../components/ListView';
 import { useStaffSalary } from '../../hooks';
 import { MenuCell, Pagination } from '../../components';
-import type { CellRender, ColumnDefsProps, StaffSalaryType } from '../../types';
-import { useMemo, useState } from 'react';
+import type { CellRender, ColumnDefsProps, StaffSalaryRequest, StaffSalaryType } from '../../types';
+import { useCallback, useMemo, useState } from 'react';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import AddSalaryModal from './AddSalaryModal';
 
@@ -25,37 +25,41 @@ const StaffSalaryTab = () => {
   const [open, setOpen] = useState(false);
   const [editSalary, setEditSalary] = useState<StaffSalaryType | null>(null);
 
-  const handleToggleModal = () => {
-    setOpen(!open);
-    if (editSalary) {
-      setEditSalary(null);
-    }
-  };
+  const handleToggleModal = useCallback(() => {
+    setOpen((prev) => !prev);
+    setEditSalary(null);
+  }, []);
 
-  const handleEdit = (id: number) => {
-    const salary = data?.data.find((s) => s.feesId === id);
-    if (salary) {
-      setEditSalary(salary);
-      setOpen(true);
-    }
-  };
+  const handleEdit = useCallback(
+    (id: number) => {
+      const salary = data?.data.find((s) => s.feesId === id);
+      if (salary) {
+        setEditSalary(salary);
+        setOpen(true);
+      }
+    },
+    [data?.data],
+  );
 
-  const handleSave = (salary: StaffSalaryType) => {
-    if (editSalary) {
-      handleUpdate(salary);
-    } else {
-      handleAdd(salary);
-    }
-    handleToggleModal();
-  };
+  const handleSave = useCallback(
+    (salary: StaffSalaryRequest) => {
+      handleToggleModal();
+      if (editSalary) {
+        handleUpdate(salary);
+      } else {
+        handleAdd(salary);
+      }
+    },
+    [handleToggleModal, handleUpdate, handleAdd, editSalary],
+  );
 
   const Column = useMemo<ColumnDefsProps[]>(
     () => [
       { id: 'feesId', label: 'Fees ID', sortable: true },
-      { id: 'salaryFor', label: 'Salary For', sortable: true },
+      { id: 'salaryMonth', label: 'Salary For', sortable: true, dateFormat: true },
       { id: 'amount', label: 'Net Salary', sortable: true },
       { id: 'mode', label: 'Mode', sortable: true },
-      { id: 'date', label: 'Payment Date', sortable: true },
+      { id: 'paymentDate', label: 'Payment Date', sortable: true, dateFormat: true },
       {
         id: 'actions',
         label: 'Action',
@@ -69,7 +73,7 @@ const StaffSalaryTab = () => {
         ),
       },
     ],
-    [data?.data, handleDelete],
+    [handleDelete, handleEdit],
   );
 
   return (

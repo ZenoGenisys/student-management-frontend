@@ -10,7 +10,7 @@ type AcademicDetailsProps = {
 
 const Column: ColumnDefsProps[] = [
   { id: 'level', label: 'Level' },
-  { id: 'date', label: 'Completed Date' },
+  { id: 'date', label: 'Completed Date', dateFormat: true },
   { id: 'document', label: 'View Document' },
   { id: 'remarks', label: 'Remarks' },
 ];

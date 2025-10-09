@@ -18,6 +18,7 @@ export type ColumnDefsProps<T = any> = {
   sortable?: boolean;
   align?: 'left' | 'right' | 'center';
   width?: string;
+  dateFormat?: boolean;
   cellRenderer?: ({ column, row, rows }: CellRender<T>) => React.ReactNode;
 };
 

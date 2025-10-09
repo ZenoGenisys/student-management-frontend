@@ -12,6 +12,7 @@ import {
 import type { ListViewProps, Row } from '../types';
 import { useTheme } from '@mui/material/styles';
 import { useCallback, useEffect, useState } from 'react';
+import { getFormattedDate } from '../utils';
 
 const ListView = <T extends Row = Row>({
   columns,
@@ -160,7 +161,7 @@ const ListView = <T extends Row = Row>({
                   // fallback to default rendering if no cellRenderer provided
                   return (
                     <TableCell key={column.id} align={column.align || 'center'}>
-                      {row[column.id]}
+                      {column.dateFormat ? getFormattedDate(row[column.id]) : row[column.id]}
                     </TableCell>
                   );
                 })}

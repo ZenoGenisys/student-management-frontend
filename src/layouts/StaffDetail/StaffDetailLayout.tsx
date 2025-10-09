@@ -8,6 +8,7 @@ import type { StaffType } from '../../types';
 import StaffDetailsTab from './StaffDetailsTab';
 import StaffAttendanceTab from './StaffAttendanceTab';
 import StaffSalaryTab from './StaffSalaryTab';
+import { getFormattedDate } from '../../utils';
 
 type StaffDetailLayoutProps = {
   data: StaffType;
@@ -30,10 +31,10 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
             'Staff Id': data?.staffId,
             'Email Id': data?.email,
             Gender: data?.gender,
-            'Date of Birth': data?.dateOfBirth?.split('-').reverse().join('-'),
+            'Date of Birth': getFormattedDate(data?.dateOfBirth),
             Age: data?.age,
             'Marital Status': data?.maritalStatus,
-            'Date of Joining': data?.joiningDate?.split('-').reverse().join('-'),
+            'Date of Joining': getFormattedDate(data?.joiningDate),
             'Blood Group': data?.bloodGroup,
             Qualification: data?.qualification,
             'Academic Level': data?.level,
