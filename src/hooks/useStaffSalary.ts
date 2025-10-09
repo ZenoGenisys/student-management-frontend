@@ -1,11 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
-import { getStaffSalary } from '../repositories';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  addStaffSalary,
+  deleteStaffSalary,
+  getStaffSalary,
+  updateStaffSalary,
+} from '../repositories';
 import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParams } from 'react-router-dom';
+import type { StaffSalaryType } from '../types';
+import { useSnackbar } from '../state';
 
 const useStaffSalary = () => {
   const { staffId } = useParams<{ staffId: string }>();
+  const queryClient = useQueryClient();
+  const { showSnackbar } = useSnackbar();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const [search, setSearch] = useState<string | null | undefined>(null);
@@ -44,6 +53,39 @@ const useStaffSalary = () => {
       }),
   });
 
+  const { mutate: addSalary } = useMutation({
+    mutationFn: addStaffSalary,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['staffSalary'] });
+      showSnackbar({ message: 'Salary added successfully', severity: 'success' });
+    },
+    onError: () => {
+      showSnackbar({ message: 'Failed to add salary', severity: 'error' });
+    },
+  });
+
+  const { mutate: updateSalary } = useMutation({
+    mutationFn: updateStaffSalary,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['staffSalary'] });
+      showSnackbar({ message: 'Salary updated successfully', severity: 'success' });
+    },
+    onError: () => {
+      showSnackbar({ message: 'Failed to update salary', severity: 'error' });
+    },
+  });
+
+  const { mutate: deleteSalary } = useMutation({
+    mutationFn: deleteStaffSalary,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['staffSalary'] });
+      showSnackbar({ message: 'Salary deleted successfully', severity: 'success' });
+    },
+    onError: () => {
+      showSnackbar({ message: 'Failed to delete salary', severity: 'error' });
+    },
+  });
+
   const handleViewToggle = useCallback((view: 'grid' | 'list') => {
     setActiveView(view);
   }, []);
@@ -69,15 +111,26 @@ const useStaffSalary = () => {
     setSort({ orderBy: 'name', order });
   }, []);
 
-  const handleEdit = useCallback((id: number) => {
-    // TODO: Implement edit functionality
-    console.log('Edit staff salary with id:', id);
-  }, []);
+  const handleAdd = useCallback(
+    (salary: StaffSalaryType) => {
+      addSalary({ ...salary, staffId: Number(staffId) });
+    },
+    [addSalary, staffId],
+  );
 
-  const handleDelete = useCallback((id: number) => {
-    // TODO: Implement delete functionality
-    console.log('Delete staff salary with id:', id);
-  }, []);
+  const handleUpdate = useCallback(
+    (salary: StaffSalaryType) => {
+      updateSalary({ ...salary, staffId: Number(staffId) });
+    },
+    [updateSalary, staffId],
+  );
+
+  const handleDelete = useCallback(
+    (id: number) => {
+      deleteSalary(id);
+    },
+    [deleteSalary],
+  );
 
   return {
     data,
@@ -94,7 +147,8 @@ const useStaffSalary = () => {
     handleSort,
     handleSearch,
     handleGridSort,
-    handleEdit,
+    handleAdd,
+    handleUpdate,
     handleDelete,
   };
 };

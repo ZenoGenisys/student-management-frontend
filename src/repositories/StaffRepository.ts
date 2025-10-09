@@ -9,6 +9,7 @@ import type {
   StaffResponse,
   StaffSalaryResponse,
   StaffType,
+  StaffSalaryType,
 } from '../types';
 import { getHttpClient } from './AxiosClient';
 
@@ -36,6 +37,18 @@ export const deleteStaff = (staffId: number): Promise<string> => {
 // Staff Salary APIs
 export const getStaffSalary = (params: getStaffSalaryRequest): Promise<StaffSalaryResponse> => {
   return getHttpClient(`${API_PATH.STAFF_SALARY}`, 'GET', null, params);
+};
+
+export const addStaffSalary = (salaryData: StaffSalaryType): Promise<StaffSalaryType> => {
+  return getHttpClient(API_PATH.STAFF_SALARY, 'POST', salaryData);
+};
+
+export const updateStaffSalary = (salaryData: StaffSalaryType): Promise<StaffSalaryType> => {
+  return getHttpClient(API_PATH.STAFF_SALARY, 'PUT', salaryData);
+};
+
+export const deleteStaffSalary = (id: number): Promise<string> => {
+  return getHttpClient(API_PATH.STAFF_SALARY, 'DELETE', null, { id });
 };
 
 // Staff Attendance APIs

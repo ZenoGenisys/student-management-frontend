@@ -18,13 +18,35 @@ const StaffSalaryTab = () => {
     handlePageChange,
     handleSort,
     handleRowPerPageChange,
-    handleEdit,
     handleDelete,
+    handleAdd,
+    handleUpdate,
   } = useStaffSalary();
   const [open, setOpen] = useState(false);
+  const [editSalary, setEditSalary] = useState<StaffSalaryType | null>(null);
 
   const handleToggleModal = () => {
     setOpen(!open);
+    if (editSalary) {
+      setEditSalary(null);
+    }
+  };
+
+  const handleEdit = (id: number) => {
+    const salary = data?.data.find((s) => s.feesId === id);
+    if (salary) {
+      setEditSalary(salary);
+      setOpen(true);
+    }
+  };
+
+  const handleSave = (salary: StaffSalaryType) => {
+    if (editSalary) {
+      handleUpdate(salary);
+    } else {
+      handleAdd(salary);
+    }
+    handleToggleModal();
   };
 
   const Column = useMemo<ColumnDefsProps[]>(
@@ -41,13 +63,13 @@ const StaffSalaryTab = () => {
         cellRenderer: (cellProps: CellRender<StaffSalaryType>) => (
           <MenuCell
             id={cellProps.row?.feesId}
-            onClickEdit={handleEdit}
-            onClickDelete={handleDelete}
+            onClickEdit={() => handleEdit(cellProps.row.feesId)}
+            onClickDelete={() => handleDelete(cellProps.row.feesId)}
           />
         ),
       },
     ],
-    [handleDelete, handleEdit],
+    [data?.data, handleDelete],
   );
 
   return (
@@ -102,7 +124,12 @@ const StaffSalaryTab = () => {
           />
         </Box>
       </Pagination>
-      <AddSalaryModal open={open} onClose={handleToggleModal} />
+      <AddSalaryModal
+        open={open}
+        onClose={handleToggleModal}
+        editData={editSalary}
+        onSave={handleSave}
+      />
     </Box>
   );
 };

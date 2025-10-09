@@ -76,9 +76,8 @@ export type getStaffSalaryRequest = {
 export type StaffSalaryType = {
   feesId: number;
   staffId: number;
-  name: string;
-  email: string;
   mode: string;
+  salaryFor: string;
   amount: number;
   date: string;
   updatedBy: string | null;
