@@ -165,8 +165,8 @@ const AddSalaryModal = ({ open, onClose, editData, onSave }: AddSalaryModalProps
                   slotProps={{
                     textField: {
                       size: 'small',
-                      error: !!errors.paymentDate,
-                      helperText: errors.paymentDate,
+                      error: !!errors.paymentDate && touched.paymentDate,
+                      helperText: errors.paymentDate && touched.paymentDate,
                     },
                   }}
                   value={values.paymentDate}
