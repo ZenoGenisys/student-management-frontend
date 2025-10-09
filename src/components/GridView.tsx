@@ -5,7 +5,6 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box, Button, IconButton } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
@@ -15,16 +14,23 @@ import { useTheme } from '@mui/material/styles';
 import type { GridViewProps } from '../types';
 import { getAvatarProps } from '../utils/avatar';
 import { useNavigate } from 'react-router-dom';
+import MenuCell from './cellRender/MenuCell';
 
-const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
+const GridView: React.FC<GridViewProps> = ({
+  type,
+  rows,
+  onClickEdit,
+  onClickDelete,
+  onClickView,
+}) => {
   const theme = useTheme();
   const navigate = useNavigate();
 
   return (
-    <Box marginTop={3}>
+    <Box>
       <Grid container spacing={2}>
         {rows.map((row, index) => (
-          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4, xl: 3}} key={`Grid${row?.staffId || index}`}>
+          <Grid size={{ xs: 12, sm: 12, md: 6, lg: 4, xl: 3 }} key={`Grid${row?.staffId || index}`}>
             <Card sx={{ border: `1px solid ${theme.palette.divider}` }}>
               <CardHeader
                 title={
@@ -56,9 +62,12 @@ const GridView: React.FC<GridViewProps> = ({ type, rows }) => {
                     >
                       {row?.status}
                     </Typography>
-                    <IconButton aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
+                    <MenuCell
+                      id={row?.staffId}
+                      onClickEdit={onClickEdit}
+                      onClickDelete={onClickDelete}
+                      onClickView={onClickView}
+                    />
                   </Box>
                 }
               />

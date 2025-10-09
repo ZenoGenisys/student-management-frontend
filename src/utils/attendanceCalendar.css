@@ -1,0 +1,55 @@
+/* AttendanceCalendar Styles */
+
+.react-calendar {
+  border: 1px solid #E3E8EE;
+  border-radius: 10px;
+}
+
+.react-calendar__tile {
+  padding: 15px 12px;
+}
+
+.present-date {
+  position: relative;
+  color: inherit;
+}
+.present-date::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: green;
+  border-radius: 50%;
+}
+
+.absent-date {
+  position: relative;
+  color: inherit;
+}
+.absent-date::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: red;
+  border-radius: 50%;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: unset !important;
+}
+
+.react-calendar__tile--active {
+  background: #006edc9d;
+  color: white !important;
+}
+
+.react-calendar__tile--active:enabled:focus {
+  background: #006edcff;
+}

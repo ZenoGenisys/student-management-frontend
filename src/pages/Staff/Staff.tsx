@@ -4,8 +4,8 @@ import GridView from '../../components/GridView';
 import ListView from '../../components/ListView';
 import { useStaff } from '../../hooks';
 import { GridFilter, GridHeader } from '../../layouts';
-import { ActionCell, NameCell, StatusCell } from '../../components';
-import type { ColumnDefsProps } from '../../types';
+import { ActionCell, NameCell, Pagination, StatusCell } from '../../components';
+import type { CellRender, ColumnDefsProps, StaffType } from '../../types';
 
 const Staff: React.FC = () => {
   const {
@@ -34,7 +34,7 @@ const Staff: React.FC = () => {
         id: 'name',
         label: 'Name',
         sortable: true,
-        cellRenderer: NameCell as (props: any) => React.ReactNode,
+        cellRenderer: NameCell,
         align: 'left' as const,
       },
       { id: 'gender', label: 'Gender', sortable: true },
@@ -45,14 +45,14 @@ const Staff: React.FC = () => {
         id: 'status',
         label: 'Status',
         sortable: true,
-        cellRenderer: StatusCell as (props: any) => React.ReactNode,
+        cellRenderer: StatusCell,
       },
-      { id: 'joiningDate', label: 'Date of Joining', sortable: true },
+      { id: 'joiningDate', label: 'Date of Joining', sortable: true, dateFormat: true },
       {
         id: 'actions',
         label: 'Action',
         sortable: false,
-        cellRenderer: (cellProps: any) => (
+        cellRenderer: (cellProps: CellRender<StaffType>) => (
           <ActionCell
             {...cellProps}
             onClickEdit={handleEdit}
@@ -71,29 +71,39 @@ const Staff: React.FC = () => {
       <GridFilter
         title="Staff"
         activeView={activeView}
-        search={search}
         handleViewToggle={handleViewToggle}
-        handleSearch={handleSearch}
         handleSortChange={handleGridSort}
       />
-      <Box flexGrow={1}>
-        {activeView === 'grid' ? (
-          <GridView type="STAFF" rows={data?.data ?? []} />
-        ) : (
-          <ListView
-            columns={Column}
-            rows={data?.data ?? []}
-            page={page}
-            rowsPerPage={rowsPerPage}
-            sort={sort}
-            pagination={data?.pagination}
-            handleSort={handleSort}
-            handleRowPerPageChange={handleRowPerPageChange}
-            handlePageChange={handlePageChange}
-            getRowId={(row) => row.staffId.toString()}
-          />
-        )}
-      </Box>
+      <Pagination
+        page={page}
+        pagination={data?.pagination}
+        rowsPerPage={rowsPerPage}
+        search={search as string | undefined}
+        handleSearch={handleSearch}
+        handlePageChange={handlePageChange}
+        handleRowPerPageChange={handleRowPerPageChange}
+      >
+        <Box flexGrow={1}>
+          {activeView === 'grid' ? (
+            <GridView
+              type="STAFF"
+              rows={data?.data ?? []}
+              onClickEdit={handleEdit}
+              onClickDelete={handleDelete}
+              onClickView={handleView}
+            />
+          ) : (
+            <ListView
+              columns={Column}
+              rows={data?.data ?? []}
+              sort={sort}
+              showCheckbox={false}
+              handleSort={handleSort}
+              getRowId={(row) => row.staffId.toString()}
+            />
+          )}
+        </Box>
+      </Pagination>
     </Box>
   );
 };

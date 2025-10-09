@@ -49,7 +49,7 @@ type SearchProps = {
 };
 const Search = ({ search, onChange }: SearchProps) => {
   return (
-    <SearchContainer sx={{ display: { xs: 'none', sm: 'flex' } }}>
+    <SearchContainer sx={{ background: '#fff', margin: 0 }}>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>

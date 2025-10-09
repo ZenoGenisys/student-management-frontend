@@ -1,13 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { deleteStaff, getStaff } from '../repositories';
+import {
+  addStaffSalary,
+  deleteStaffSalary,
+  getStaffSalary,
+  updateStaffSalary,
+} from '../repositories';
 import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import type { StaffSalaryRequest } from '../types';
 import { useSnackbar } from '../state';
-import { PATH } from '../routes';
 
-const useStaff = () => {
-  const navigate = useNavigate();
+const useStaffSalary = () => {
+  const { staffId } = useParams<{ staffId: string }>();
+  const { showSnackbar } = useSnackbar();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const [search, setSearch] = useState<string | null | undefined>(null);
@@ -18,7 +24,6 @@ const useStaff = () => {
     orderBy: string;
     order: 'asc' | 'desc';
   } | null>(null);
-  const { showSnackbar } = useSnackbar();
 
   // Debounce search input
   useEffect(() => {
@@ -31,12 +36,13 @@ const useStaff = () => {
   }, [search]);
 
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['staff', debouncedSearch, page, rowsPerPage, sort],
+    queryKey: ['staffSalary', staffId, debouncedSearch, page, rowsPerPage, sort],
     queryFn: () =>
-      getStaff({
+      getStaffSalary({
         page: page,
         size: rowsPerPage,
         search: debouncedSearch as string | undefined,
+        staffId: Number(staffId),
         ...(sort
           ? {
               sortBy: sort.orderBy,
@@ -71,36 +77,47 @@ const useStaff = () => {
     setSort({ orderBy: 'name', order });
   }, []);
 
-  const handleAddStaff = useCallback(() => {
-    navigate(PATH.ADD_STAFF);
-  }, [navigate]);
-
-  const handleView = useCallback(
-    (id: number) => {
-      navigate(PATH.STAFF_DETAILS.replace(':staffId', id.toString()));
+  const handleAdd = useCallback(
+    async (salary: StaffSalaryRequest) => {
+      try {
+        await addStaffSalary({ ...salary, staffId: Number(staffId) });
+        showSnackbar({ message: 'Salary added successfully', severity: 'success' });
+        refetch();
+      } catch (error) {
+        showSnackbar({
+          message: error instanceof Error ? error.message : 'Failed to add salary',
+          severity: 'error',
+        });
+      }
     },
-    [navigate],
+    [showSnackbar, refetch, staffId],
   );
 
-  const handleEdit = useCallback(
-    (id: number) => {
-      navigate(PATH.EDIT_STAFF.replace(':staffId', id.toString()));
+  const handleUpdate = useCallback(
+    async (salary: StaffSalaryRequest) => {
+      try {
+        await updateStaffSalary({ ...salary, staffId: Number(staffId) });
+        showSnackbar({ message: 'Salary updated successfully', severity: 'success' });
+        refetch();
+      } catch (error) {
+        showSnackbar({
+          message: error instanceof Error ? error.message : 'Failed to update salary',
+          severity: 'error',
+        });
+      }
     },
-    [navigate],
+    [staffId, showSnackbar, refetch],
   );
 
   const handleDelete = useCallback(
     async (id: number) => {
       try {
-        await deleteStaff(id);
+        await deleteStaffSalary(id);
+        showSnackbar({ message: 'Salary deleted successfully', severity: 'success' });
         refetch();
-        showSnackbar({
-          message: 'Staff deleted successfully!',
-          severity: 'success',
-        });
       } catch (error) {
         showSnackbar({
-          message: (error as Error).message || 'Failed to delete staff.',
+          message: error instanceof Error ? error.message : 'Failed to delete salary',
           severity: 'error',
         });
       }
@@ -123,10 +140,9 @@ const useStaff = () => {
     handleSort,
     handleSearch,
     handleGridSort,
-    handleAddStaff,
-    handleView,
-    handleEdit,
+    handleAdd,
+    handleUpdate,
     handleDelete,
   };
 };
-export default useStaff;
+export default useStaffSalary;

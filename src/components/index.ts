@@ -6,12 +6,8 @@ import Search from './Search';
 import StatusCell from './cellRender/StatusCell';
 import ActionCell from './cellRender/ActionCell';
 import NameCell from './cellRender/NameCell';
-
-import StaffAttendanceTab from './Staff/StaffAttendanceTab';
-import StaffDetailsTab from './Staff/StaffDetailsTab';
-import StaffSalaryTab from './Staff/StaffSalaryTab';
-import StaffAcademicTab from './Staff/StaffAcademicTab';
-import StaffContactDetails from './Staff/StaffContactDetails';
+import MenuCell from './cellRender/MenuCell';
+import Pagination from './Pagination';
 
 export {
   Layout,
@@ -22,9 +18,6 @@ export {
   StatusCell,
   ActionCell,
   NameCell,
-  StaffAcademicTab,
-  StaffAttendanceTab,
-  StaffDetailsTab,
-  StaffSalaryTab,
-  StaffContactDetails,
+  MenuCell,
+  Pagination,
 };

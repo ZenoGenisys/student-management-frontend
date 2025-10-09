@@ -17,37 +17,31 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
-type DeleteConfirmationProps = {
+type RevokeConfirmationModalProps = {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
 };
-const DeleteConfirmation = ({ open, onClose, onConfirm }: DeleteConfirmationProps) => {
+
+const RevokeConfirmationModal = ({ open, onClose, onConfirm }: RevokeConfirmationModalProps) => {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      TransitionComponent={Transition}
-      aria-labelledby="delete-dialog-title"
-      aria-describedby="delete-dialog-description"
-    >
-      <DialogTitle id="delete-dialog-title" variant="h5">
-        Confirm Deletion
-      </DialogTitle>
+    <Dialog open={open} onClose={onClose} TransitionComponent={Transition}>
+      <DialogTitle variant="h5">Confirm Role Deletion</DialogTitle>
       <DialogContent>
-        <DialogContentText id="delete-dialog-description" variant="body1">
-          Are you sure you want to delete this record. This action cannot be undone.
+        <DialogContentText>
+          Are you sure you want to delete this staff member's role? This action cannot be undone.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} autoFocus variant="outlined">
+        <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>
-        <Button onClick={onConfirm} variant="outlined" color="error">
-          Yes, Delete
+        <Button variant="contained" color="error" onClick={onConfirm}>
+          Delete
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
-export default DeleteConfirmation;
+
+export default RevokeConfirmationModal;

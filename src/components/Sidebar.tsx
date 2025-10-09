@@ -17,7 +17,7 @@ import { DashboardOutlined, PeopleAltOutlined, SchoolOutlined } from '@mui/icons
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../routes/path';
 import { DRAWER_WIDTH } from '../constants/layout';
-import logo from "../assets/images/logo.png";
+import logo from '../assets/images/logo.png';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
