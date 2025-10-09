@@ -55,7 +55,7 @@ const Pagination = ({
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center" p={2}>
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box display="flex" alignItems="center" flexWrap={'wrap'} gap={1}>
           <Typography variant="body1" color="textSecondary">
             Row Per Page
           </Typography>

@@ -25,6 +25,7 @@ const HeaderDetails = ({
     <Box
       flexGrow={1}
       display={'flex'}
+      flexWrap={'wrap'}
       justifyContent="space-between"
       alignItems="center"
       padding={2}
@@ -34,7 +35,7 @@ const HeaderDetails = ({
       <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold' }}>
         {title}
       </Typography>
-      <Box display={'flex'} gap={2}>
+      <Box display={'flex'} flexWrap={'wrap'} justifyContent={'flex-end'} gap={2}>
         <Button
           variant="outlined"
           color="primary"
