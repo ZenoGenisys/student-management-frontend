@@ -163,6 +163,7 @@ export default function StaffAttendanceTab() {
         prev2Label={null}
         onClickDay={handleDateClick}
         onActiveStartDateChange={handleActiveStartDateChange}
+        tileDisabled={({ date }) => date > new Date()}
       />
       <Box display="flex" justifyContent="flex-start" gap={2} mt={2}>
         <Button variant="contained" onClick={handleDialog} disabled={!selectedDates}>
@@ -172,9 +173,9 @@ export default function StaffAttendanceTab() {
           variant="outlined"
           color="error"
           onClick={handleClearAttendance}
-          disabled={!enableClearAttendance}
+          disabled={!enableClearAttendance || !selected || selected.length === 0}
         >
-          Clear Attendance
+          Delete Attendance
         </Button>
         <Button
           variant="outlined"

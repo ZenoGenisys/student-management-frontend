@@ -111,6 +111,7 @@ const LevelForm = ({
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
+                    disableFuture
                     value={values.date ? dayjs(values.date) : null}
                     onChange={handleDateChange}
                     slotProps={{
