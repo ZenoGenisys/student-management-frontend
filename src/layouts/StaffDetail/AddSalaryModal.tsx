@@ -98,6 +98,7 @@ const AddSalaryModal = ({ open, onClose, editData, onSave }: AddSalaryModalProps
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                  disableFuture
                   views={['month', 'year']}
                   sx={{ width: '100%' }}
                   slotProps={{
@@ -161,6 +162,7 @@ const AddSalaryModal = ({ open, onClose, editData, onSave }: AddSalaryModalProps
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                  disableFuture
                   sx={{ width: '100%' }}
                   slotProps={{
                     textField: {
