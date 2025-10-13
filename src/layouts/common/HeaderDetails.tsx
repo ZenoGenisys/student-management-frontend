@@ -9,6 +9,7 @@ type HeaderProps = {
   title: string;
   showRevoke?: boolean;
   editLabel?: string;
+  isStaff?: boolean;
   onClickEdit: () => void;
   onClickPromote?: () => void;
   onClickRevoke?: () => void;
@@ -17,6 +18,7 @@ const HeaderDetails = ({
   title,
   showRevoke,
   editLabel = 'Edit',
+  isStaff = true,
   onClickEdit,
   onClickPromote,
   onClickRevoke,
@@ -45,25 +47,29 @@ const HeaderDetails = ({
         >
           {editLabel}
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          startIcon={<SensorOccupiedOutlinedIcon />}
-          onClick={onClickPromote}
-        >
-          Promote
-        </Button>
-        {showRevoke && (
-          <Button
-            variant="outlined"
-            color="error"
-            size="large"
-            startIcon={<PersonRemoveOutlinedIcon />}
-            onClick={onClickRevoke}
-          >
-            Delete Role
-          </Button>
+        {isStaff && (
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              size="large"
+              startIcon={<SensorOccupiedOutlinedIcon />}
+              onClick={onClickPromote}
+            >
+              Promote
+            </Button>
+            {showRevoke && (
+              <Button
+                variant="outlined"
+                color="error"
+                size="large"
+                startIcon={<PersonRemoveOutlinedIcon />}
+                onClick={onClickRevoke}
+              >
+                Delete Role
+              </Button>
+            )}
+          </>
         )}
       </Box>
     </Box>

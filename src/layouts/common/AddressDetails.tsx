@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   Card,
@@ -13,13 +12,15 @@ import { useTheme } from '@mui/material/styles';
 import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import { GrDocumentPdf } from 'react-icons/gr';
 import { FaDownload } from 'react-icons/fa6';
+import React from 'react';
 
-interface StaffdataProps {
-  address: string | undefined;
-  additionalDetails: string | undefined;
-}
+type AddressDetailsProps = {
+  address?: string;
+  additionalDetails?: string;
+  parentDetails?: { [key: string]: string | number | undefined };
+};
 
-const StaffDetailsTab: React.FC<StaffdataProps> = ({ address, additionalDetails }) => {
+const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDetailsProps) => {
   const theme = useTheme();
   return (
     <Box display={'flex'} flexDirection="column" gap={2}>
@@ -42,6 +43,30 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address, additionalDetails 
           </Card>
         </Grid>
       </Grid>
+
+      {/* Parents Details */}
+      {parentDetails && (
+        <Card>
+          <CardHeader title={<Typography variant="h5">Parents Details</Typography>} />
+          <CardContent
+            sx={{
+              borderTop: `1px solid ${theme.palette.divider}`,
+            }}
+          >
+            <Grid container spacing={2} columns={12} mb={1}>
+              {Object.keys(parentDetails).map((key) => (
+                <React.Fragment key={key}>
+                  <Grid size={3}>
+                    <b>{key}:</b>
+                  </Grid>
+
+                  <Grid size={3}>{parentDetails[key]}</Grid>
+                </React.Fragment>
+              ))}
+            </Grid>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Documents */}
       <Card>
@@ -126,4 +151,4 @@ const StaffDetailsTab: React.FC<StaffdataProps> = ({ address, additionalDetails 
   );
 };
 
-export default StaffDetailsTab;
+export default AddressDetails;

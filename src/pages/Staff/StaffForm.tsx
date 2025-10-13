@@ -33,7 +33,6 @@ import LevelForm from '../../layouts/common/LevelForm';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 
-// ✅ memoized validation schema
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   gender: Yup.string().required('Gender is required'),
@@ -68,7 +67,6 @@ const StaffForm: React.FC = () => {
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
 
-  // ✅ memoized options
   const genderOptions = useMemo(() => ['Male', 'Female', 'Other'], []);
   const maritalOptions = useMemo(() => ['Single', 'Married'], []);
   const centerOptions = useMemo(() => ['Puliyur', 'Karur'], []);

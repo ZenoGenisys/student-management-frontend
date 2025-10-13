@@ -1,9 +1,23 @@
+import type { LevelDetails } from './Staff';
+
 export type GetStudentRequest = {
   page: number;
   size: number;
   search?: string;
   sortBy?: string;
   sortOrder?: 'ASC' | 'DESC';
+};
+
+export type ParentDetails = {
+  parentId: number;
+  fatherName: string;
+  fatherPhoneNumber: string;
+  fatherEmail: string;
+  fatherOccupation: string;
+  motherName: string;
+  motherPhoneNumber: string;
+  motherEmail: string;
+  motherOccupation: string;
 };
 
 export type StudentType = {
@@ -15,13 +29,21 @@ export type StudentType = {
   schoolName: string;
   grade: string;
   joiningDate: string;
-  learningLevel: string;
-  status: string;
+  level: string;
+  status: 'Active' | 'Inactive';
   center: string;
-  batch: string;
-  primaryContactNumber: string;
+  batch: string[];
+  createdAt: Date;
+  modifiedAt: Date;
+  contactNumber: string;
   email: string;
   address: string;
+  bloodGroup: string;
+  studentType?: string;
+  primaryContactNumber?: string;
+  levelDetails?: LevelDetails[];
+  parentDetails?: ParentDetails;
+  additionalDetails?: string;
 };
 
 export type StudentResponse = {

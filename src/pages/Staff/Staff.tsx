@@ -6,6 +6,7 @@ import { useStaff } from '../../hooks';
 import { GridFilter, GridHeader } from '../../layouts';
 import { ActionCell, NameCell, Pagination, StatusCell } from '../../components';
 import type { CellRender, ColumnDefsProps, StaffType } from '../../types';
+import { PATH } from '../../routes';
 
 const Staff: React.FC = () => {
   const {
@@ -34,7 +35,12 @@ const Staff: React.FC = () => {
         id: 'name',
         label: 'Name',
         sortable: true,
-        cellRenderer: NameCell,
+        cellRenderer: (cellProps: CellRender<StaffType>) => (
+          <NameCell
+            name={cellProps.row.name}
+            redirectionUrl={PATH.STAFF_DETAILS.replace(':staffId', String(cellProps.row.staffId))}
+          />
+        ),
         align: 'left' as const,
       },
       { id: 'gender', label: 'Gender', sortable: true },

@@ -1,19 +1,32 @@
 import Box from '@mui/material/Box';
-import type { CellRender, StaffType } from '../../types';
+import type { CellRender, StaffType, StudentType } from '../../types';
 import { useTheme } from '@mui/material/styles';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import IconButton from '@mui/material/IconButton';
 import MenuCell from './MenuCell';
+import { useMemo } from 'react';
 
-type ActionCellProps = CellRender<StaffType> & {
+type ActionCellProps<T extends StaffType | StudentType> = CellRender<T> & {
   onClickView: (id: number) => void;
   onClickEdit: (id: number) => void;
   onClickDelete: (id: number) => void;
 };
-const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCellProps) => {
+const ActionCell = <T extends StaffType | StudentType>({
+  row,
+  onClickView,
+  onClickEdit,
+  onClickDelete,
+}: ActionCellProps<T>) => {
   const theme = useTheme();
+
+  const id = useMemo(() => {
+    if ('staffId' in row) {
+      return row.staffId;
+    }
+    return row.studentId;
+  }, [row]);
 
   return (
     <Box display="flex" justifyContent="center" gap={1}>
@@ -65,7 +78,7 @@ const ActionCell = ({ row, onClickView, onClickEdit, onClickDelete }: ActionCell
         <MailOutlineOutlinedIcon />
       </IconButton>
       <MenuCell
-        id={row?.staffId}
+        id={id}
         onClickView={onClickView}
         onClickEdit={onClickEdit}
         onClickDelete={onClickDelete}

@@ -1,21 +1,22 @@
+import Grid from '@mui/material/Grid';
+import { AddressDetails, BasicDetails } from '../common';
+import type { StudentType } from '../../types';
+import { getFormattedDate } from '../../utils';
+import Box from '@mui/material/Box';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
-import { Box, Grid, Tab, Tabs } from '@mui/material';
-import { BasicDetails, AcademicDetails, AddressDetails } from '../common';
-import type { StaffType } from '../../types';
-import StaffAttendanceTab from './StaffAttendanceTab';
-import StaffSalaryTab from './StaffSalaryTab';
-import { getFormattedDate } from '../../utils';
 
-type StaffDetailLayoutProps = {
-  data: StaffType;
+type StudentDetailsLayoutProps = {
+  data: StudentType;
   tabValue: number;
   handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
 };
 
-const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayoutProps) => {
+const StudentDetailsLayout = ({ data, tabValue, handleTabChange }: StudentDetailsLayoutProps) => {
   return (
     <Grid container spacing={2} width="100%">
       {/* Left Side - Student Info */}
@@ -24,22 +25,21 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
         <BasicDetails
           name={data?.name}
           status={data?.status}
-          contactNumber={data?.contactNumber}
+          contactNumber={data?.primaryContactNumber ?? ''}
           email={data?.email}
           data={{
-            'Staff Id': data?.staffId,
+            'Student Id': data?.studentId,
             'Email Id': data?.email,
             Gender: data?.gender,
             'Date of Birth': getFormattedDate(data?.dateOfBirth),
             Age: data?.age,
-            'Marital Status': data?.maritalStatus,
             'Date of Joining': getFormattedDate(data?.joiningDate),
             'Blood Group': data?.bloodGroup,
-            Qualification: data?.qualification,
-            'Academic Level': data?.level,
-            Experience: `${data?.experience} years`,
+            Grade: data?.grade,
+            'School Name': data?.schoolName,
+            Batch: data?.batch.toString(),
             Center: data?.center,
-            Role: data?.role ?? '-',
+            Type: data?.studentType ?? '',
           }}
         />
       </Grid>
@@ -59,18 +59,14 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
             <Tab
               icon={<SchoolOutlinedIcon fontSize="medium" />}
               iconPosition="start"
-              label="Staff Details"
+              label="Student Details"
             />
             <Tab
               icon={<EventNoteOutlinedIcon fontSize="medium" />}
               iconPosition="start"
               label="Attendance"
             />
-            <Tab
-              icon={<PaidOutlinedIcon fontSize="medium" />}
-              iconPosition="start"
-              label="Salary"
-            />
+            <Tab icon={<PaidOutlinedIcon fontSize="medium" />} iconPosition="start" label="Fees" />
             <Tab
               icon={<LocalLibraryOutlinedIcon fontSize="medium" />}
               iconPosition="start"
@@ -80,21 +76,34 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
 
           {/* Tab 1 Details */}
           {tabValue === 0 && (
-            <AddressDetails address={data?.address} additionalDetails={data?.additionalDetails} />
+            <AddressDetails
+              address={data?.address}
+              additionalDetails={data?.additionalDetails}
+              parentDetails={{
+                'Father Name': data?.parentDetails?.fatherName,
+                'Father Phone Number': data?.parentDetails?.fatherPhoneNumber,
+                'Father Email': data?.parentDetails?.fatherEmail,
+                'Father Occupation': data?.parentDetails?.fatherOccupation,
+                'Mother Name': data?.parentDetails?.motherName,
+                'Mother Phone Number': data?.parentDetails?.motherPhoneNumber,
+                'Mother Email': data?.parentDetails?.motherEmail,
+                'Mother Occupation': data?.parentDetails?.motherOccupation,
+              }}
+            />
           )}
 
           {/* Tab 2 Attendance */}
-          {tabValue === 1 && <StaffAttendanceTab />}
+          {/* {tabValue === 1 && <StaffAttendanceTab />} */}
 
           {/* Tab 3 Fees */}
-          {tabValue === 2 && <StaffSalaryTab />}
+          {/* {tabValue === 2 && <StaffSalaryTab />} */}
 
           {/* Tab 4 Fees */}
-          {tabValue === 3 && <AcademicDetails data={data?.levelDetails} />}
+          {/* {tabValue === 3 && <AcademicDetails data={data?.levelDetails} />} */}
         </Box>
       </Grid>
     </Grid>
   );
 };
 
-export default StaffDetailLayout;
+export default StudentDetailsLayout;

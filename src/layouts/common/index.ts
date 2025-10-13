@@ -3,5 +3,6 @@ import GridFilter from './GridFilter';
 import BasicDetails from './BasicDetails';
 import HeaderDetails from './HeaderDetails';
 import AcademicDetails from './AcademicDetails';
+import AddressDetails from './AddressDetails';
 
-export { GridHeader, GridFilter, BasicDetails, HeaderDetails, AcademicDetails };
+export { GridHeader, AddressDetails, GridFilter, BasicDetails, HeaderDetails, AcademicDetails };
