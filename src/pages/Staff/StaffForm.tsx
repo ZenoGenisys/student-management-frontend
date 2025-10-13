@@ -228,6 +228,7 @@ const StaffForm: React.FC = () => {
                             </Typography>
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                               <DatePicker
+                                disableFuture
                                 value={dayjs(field.value)}
                                 onChange={(v) => form.setFieldValue(field.name, v)}
                                 slotProps={{
