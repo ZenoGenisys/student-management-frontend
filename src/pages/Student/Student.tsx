@@ -25,6 +25,7 @@ const Student: React.FC = () => {
     handleEdit,
     handleDelete,
     handleView,
+    handleAdd,
   } = useStudent();
 
   const Column = useMemo<ColumnDefsProps[]>(
@@ -74,7 +75,7 @@ const Student: React.FC = () => {
 
   return (
     <Box display="flex" flexDirection="column">
-      <GridHeader title="Student" />
+      <GridHeader title="Student" onClickAdd={handleAdd} />
       <GridFilter
         title="Student"
         activeView={activeView}

@@ -5,7 +5,6 @@ import {
   CardHeader,
   Card,
   CardContent,
-  Avatar,
   FormControl,
   MenuItem,
   Select,
@@ -17,7 +16,6 @@ import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -32,6 +30,7 @@ import { PATH } from '../../routes';
 import LevelForm from '../../layouts/common/LevelForm';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
+import { AdditionalDetailsForm, AddressForm, AvatarUpload } from '../../layouts';
 
 const validationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
@@ -47,17 +46,14 @@ const validationSchema = Yup.object({
   center: Yup.string().required('Center is required'),
   status: Yup.string().required('Status is required'),
   address: Yup.string().required('Address is required'),
-  levelDetails: Yup.array()
-    .of(
-      Yup.object({
-        level: Yup.number().required(),
-        date: Yup.date().nullable().required('Date is required'),
-        document: Yup.string().required('Document is required'),
-        remarks: Yup.string().required('Remarks are required'),
-      }),
-    )
-    .min(1, 'At least one level is required')
-    .max(8, 'Maximum 8 levels allowed'),
+  levelDetails: Yup.array().of(
+    Yup.object({
+      level: Yup.number().required(),
+      date: Yup.date().nullable().required('Date is required'),
+      document: Yup.string().required('Document is required'),
+      remarks: Yup.string().required('Remarks are required'),
+    }),
+  ),
 });
 
 const StaffForm: React.FC = () => {
@@ -461,11 +457,11 @@ const StaffForm: React.FC = () => {
                   </Grid>
 
                   {/* Additional Details */}
-                  <AdditionalDetailsSection />
+                  <AdditionalDetailsForm />
                 </CardContent>
               </Card>
 
-              {/* Qualification Level */}
+              {/* Academic Level */}
               <Card>
                 <CardHeader
                   title={
@@ -517,14 +513,8 @@ const StaffForm: React.FC = () => {
                 </CardContent>
               </Card>
 
-              {touched.levelDetails && typeof errors.levelDetails === 'string' && (
-                <Typography color="error" variant="caption">
-                  {errors.levelDetails}
-                </Typography>
-              )}
-
               {/* Address */}
-              <AddressSection />
+              <AddressForm />
 
               {/* Buttons */}
               <Box display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
@@ -547,98 +537,6 @@ const StaffForm: React.FC = () => {
     </Formik>
   );
 };
-
-const AvatarUpload = React.memo(() => (
-  <Box display="flex" gap={1} mb={3}>
-    <Avatar src="/static/images/avatar/1.jpg" sx={{ width: 80, height: 80 }} variant="square" />
-    <Box display="flex" flexDirection="column" gap={1}>
-      <Box display="flex" gap={1}>
-        <Button variant="outlined" color="primary" size="medium" sx={{ p: '4px 8px' }}>
-          Upload
-        </Button>
-        <Button variant="contained" color="primary" size="medium" sx={{ p: '4px 8px' }}>
-          Remove
-        </Button>
-      </Box>
-      <Typography variant="caption">Upload image size 4MB, Format JPG, PNG</Typography>
-    </Box>
-  </Box>
-));
-
-const AdditionalDetailsSection = React.memo(() => (
-  <Grid container spacing={2} mt={2}>
-    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-      <FastField name="additionalDetails">
-        {({ field, meta }: FieldProps<string>) => (
-          <FormControl fullWidth>
-            <Typography mb={1} variant="h6">
-              Additional Details
-            </Typography>
-            <textarea
-              {...field}
-              style={{
-                width: '100%',
-                minHeight: 100,
-                resize: 'vertical',
-                border: '1px solid #ccc',
-                borderRadius: 4,
-                padding: 8,
-              }}
-              placeholder="Add additional notes here..."
-            />
-            {meta.touched && meta.error && (
-              <Typography color="error" variant="caption">
-                {meta.error}
-              </Typography>
-            )}
-          </FormControl>
-        )}
-      </FastField>
-    </Grid>
-  </Grid>
-));
-
-const AddressSection = React.memo(() => (
-  <Card>
-    <CardHeader
-      title={
-        <Typography variant="h4" display="flex" alignItems="center">
-          <HomeOutlinedIcon sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }} />
-          Address
-        </Typography>
-      }
-    />
-    <CardContent>
-      <Grid container spacing={2} mt={2}>
-        <Grid size={{ xs: 12 }}>
-          <FastField name="address">
-            {({ field, meta }: FieldProps<string>) => (
-              <FormControl fullWidth>
-                <textarea
-                  {...field}
-                  style={{
-                    width: '100%',
-                    minHeight: 100,
-                    resize: 'vertical',
-                    border: '1px solid #ccc',
-                    borderRadius: 4,
-                    padding: 8,
-                  }}
-                  placeholder="Address..."
-                />
-                {meta.touched && meta.error && (
-                  <Typography color="error" variant="caption">
-                    {meta.error}
-                  </Typography>
-                )}
-              </FormControl>
-            )}
-          </FastField>
-        </Grid>
-      </Grid>
-    </CardContent>
-  </Card>
-));
 
 const MemoizedLevelForm = React.memo(LevelForm);
 export default React.memo(StaffForm);

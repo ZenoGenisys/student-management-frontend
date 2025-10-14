@@ -71,6 +71,10 @@ const useStudent = () => {
     setSort({ orderBy: 'name', order });
   }, []);
 
+  const handleAdd = useCallback(() => {
+    navigate(PATH.ADD_STUDENT);
+  }, [navigate]);
+
   const handleView = useCallback(
     (id: number) => {
       navigate(PATH.STUDENT_DETAILS.replace(':studentId', id.toString()));
@@ -122,6 +126,7 @@ const useStudent = () => {
     handleEdit,
     handleDelete,
     handleView,
+    handleAdd,
   };
 };
 export default useStudent;

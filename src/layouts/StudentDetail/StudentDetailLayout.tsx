@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import { AddressDetails, BasicDetails } from '../common';
+import { AcademicDetails, AddressDetails, BasicDetails } from '../common';
 import type { StudentType } from '../../types';
 import { getFormattedDate } from '../../utils';
 import Box from '@mui/material/Box';
@@ -99,7 +99,7 @@ const StudentDetailsLayout = ({ data, tabValue, handleTabChange }: StudentDetail
           {/* {tabValue === 2 && <StaffSalaryTab />} */}
 
           {/* Tab 4 Fees */}
-          {/* {tabValue === 3 && <AcademicDetails data={data?.levelDetails} />} */}
+          {tabValue === 3 && <AcademicDetails data={data?.levelDetails} />}
         </Box>
       </Grid>
     </Grid>

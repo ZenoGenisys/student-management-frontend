@@ -54,3 +54,23 @@ export type StudentResponse = {
     currentPage: number;
   };
 };
+
+export type CreateStudent = {
+  studentId?: number;
+  name: string;
+  gender: string;
+  joiningDate: string;
+  dateOfBirth: string;
+  schoolName: string;
+  grade: string;
+  primaryContactNumber: string;
+  email: string;
+  address: string;
+  batch: string[];
+  center: string;
+  status: 'Active' | 'Inactive';
+  additionalDetails: string;
+  bloodGroup: string;
+  levelDetails?: LevelDetails[];
+  parentDetails?: ParentDetails;
+};
