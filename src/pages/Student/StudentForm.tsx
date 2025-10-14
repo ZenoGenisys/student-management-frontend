@@ -280,7 +280,13 @@ const StudentForm = () => {
                         touched={
                           Array.isArray(touched.levelDetails) ? touched.levelDetails[idx] : {}
                         }
-                        errors={Array.isArray(errors.levelDetails) ? errors.levelDetails[idx] : {}}
+                        errors={
+                          Array.isArray(errors.levelDetails)
+                            ? typeof errors.levelDetails[idx] === 'string'
+                              ? {}
+                              : (errors.levelDetails[idx] ?? {})
+                            : {}
+                        }
                         isMobile={isMobile}
                         levelDetails={values.levelDetails ?? []}
                         setFieldValue={setFieldValue}

@@ -1,3 +1,4 @@
+import type { Dayjs } from 'dayjs';
 import type { LevelDetails } from './Staff';
 
 export type GetStudentRequest = {
@@ -9,7 +10,7 @@ export type GetStudentRequest = {
 };
 
 export type ParentDetails = {
-  parentId: number;
+  parentId?: number;
   fatherName: string;
   fatherPhoneNumber: string;
   fatherEmail: string;
@@ -59,8 +60,8 @@ export type CreateStudent = {
   studentId?: number;
   name: string;
   gender: string;
-  joiningDate: string;
-  dateOfBirth: string;
+  joiningDate: string | Dayjs | null;
+  dateOfBirth: string | Dayjs | null;
   schoolName: string;
   grade: string;
   primaryContactNumber: string;
