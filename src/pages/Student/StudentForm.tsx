@@ -24,9 +24,9 @@ import {
   AdditionalDetailsForm,
   AddressForm,
   AvatarUpload,
-  BasicInfo,
   ParentsInfo,
-  validationSchema,
+  StudentBasicInfo,
+  StudentValidationSchema,
 } from '../../layouts';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../routes';
@@ -119,7 +119,7 @@ const StudentForm = () => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationSchema}
+      validationSchema={StudentValidationSchema}
       enableReinitialize
       onSubmit={handleSubmit}
       validateOnChange={false}
@@ -151,7 +151,7 @@ const StudentForm = () => {
 
                   <Grid container spacing={2}>
                     {/* Example Basic Details usage */}
-                    {BasicInfo.map((item, index) => (
+                    {StudentBasicInfo.map((item, index) => (
                       <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`student-form${index}`}>
                         <FastField name={item.value}>
                           {({ field, form, meta }: FieldProps<string>) => (

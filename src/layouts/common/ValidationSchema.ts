@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-export const validationSchema = Yup.object({
+export const StudentValidationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   gender: Yup.string().required('Gender is required'),
   dateOfBirth: Yup.date().nullable().required('Date of Birth is required'),
@@ -30,6 +30,30 @@ export const validationSchema = Yup.object({
     fatherOccupation: Yup.string().required('Father Occupation is required'),
     motherOccupation: Yup.string().required('Mother Occupation is required'),
   }),
+  levelDetails: Yup.array().of(
+    Yup.object({
+      level: Yup.number().required(),
+      date: Yup.date().nullable().required('Date is required'),
+      document: Yup.string().required('Document is required'),
+      remarks: Yup.string().required('Remarks are required'),
+    }),
+  ),
+});
+
+export const StaffValidationSchema = Yup.object({
+  name: Yup.string().required('Name is required'),
+  gender: Yup.string().required('Gender is required'),
+  dateOfBirth: Yup.date().nullable().required('Date of Birth is required'),
+  bloodGroup: Yup.string().required('Blood Group is required'),
+  joiningDate: Yup.date().nullable().required('Joining Date is required'),
+  contactNumber: Yup.string().required('Contact Number is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  maritalStatus: Yup.string().required('Marital Status is required'),
+  qualification: Yup.string().required('Qualification is required'),
+  experience: Yup.string().required('Experience is required'),
+  center: Yup.string().required('Center is required'),
+  status: Yup.string().required('Status is required'),
+  address: Yup.string().required('Address is required'),
   levelDetails: Yup.array().of(
     Yup.object({
       level: Yup.number().required(),

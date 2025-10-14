@@ -1,6 +1,3 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -10,47 +7,41 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import { TitleCard } from '../../components';
 
 export const AddressForm = React.memo(() => (
-  <Card>
-    <CardHeader
-      title={
-        <Typography variant="h4" display="flex" alignItems="center">
-          <HomeOutlinedIcon sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }} />
-          Address
-        </Typography>
-      }
-    />
-    <CardContent>
-      <Grid container spacing={2} mt={2}>
-        <Grid size={{ xs: 12 }}>
-          <FastField name="address">
-            {({ field, meta }: FieldProps<string>) => (
-              <FormControl fullWidth>
-                <textarea
-                  {...field}
-                  style={{
-                    width: '100%',
-                    minHeight: 100,
-                    resize: 'vertical',
-                    border: '1px solid #ccc',
-                    borderRadius: 4,
-                    padding: 8,
-                  }}
-                  placeholder="Address..."
-                />
-                {meta.touched && meta.error && (
-                  <Typography color="error" variant="caption">
-                    {meta.error}
-                  </Typography>
-                )}
-              </FormControl>
-            )}
-          </FastField>
-        </Grid>
+  <TitleCard
+    title={'Address'}
+    icon={<HomeOutlinedIcon sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }} />}
+  >
+    <Grid container spacing={2} mt={2}>
+      <Grid size={{ xs: 12 }}>
+        <FastField name="address">
+          {({ field, meta }: FieldProps<string>) => (
+            <FormControl fullWidth>
+              <textarea
+                {...field}
+                style={{
+                  width: '100%',
+                  minHeight: 100,
+                  resize: 'vertical',
+                  border: '1px solid #ccc',
+                  borderRadius: 4,
+                  padding: 8,
+                }}
+                placeholder="Address..."
+              />
+              {meta.touched && meta.error && (
+                <Typography color="error" variant="caption">
+                  {meta.error}
+                </Typography>
+              )}
+            </FormControl>
+          )}
+        </FastField>
       </Grid>
-    </CardContent>
-  </Card>
+    </Grid>
+  </TitleCard>
 ));
 
 export const AdditionalDetailsForm = React.memo(() => (

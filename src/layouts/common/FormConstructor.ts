@@ -1,4 +1,4 @@
-export const BasicInfo = [
+export const StudentBasicInfo = [
   {
     label: 'Name',
     type: 'text',
@@ -107,5 +107,72 @@ export const ParentsInfo = [
     label: 'Mother Occupation',
     type: 'text',
     value: 'motherOccupation',
+  },
+];
+
+export const StaffBasicInfo = [
+  {
+    label: 'Name',
+    type: 'text',
+    value: 'name',
+  },
+  {
+    label: 'Gender',
+    value: 'gender',
+    type: 'select',
+    option: ['Male', 'Female', 'Other'],
+  },
+  {
+    label: 'Date of Birth',
+    type: 'date',
+    value: 'dateOfBirth',
+  },
+  {
+    label: 'Blood Group',
+    type: 'text',
+    value: 'bloodGroup',
+  },
+  {
+    label: 'Joining Date',
+    type: 'date',
+    value: 'joiningDate',
+  },
+  {
+    label: 'Contact Number',
+    type: 'text',
+    value: 'contactNumber',
+  },
+  {
+    label: 'Email',
+    type: 'text',
+    value: 'email',
+  },
+  {
+    label: 'Marital Status',
+    type: 'select',
+    value: 'maritalStatus',
+    option: ['Single', 'Married'],
+  },
+  {
+    label: 'Qualification',
+    type: 'text',
+    value: 'qualification',
+  },
+  {
+    label: 'Experience',
+    type: 'text',
+    value: 'experience',
+  },
+  {
+    label: 'Center',
+    type: 'select',
+    value: 'center',
+    option: ['Puliyur', 'Karur'],
+  },
+  {
+    label: 'Status',
+    type: 'select',
+    value: 'status',
+    option: ['Active', 'Inactive'],
   },
 ];

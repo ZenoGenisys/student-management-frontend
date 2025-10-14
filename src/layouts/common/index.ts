@@ -5,6 +5,8 @@ import HeaderDetails from './HeaderDetails';
 import AcademicDetails from './AcademicDetails';
 import AddressDetails from './AddressDetails';
 import { AddressForm, AdditionalDetailsForm, AvatarUpload } from './FormComponents';
+export * from './ValidationSchema';
+export * from './FormConstructor';
 
 export {
   GridHeader,
