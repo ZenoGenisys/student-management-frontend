@@ -46,7 +46,7 @@ export const AddressForm = React.memo(() => (
 
 export const AdditionalDetailsForm = React.memo(() => (
   <Grid container spacing={2} mt={2}>
-    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 4 }}>
       <FastField name="additionalDetails">
         {({ field, meta }: FieldProps<string>) => (
           <FormControl fullWidth>

@@ -1,6 +1,10 @@
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { FastField, Form, Formik, type FieldProps, type FormikHelpers } from 'formik';
@@ -17,6 +21,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
+import FamilyRestroomOutlinedIcon from '@mui/icons-material/FamilyRestroomOutlined';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import LevelForm from '../../layouts/common/LevelForm';
 import type { CreateStudent } from '../../types';
@@ -24,7 +29,8 @@ import {
   AdditionalDetailsForm,
   AddressForm,
   AvatarUpload,
-  ParentsInfo,
+  FatherInfo,
+  MotherInfo,
   StudentBasicInfo,
   StudentValidationSchema,
 } from '../../layouts';
@@ -229,34 +235,77 @@ const StudentForm = () => {
               <TitleCard
                 title={'Parents Details'}
                 icon={
-                  <LocalLibraryOutlinedIcon
+                  <FamilyRestroomOutlinedIcon
                     sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
                   />
                 }
               >
-                <Grid container spacing={2} mt={2}>
-                  {ParentsInfo.map((item, index) => (
-                    <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`student-form${index}`}>
-                      <FastField name={`parentDetails.${item.value}`}>
-                        {({ field, meta }: FieldProps<string>) => (
-                          <FormControl fullWidth>
-                            <Typography mb={1} variant="h6">
-                              {item.label}
-                            </Typography>
-                            {item.type === 'text' && (
-                              <TextField
-                                {...field}
-                                size="small"
-                                error={meta.touched && Boolean(meta.error)}
-                                helperText={meta.touched && meta.error}
-                              />
-                            )}
-                          </FormControl>
-                        )}
-                      </FastField>
-                    </Grid>
-                  ))}
-                </Grid>
+                <>
+                  <FastField name="primaryContactNumber">
+                    {({ field }: FieldProps<string>) => (
+                      <FormControl component="fieldset" sx={{ mb: 2 }}>
+                        <Typography variant='h6' color="secondary">Primary Contact</Typography>
+                        <RadioGroup row {...field}>
+                          <FormControlLabel value="Father" control={<Radio />} label="Father" />
+                          <FormControlLabel value="Mother" control={<Radio />} label="Mother" />
+                        </RadioGroup>
+                      </FormControl>
+                    )}
+                  </FastField>
+                  <Typography variant="h5" color="secondary" pb={2}>
+                    Father's Info
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {FatherInfo.map((item, index) => (
+                      <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`father-form${index}`}>
+                        <FastField name={`parentDetails.${item.value}`}>
+                          {({ field, meta }: FieldProps<string>) => (
+                            <FormControl fullWidth>
+                              <Typography mb={1} variant="h6">
+                                {item.label}
+                              </Typography>
+                              {item.type === 'text' && (
+                                <TextField
+                                  {...field}
+                                  size="small"
+                                  error={meta.touched && Boolean(meta.error)}
+                                  helperText={meta.touched && meta.error}
+                                />
+                              )}
+                            </FormControl>
+                          )}
+                        </FastField>
+                      </Grid>
+                    ))}
+                  </Grid>
+                  <Divider sx={{ my: 2 }} />
+                  <Typography variant="h5" color="secondary" pb={2}>
+                    Mother's Info
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {MotherInfo.map((item, index) => (
+                      <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`mother-form${index}`}>
+                        <FastField name={`parentDetails.${item.value}`}>
+                          {({ field, meta }: FieldProps<string>) => (
+                            <FormControl fullWidth>
+                              <Typography mb={1} variant="h6">
+                                {item.label}
+                              </Typography>
+                              {item.type === 'text' && (
+                                <TextField
+                                  {...field}
+                                  size="small"
+                                  error={meta.touched && Boolean(meta.error)}
+                                  helperText={meta.touched && meta.error}
+                                />
+                              )}
+                            </FormControl>
+                          )}
+                        </FastField>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </>
               </TitleCard>
 
               {/* Academic Level */}
@@ -264,7 +313,7 @@ const StudentForm = () => {
                 title="Academic Level"
                 icon={
                   <LocalLibraryOutlinedIcon
-                    sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
+                    sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px'}}
                   />
                 }
                 suffixIcon={

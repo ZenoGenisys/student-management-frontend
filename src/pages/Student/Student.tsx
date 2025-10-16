@@ -49,6 +49,7 @@ const Student: React.FC = () => {
       { id: 'gender', label: 'Gender', sortable: true },
       { id: 'age', label: 'Age', sortable: true },
       { id: 'schoolName', label: 'School Name', sortable: true },
+      { id: 'studentType', label: 'Student Type', sortable: true },
       {
         id: 'status',
         label: 'Status',

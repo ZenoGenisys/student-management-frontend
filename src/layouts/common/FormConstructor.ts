@@ -21,14 +21,14 @@ export const StudentBasicInfo = [
     value: 'bloodGroup',
   },
   {
-    label: 'Joining Date',
-    type: 'date',
-    value: 'joiningDate',
-  },
-  {
     label: 'Email',
     type: 'text',
     value: 'email',
+  },
+  {
+    label: 'Joining Date',
+    type: 'date',
+    value: 'joiningDate',
   },
   {
     label: 'School Name',
@@ -47,10 +47,10 @@ export const StudentBasicInfo = [
     option: ['Puliyur', 'Karur'],
   },
   {
-    label: 'Primary Contact Number',
+    label: 'Student Type',
     type: 'select',
-    value: 'primaryContactNumber',
-    option: ['Father', 'Mother'],
+    value: 'studentType',
+    option: ['Regular', 'Crash Course'],
   },
   {
     label: 'Status',
@@ -67,44 +67,47 @@ export const StudentBasicInfo = [
   },
 ];
 
-export const ParentsInfo = [
+export const FatherInfo = [
   {
     label: 'Father Name',
     type: 'text',
     value: 'fatherName',
   },
   {
+    label: 'Phone Number',
+    type: 'text',
+    value: 'fatherPhoneNumber',
+  },
+  {
+    label: 'Email',
+    type: 'text',
+    value: 'fatherEmail',
+  },
+  {
+    label: 'Occupation',
+    type: 'text',
+    value: 'fatherOccupation',
+  },
+];
+
+export const MotherInfo = [
+  {
     label: 'Mother Name',
     type: 'text',
     value: 'motherName',
   },
   {
-    label: 'Father Phone Number',
-    type: 'text',
-    value: 'fatherPhoneNumber',
-  },
-  {
-    label: 'Mother Phone Number',
+    label: 'Phone Number',
     type: 'text',
     value: 'motherPhoneNumber',
   },
   {
-    label: 'Father Email',
-    type: 'text',
-    value: 'fatherEmail',
-  },
-  {
-    label: 'Mother Email',
+    label: 'Email',
     type: 'text',
     value: 'motherEmail',
   },
   {
-    label: 'Father Occupation',
-    type: 'text',
-    value: 'fatherOccupation',
-  },
-  {
-    label: 'Mother Occupation',
+    label: 'Occupation',
     type: 'text',
     value: 'motherOccupation',
   },
