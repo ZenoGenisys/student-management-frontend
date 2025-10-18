@@ -39,7 +39,7 @@ const AttendanceDetail: React.FC = () => {
 
       {isDateValid ? (
         <>
-          <Box>
+          <Box mb={2}>
             <Box
               display={'flex'}
               flexWrap={'wrap'}
@@ -67,7 +67,7 @@ const AttendanceDetail: React.FC = () => {
                 totalPages: 1,
                 totalRows: dummyStudents.length,
               }}
-              rowsPerPage={10}
+              rowsPerPage={50}
               search=""
               handleSearch={() => {}}
               handlePageChange={() => {}}
