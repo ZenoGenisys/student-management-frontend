@@ -12,12 +12,7 @@ const AttendanceDetail: React.FC = () => {
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        p={2}
-        gap={2}
-      >
+      <Box display="flex" alignItems="center" p={2} gap={2}>
         <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
           {isDateValid && selectedDate
             ? `Attendance for ${selectedDate.format('MMMM D, YYYY')}`
@@ -26,17 +21,36 @@ const AttendanceDetail: React.FC = () => {
       </Box>
 
       {isDateValid ? (
-        <Paper elevation={2} sx={{ p: 3, mt: 2 }}>
-          <Typography variant="h5">
-            Detailed attendance records for this day will be displayed here.
-          </Typography>
-          {/* You would fetch and display detailed data here based on the selectedDate */}
-        </Paper>
+        <>
+          <Box
+            display={'flex'}
+            flexWrap={'wrap'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+            flexGrow={1}
+            p={2}
+            mb={2}
+            sx={{ bgcolor: '#fff', border: '1px solid #E3E8EE' }}
+          >
+            <Typography variant="h5">Student Attendace</Typography>
+          </Box>
+          <Box
+            display={'flex'}
+            flexWrap={'wrap'}
+            alignItems={'center'}
+            justifyContent={'space-between'}
+            flexGrow={1}
+            p={2}
+            sx={{ bgcolor: '#fff', border: '1px solid #E3E8EE' }}
+          >
+            <Typography variant="h5">Staff Attendace</Typography>
+          </Box>
+        </>
       ) : (
         <Paper elevation={2} sx={{ p: 3, mt: 2, borderColor: 'error.main' }}>
           <Typography color="error">
-            The date provided in the URL is not valid. Please go back to the
-            calendar and select a valid date.
+            The date provided in the URL is not valid. Please go back to the calendar and select a
+            valid date.
           </Typography>
         </Paper>
       )}
