@@ -5,6 +5,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './Attendance.css'; // Import the new stylesheet
 import { type AttendanceEvent } from '../types/events';
+import { useNavigate } from 'react-router-dom';
 
 // Setup the localizer by providing the moment Object
 const localizer = momentLocalizer(moment);
@@ -78,6 +79,10 @@ const Legend = () => (
 const Attendance: React.FC = () => {
   // State to control the calendar's date
   const [date, setDate] = useState(new Date());
+  const navigate = useNavigate();
+  const handleSelectSlot = (slotInfo: { start: Date; end: Date; slots: Date[] }) => {
+    navigate(`/attendance-detail/${moment(slotInfo.start).format('YYYY-MM-DD')}`);
+  };
 
   return (
     <>
@@ -106,6 +111,8 @@ const Attendance: React.FC = () => {
           onNavigate={(newDate) => setDate(newDate)}
           view="month"
           views={['month']}
+          selectable={true}
+          onSelectSlot={handleSelectSlot}
         />
       </Box>
     </>
