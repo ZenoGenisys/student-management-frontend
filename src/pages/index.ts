@@ -6,5 +6,6 @@ import Staff from './Staff/Staff';
 import StaffDetails from './Staff/StaffDetails';
 import StaffForm from './Staff/StaffForm';
 import StudentForm from './Student/StudentForm';
+import Attendance from './Attendance';
 
-export { Login, Student, Dashboard, Staff, StaffDetails, StaffForm, StudentDetails, StudentForm };
+export { Login, Student, Dashboard, Staff, StaffDetails, StaffForm, StudentDetails, StudentForm, Attendance };

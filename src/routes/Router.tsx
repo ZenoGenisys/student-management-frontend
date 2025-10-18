@@ -6,7 +6,7 @@ import { useAuth } from '../state';
 import { Layout } from '../components';
 import CircularProgress from '@mui/material/CircularProgress';
 import ErrorBoundary from '../components/ErrorBoundary';
-import { StudentDetails } from '../pages';
+import { Attendance, StudentDetails } from '../pages';
 
 const Login = lazy(() => import('../pages/Login'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
@@ -63,6 +63,7 @@ const Router = () => {
           <Route path={PATH.STAFF_DETAILS} element={<StaffDetails />} />
           <Route path={PATH.ADD_STAFF} element={<StaffForm />} />
           <Route path={PATH.EDIT_STAFF} element={<StaffForm />} />
+          <Route path={PATH.ATTENDANCE} element={<Attendance />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

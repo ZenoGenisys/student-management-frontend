@@ -10,4 +10,5 @@ export const PATH = {
   STAFF_DETAILS: '/staff/:staffId',
   ADD_STAFF: '/add-staff',
   EDIT_STAFF: '/edit-staff/:staffId',
+  ATTENDANCE: '/attendance',
 };

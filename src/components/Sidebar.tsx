@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { PATH } from '../routes/path';
 import { DRAWER_WIDTH } from '../constants/layout';
 import logo from '../assets/images/logo.png';
+import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -45,6 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
     { text: 'Dashboard', icon: <DashboardOutlined />, path: PATH.DASHBOARD },
     { text: 'Students', icon: <SchoolOutlined />, path: PATH.STUDENT },
     { text: 'Staff', icon: <PeopleAltOutlined />, path: PATH.STAFF },
+    { text: 'Attendance', icon: <CalendarMonthOutlinedIcon />, path: PATH.ATTENDANCE },
   ];
 
   const handleNavigation = (path: string) => {
