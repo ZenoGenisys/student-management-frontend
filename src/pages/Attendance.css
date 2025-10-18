@@ -9,6 +9,15 @@
   width: fit-content;
 }
 
+/* This targets the container for events within a single day in the month view */
+.rbc-month-view .rbc-row-content .rbc-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: flex-start;
+}
+
 /* Student Present */
 .rbc-event.student-present {
   background-color: #2e7d32;

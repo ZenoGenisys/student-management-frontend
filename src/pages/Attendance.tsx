@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Typography, Grid, Paper } from '@mui/material';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import {
+  Box,
+  Typography,
+  Button,
+  ButtonGroup,
+  useTheme,
+  useMediaQuery,
+} from '@mui/material';
+import { Calendar, momentLocalizer, type ToolbarProps } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './Attendance.css'; // Import the new stylesheet
@@ -49,8 +56,6 @@ const attendanceEvents: AttendanceEvent[] = [
 ];
 
 const eventPropGetter = (event: AttendanceEvent) => {
-  // The className will be a combination of type and status, e.g., "student-present"
-  // This will match the classes in Attendance.css
   const className = `${event.type}-${event.status}`;
   return { className };
 };
@@ -76,12 +81,65 @@ const Legend = () => (
   </Box>
 );
 
+const CustomToolbar = (toolbar: ToolbarProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const navigate = (action: 'PREV' | 'NEXT' | 'TODAY') => {
+    toolbar.onNavigate(action);
+  };
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        mb: 2,
+        flexWrap: 'wrap',
+        gap: 1,
+      }}
+    >
+      <ButtonGroup variant="outlined" size={isMobile ? 'small' : 'medium'}>
+        <Button onClick={() => navigate('PREV')}>Back</Button>
+        <Button onClick={() => navigate('TODAY')}>Today</Button>
+        <Button onClick={() => navigate('NEXT')}>Next</Button>
+      </ButtonGroup>
+
+      <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold' }}>
+        {toolbar.label}
+      </Typography>
+    </Box>
+  );
+};
+
+// Custom component to render the event content
+const CustomEvent = ({ event }: { event: AttendanceEvent }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  // Extracts the number from a title like "Students: 245 Present"
+  const number = event.title?.toString().match(/\d+/)?.[0];
+
+  if (isMobile) {
+    return <span>{number}</span>;
+  }
+  return <span>{event.title}</span>;
+};
+
 const Attendance: React.FC = () => {
-  // State to control the calendar's date
   const [date, setDate] = useState(new Date());
+
   const navigate = useNavigate();
   const handleSelectSlot = (slotInfo: { start: Date; end: Date; slots: Date[] }) => {
     navigate(`/attendance-detail/${moment(slotInfo.start).format('YYYY-MM-DD')}`);
+  };
+
+  const handleSelectEvent = (event: AttendanceEvent) => {
+    if (event.start) {
+      const formattedDate = moment(event.start).format('YYYY-MM-DD');
+      navigate(`/attendance-detail/${formattedDate}`);
+    }
   };
 
   return (
@@ -100,7 +158,7 @@ const Attendance: React.FC = () => {
         <Legend />
       </Box>
 
-      <Box sx={{ height: '75vh', p: 1 }}>
+      <Box sx={{ height: 'calc(100vh - 300px)', p: 1 }}>
         <Calendar
           localizer={localizer}
           events={attendanceEvents}
@@ -109,10 +167,15 @@ const Attendance: React.FC = () => {
           eventPropGetter={eventPropGetter}
           date={date}
           onNavigate={(newDate) => setDate(newDate)}
-          view="month"
-          views={['month']}
+          view="month" // Lock the view to month
+          views={['month']} // Only allow the month view
+          components={{
+            event: CustomEvent,
+            toolbar: CustomToolbar,
+          }}
           selectable={true}
           onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
         />
       </Box>
     </>
