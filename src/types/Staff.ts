@@ -112,7 +112,7 @@ export type GetStaffAttendanceRequest = {
 };
 
 export type StaffAttendanceType = {
-  staffAttendanceId: number;
+  attendanceId: number;
   staffId: number;
   name: string;
   email: string;
@@ -126,20 +126,20 @@ export type StaffAttendanceResponse = {
   pagination: PaginationType;
 };
 
-export type MarkAttendanceRequest = {
-  staffAttendanceId?: number;
-  staffId: number;
+export type MarkStaffAttendanceRequest = {
+  attendanceId?: number;
+  staffId?: number;
   date: string;
   attendance: boolean;
 };
 
-export type StaffAttendanceSummaryRequest = {
-  staffId: number;
+export type AttendanceSummaryRequest = {
+  id: number;
   startDate?: Date | string;
   endDate?: Date | string;
 };
 
-export type StaffAttendanceSummaryResponse = {
+export type AttendanceSummaryResponse = {
   presentCount: number;
   absentCount: number;
   totalCount: number;

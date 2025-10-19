@@ -94,12 +94,13 @@ const Dashboard: React.FC = () => {
               </Box>
             </Box>
             <Divider sx={{ marginTop: '15px', marginBottom: '15px' }} />
-            <Box display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-              <Box
-                display={'flex'}
-                flexDirection={'row'}
-                alignItems={'center'}
-              >
+            <Box
+              display={'flex'}
+              flexDirection={'row'}
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            >
+              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
                 <Typography variant="body1" color="text.secondary">
                   Active:
                 </Typography>
@@ -133,11 +134,7 @@ const Dashboard: React.FC = () => {
                   justifyContent: 'center',
                 }}
               >
-                <img
-                  src={StaffIcon}
-                  alt="Staff"
-                  style={{ width: '100%', height: 'auto' }}
-                />
+                <img src={StaffIcon} alt="Staff" style={{ width: '100%', height: 'auto' }} />
               </Box>
               <Box>
                 <Typography variant="h4" fontWeight="bold">
@@ -149,12 +146,13 @@ const Dashboard: React.FC = () => {
               </Box>
             </Box>
             <Divider sx={{ marginTop: '15px', marginBottom: '15px' }} />
-            <Box display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'space-between'}>
-              <Box
-                display={'flex'}
-                flexDirection={'row'}
-                alignItems={'center'}
-              >
+            <Box
+              display={'flex'}
+              flexDirection={'row'}
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            >
+              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
                 <Typography variant="body1" color="text.secondary">
                   Active:
                 </Typography>

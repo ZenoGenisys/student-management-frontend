@@ -4,15 +4,15 @@ import type {
   GetStaffAttendanceRequest,
   GetStaffRequest,
   getStaffSalaryRequest,
-  MarkAttendanceRequest,
   StaffAttendanceResponse,
   StaffResponse,
   StaffSalaryResponse,
   StaffType,
   StaffSalaryType,
   StaffSalaryRequest,
-  StaffAttendanceSummaryRequest,
-  StaffAttendanceSummaryResponse,
+  AttendanceSummaryRequest,
+  AttendanceSummaryResponse,
+  MarkStaffAttendanceRequest,
 } from '../types';
 import { getHttpClient } from './AxiosClient';
 
@@ -62,12 +62,14 @@ export const getStaffAttendance = (
 };
 
 export const getStaffAttendanceSummary = (
-  params?: StaffAttendanceSummaryRequest,
-): Promise<StaffAttendanceSummaryResponse> => {
+  params?: AttendanceSummaryRequest,
+): Promise<AttendanceSummaryResponse> => {
   return getHttpClient(`${API_PATH.STAFF_ATTENDANCE_SUMMARY}`, 'GET', null, params);
 };
 
-export const markAttendance = (data: MarkAttendanceRequest[]): Promise<{ message: string }> => {
+export const markStaffAttendance = (
+  data: MarkStaffAttendanceRequest[],
+): Promise<{ message: string }> => {
   return getHttpClient(`${API_PATH.STAFF_ATTENDANCE}`, 'POST', data);
 };
 

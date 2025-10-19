@@ -7,4 +7,6 @@ export const API_PATH = {
   REVOKE_STAFF_PROMOTION: '/delete-user',
   STAFF_ATTENDANCE: '/staff-attendance',
   STAFF_ATTENDANCE_SUMMARY: '/staff-attendance/summary',
+  STUDENT_ATTENDANCE: '/student-attendance',
+  STUDENT_ATTENDANCE_SUMMARY: '/student-attendance/summary',
 };

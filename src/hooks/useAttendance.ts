@@ -1,13 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
 import {
-  deleteStaffAttendance,
   getStaffAttendance,
   getStaffAttendanceSummary,
-  markAttendance,
+  markStaffAttendance,
+  deleteStaffAttendance,
+  getStudentAttendance,
+  getStudentAttendanceSummary,
+  markStudentAttendance,
+  deleteStudentAttendance,
 } from '../repositories';
 import { useParams } from 'react-router-dom';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { MarkAttendanceRequest, StaffAttendanceType } from '../types';
+import type {
+  MarkStudentAttendanceRequest,
+  MarkStaffAttendanceRequest,
+  StaffAttendanceType,
+  StudentAttendanceType,
+  StaffAttendanceResponse,
+  StudentAttendanceResponse,
+} from '../types';
 import type { CalendarProps } from 'react-calendar';
 import { useSnackbar } from '../state';
 import dayjs from 'dayjs';
@@ -20,12 +31,42 @@ type DateProps = {
   view: string;
 };
 
-const useStaffAttendance = () => {
+type ActiveStartDateChangeProps = {
+  activeStartDate: Date | null;
+  view: string;
+};
+type EntityType = 'staff' | 'student';
+type AttendanceType = StaffAttendanceType | StudentAttendanceType;
+type AttendanceResponse = StaffAttendanceResponse | StudentAttendanceResponse;
+
+const useAttendance = (entityType: EntityType) => {
   const { showSnackbar } = useSnackbar();
-  const { staffId } = useParams<{ staffId: string }>();
+  const { staffId, studentId } = useParams<{ staffId: string; studentId: string }>();
+  const id = Number(staffId ?? studentId);
+  const entityId = Number(staffId ?? studentId);
+
+  const { getAttendance, getAttendanceSummary, deleteAttendance, markAttendance } = useMemo(() => {
+    if (entityType === 'staff') {
+      return {
+        getAttendance: getStaffAttendance,
+        getAttendanceSummary: getStaffAttendanceSummary,
+        deleteAttendance: deleteStaffAttendance,
+        markAttendance: markStaffAttendance,
+      };
+    }
+    return {
+      getAttendance: getStudentAttendance,
+      getAttendanceSummary: getStudentAttendanceSummary,
+      deleteAttendance: deleteStudentAttendance,
+      markAttendance: markStudentAttendance,
+    };
+  }, [entityType]);
+
   const [attendance, setAttendance] = useState<BooleanMap>({});
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const [selected, setSelected] = useState<MarkAttendanceRequest[] | null>(null);
+  const [selected, setSelected] = useState<
+    MarkStudentAttendanceRequest[] | MarkStaffAttendanceRequest[] | null
+  >(null);
   const [showDialog, setShowDialog] = useState(false);
   const [attendanceFilter, setAttendanceFilter] = useState('year');
 
@@ -34,7 +75,7 @@ const useStaffAttendance = () => {
   }, []);
 
   const { data: attendanceSummary, refetch: summaryRefetch } = useQuery({
-    queryKey: ['staff-attendance-summary', staffId, attendanceFilter],
+    queryKey: [`${entityType}-attendance-summary`, id, attendanceFilter],
     queryFn: () => {
       let startDate: dayjs.Dayjs;
       let endDate: dayjs.Dayjs;
@@ -47,19 +88,19 @@ const useStaffAttendance = () => {
         startDate = now.startOf('month'); // 1st day of current month
         endDate = now.endOf('month'); // last day of current month
       }
-      return getStaffAttendanceSummary({
-        staffId: Number(staffId),
+      return getAttendanceSummary({
+        id: entityId,
         startDate: startDate.format('YYYY-MM-DD'),
         endDate: endDate.format('YYYY-MM-DD'),
       });
     },
   });
 
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['staff-attendance', staffId, currentYear],
+  const { data, isLoading, error, refetch } = useQuery<AttendanceResponse, Error>({
+    queryKey: [`${entityType}-attendance`, id, currentYear],
     queryFn: () => {
-      return getStaffAttendance({
-        staffId: Number(staffId),
+      return getAttendance({
+        [entityType === 'staff' ? 'staffId' : 'studentId']: entityId,
         dateFrom: `${currentYear}-01-01`,
         dateTo: `${currentYear}-12-31`,
       });
@@ -67,9 +108,9 @@ const useStaffAttendance = () => {
   });
 
   useEffect(() => {
-    if (data && data.data) {
+    if (data?.data) {
       const attendanceMap: BooleanMap = {};
-      data.data.forEach((item: StaffAttendanceType) => {
+      data.data.forEach((item: AttendanceType) => {
         attendanceMap[String(item.date)] = item.attendance;
       });
       setAttendance(attendanceMap);
@@ -102,8 +143,8 @@ const useStaffAttendance = () => {
   );
 
   const handleActiveStartDateChange: CalendarProps['onActiveStartDateChange'] = useCallback(
-    ({ activeStartDate, view }: any) => {
-      if (view === 'month') {
+    ({ activeStartDate, view }: ActiveStartDateChangeProps) => {
+      if (view === 'month' && activeStartDate) {
         const newYear = activeStartDate.getFullYear();
 
         setCurrentYear((prevYear) => {
@@ -129,34 +170,34 @@ const useStaffAttendance = () => {
         if ((prev ?? []).some((d) => dayjs(d.date).isSame(dayjs(date), 'day'))) {
           return (prev ?? []).filter((d) => !dayjs(d.date).isSame(dayjs(date), 'day'));
         }
-        const staffAttendanceId = data?.data.find((item) =>
+        const attendanceItem = data?.data.find((item) =>
           dayjs(item.date).isSame(dayjs(date), 'day'),
-        )?.staffAttendanceId;
+        );
         // Otherwise, add it
         return [
           ...(prev ?? []),
           {
-            staffAttendanceId,
+            attendanceId: attendanceItem?.attendanceId,
             date: date.toLocaleDateString('en-CA'),
-            staffId: Number(staffId),
+            [entityType === 'staff' ? 'staffId' : 'studentId']: entityId,
             attendance: true,
           },
         ];
       });
     },
-    [staffId, data],
+    [entityId, data, entityType],
   );
 
-  const handleClearAttendance = useCallback(async () => {
+  const handleDeleteAttendance = useCallback(async () => {
     try {
       if (selected) {
         const attendanceIds = selected
-          .map((item) => item.staffAttendanceId)
+          .map((item) => item?.attendanceId)
           .filter((item) => item !== undefined);
-        await deleteStaffAttendance(attendanceIds);
+        await deleteAttendance(attendanceIds);
         setSelected(null);
         showSnackbar({
-          message: 'Attendance cleared successfully!',
+          message: 'Attendance deleted successfully!',
           severity: 'success',
         });
         refetch();
@@ -164,11 +205,11 @@ const useStaffAttendance = () => {
       }
     } catch (error) {
       showSnackbar({
-        message: error instanceof Error ? error.message : 'Failed to clear attendance',
+        message: error instanceof Error ? error.message : 'Failed to delete attendance',
         severity: 'error',
       });
     }
-  }, [selected, showSnackbar, refetch, summaryRefetch]);
+  }, [selected, showSnackbar, refetch, summaryRefetch, deleteAttendance]);
 
   const handleDialog = useCallback(() => {
     setShowDialog((prev) => !prev);
@@ -177,7 +218,6 @@ const useStaffAttendance = () => {
   const handleSaveAttendance = useCallback(
     async (status: boolean) => {
       try {
-        console.log(status);
         const params = (selected ?? [])?.map((item) => {
           return {
             ...item,
@@ -200,7 +240,7 @@ const useStaffAttendance = () => {
         });
       }
     },
-    [selected, refetch, summaryRefetch, handleDialog, showSnackbar],
+    [selected, refetch, summaryRefetch, handleDialog, showSnackbar, markAttendance],
   );
 
   const handleClearSelection = useCallback(() => {
@@ -219,7 +259,7 @@ const useStaffAttendance = () => {
       tileClassName,
       handleActiveStartDateChange,
       handleDateClick,
-      handleClearAttendance,
+      handleDeleteAttendance,
       handleDialog,
       handleClearSelection,
       attendanceFilter,
@@ -236,7 +276,7 @@ const useStaffAttendance = () => {
       tileClassName,
       handleActiveStartDateChange,
       handleDateClick,
-      handleClearAttendance,
+      handleDeleteAttendance,
       handleDialog,
       handleClearSelection,
       attendanceFilter,
@@ -244,4 +284,4 @@ const useStaffAttendance = () => {
     ],
   );
 };
-export default useStaffAttendance;
+export default useAttendance;

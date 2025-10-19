@@ -5,6 +5,7 @@ import HeaderDetails from './HeaderDetails';
 import AcademicDetails from './AcademicDetails';
 import AddressDetails from './AddressDetails';
 import { AddressForm, AdditionalDetailsForm, AvatarUpload } from './FormComponents';
+import AttendanceSection from './AttendanceSection';
 export * from './ValidationSchema';
 export * from './FormConstructor';
 
@@ -18,4 +19,5 @@ export {
   BasicDetails,
   HeaderDetails,
   AcademicDetails,
+  AttendanceSection,
 };

@@ -1,5 +1,6 @@
 import type { Dayjs } from 'dayjs';
 import type { LevelDetails } from './Staff';
+import type { PaginationType } from './ListViewType';
 
 export type GetStudentRequest = {
   page: number;
@@ -74,4 +75,37 @@ export type CreateStudent = {
   bloodGroup: string;
   levelDetails?: LevelDetails[];
   parentDetails?: ParentDetails;
+};
+
+export type GetStudentAttendanceRequest = {
+  page?: number;
+  size?: number;
+  staffId?: number;
+  search?: string;
+  dateFrom?: string;
+  dateTo?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+};
+
+export type StudentAttendanceType = {
+  attendanceId: number;
+  studentId: number;
+  name: string;
+  email: string;
+  center: string;
+  date: string;
+  attendance: boolean;
+};
+
+export type StudentAttendanceResponse = {
+  data: StudentAttendanceType[];
+  pagination: PaginationType;
+};
+
+export type MarkStudentAttendanceRequest = {
+  attendanceId?: number;
+  studentId?: number;
+  date: string;
+  attendance: boolean;
 };

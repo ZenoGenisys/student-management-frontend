@@ -244,7 +244,9 @@ const StudentForm = () => {
                   <FastField name="primaryContactNumber">
                     {({ field }: FieldProps<string>) => (
                       <FormControl component="fieldset" sx={{ mb: 2 }}>
-                        <Typography variant='h6' color="secondary">Primary Contact</Typography>
+                        <Typography variant="h6" color="secondary">
+                          Primary Contact
+                        </Typography>
                         <RadioGroup row {...field}>
                           <FormControlLabel value="Father" control={<Radio />} label="Father" />
                           <FormControlLabel value="Mother" control={<Radio />} label="Mother" />
@@ -313,7 +315,7 @@ const StudentForm = () => {
                 title="Academic Level"
                 icon={
                   <LocalLibraryOutlinedIcon
-                    sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px'}}
+                    sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
                   />
                 }
                 suffixIcon={

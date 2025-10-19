@@ -9,4 +9,15 @@ import StudentForm from './Student/StudentForm';
 import Attendance from './Attendance';
 import AttendanceDetail from './AttendanceDetail';
 
-export { Login, Student, Dashboard, Staff, StaffDetails, StaffForm, StudentDetails, StudentForm, Attendance, AttendanceDetail };
+export {
+  Login,
+  Student,
+  Dashboard,
+  Staff,
+  StaffDetails,
+  StaffForm,
+  StudentDetails,
+  StudentForm,
+  Attendance,
+  AttendanceDetail,
+};

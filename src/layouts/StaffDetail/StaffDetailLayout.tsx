@@ -3,9 +3,8 @@ import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import { Box, Grid, Tab, Tabs } from '@mui/material';
-import { BasicDetails, AcademicDetails, AddressDetails } from '../common';
+import { BasicDetails, AcademicDetails, AddressDetails, AttendanceSection } from '../common';
 import type { StaffType } from '../../types';
-import StaffAttendanceTab from './StaffAttendanceTab';
 import StaffSalaryTab from './StaffSalaryTab';
 import { getFormattedDate } from '../../utils';
 
@@ -84,7 +83,7 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
           )}
 
           {/* Tab 2 Attendance */}
-          {tabValue === 1 && <StaffAttendanceTab />}
+          {tabValue === 1 && <AttendanceSection type={'staff'} />}
 
           {/* Tab 3 Fees */}
           {tabValue === 2 && <StaffSalaryTab />}
