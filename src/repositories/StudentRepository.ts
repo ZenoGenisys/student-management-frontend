@@ -42,7 +42,7 @@ export const getStudentAttendance = (
 export const getStudentAttendanceSummary = (
   params?: AttendanceSummaryRequest,
 ): Promise<AttendanceSummaryResponse> => {
-  return getHttpClient(`${API_PATH.STAFF_ATTENDANCE_SUMMARY}`, 'GET', null, params);
+  return getHttpClient(`${API_PATH.STUDENT_ATTENDANCE_SUMMARY}`, 'GET', null, params);
 };
 
 export const markStudentAttendance = (
