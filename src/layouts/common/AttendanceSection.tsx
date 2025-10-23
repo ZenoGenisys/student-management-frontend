@@ -9,10 +9,14 @@ import { IoCalendarNumber } from 'react-icons/io5';
 import { FaUserCheck } from 'react-icons/fa';
 import { FaUserXmark } from 'react-icons/fa6';
 import AttendanceDialog from '../../components/AttendanceDialog';
-import { useStaffAttendance } from '../../hooks';
+import { useAttendance } from '../../hooks';
 import { getFormattedDate } from '../../utils';
 
-export default function StaffAttendanceTab() {
+type AttendanceSectionProps = {
+  type: 'staff' | 'student';
+};
+
+const AttendanceSection = ({ type }: AttendanceSectionProps) => {
   const theme = useTheme();
   const {
     enableClearAttendance,
@@ -21,14 +25,14 @@ export default function StaffAttendanceTab() {
     attendanceFilter,
     attendanceSummary,
     handleSaveAttendance,
-    handleClearAttendance,
+    handleDeleteAttendance,
     tileClassName,
     handleActiveStartDateChange,
     handleDateClick,
     handleDialog,
     handleClearSelection,
     handleChange,
-  } = useStaffAttendance();
+  } = useAttendance(type);
 
   const selectedDates = React.useMemo(() => {
     if (!selected) {
@@ -172,7 +176,7 @@ export default function StaffAttendanceTab() {
         <Button
           variant="outlined"
           color="error"
-          onClick={handleClearAttendance}
+          onClick={handleDeleteAttendance}
           disabled={!enableClearAttendance || !selected || selected.length === 0}
         >
           Delete Attendance
@@ -194,4 +198,6 @@ export default function StaffAttendanceTab() {
       />
     </Box>
   );
-}
+};
+
+export default AttendanceSection;

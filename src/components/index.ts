@@ -8,6 +8,7 @@ import ActionCell from './cellRender/ActionCell';
 import NameCell from './cellRender/NameCell';
 import MenuCell from './cellRender/MenuCell';
 import Pagination from './Pagination';
+import TitleCard from './TitleCard';
 
 export {
   Layout,
@@ -20,4 +21,5 @@ export {
   NameCell,
   MenuCell,
   Pagination,
+  TitleCard,
 };

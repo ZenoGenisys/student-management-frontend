@@ -1,80 +1,103 @@
-import {
-  Box,
-  Typography,
-  Button,
-  FormControl,
-  MenuItem,
-  Select,
-  useMediaQuery,
-  TextField,
-  Grid,
-} from '@mui/material';
-import React, { useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { FastField, Form, Formik, type FieldProps, type FormikHelpers } from 'formik';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import React, { useCallback, useMemo } from 'react';
+import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
+import { useStudentDetails } from '../../hooks';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import dayjs from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
-import { createStaff, updateStaff } from '../../repositories/StaffRepository';
-import { useStaffDetails } from '../../hooks';
-import type { CreateStaff } from '../../types';
-import { Formik, Form, FastField, type FieldProps, type FormikHelpers } from 'formik';
-import { useSnackbar } from '../../state';
-import { PATH } from '../../routes';
-import LevelForm from '../../layouts/common/LevelForm';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
+import FamilyRestroomOutlinedIcon from '@mui/icons-material/FamilyRestroomOutlined';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import LevelForm from '../../layouts/common/LevelForm';
+import type { CreateStudent } from '../../types';
 import {
   AdditionalDetailsForm,
   AddressForm,
   AvatarUpload,
-  StaffBasicInfo,
-  StaffValidationSchema,
+  FatherInfo,
+  MotherInfo,
+  StudentBasicInfo,
+  StudentValidationSchema,
 } from '../../layouts';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '../../routes';
+import { useSnackbar } from '../../state';
+import { createStudent, updateStudent } from '../../repositories';
 import { TitleCard } from '../../components';
 
-const StaffForm: React.FC = () => {
+const StudentForm = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { data } = useStaffDetails();
+  const { data } = useStudentDetails();
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
 
-  const initialValues: CreateStaff = useMemo(
+  const initialValues = useMemo(
     () => ({
       name: data?.name ?? '',
       gender: data?.gender ?? '',
       dateOfBirth: data?.dateOfBirth ? dayjs(data.dateOfBirth) : null,
-      bloodGroup: data?.bloodGroup ?? '',
       joiningDate: data?.joiningDate ? dayjs(data.joiningDate) : null,
-      contactNumber: data?.contactNumber ?? '',
-      email: data?.email ?? '',
-      maritalStatus: data?.maritalStatus ?? '',
-      qualification: data?.qualification ?? '',
-      experience: data?.experience ?? 0,
+      schoolName: data?.schoolName ?? '',
+      grade: data?.grade ?? '',
+      batch: data?.batch ?? [],
       center: data?.center ?? '',
       status: data?.status ?? 'Active',
-      address: data?.address ?? '',
       additionalDetails: data?.additionalDetails ?? '',
+      bloodGroup: data?.bloodGroup ?? '',
       levelDetails: data?.levelDetails ?? [],
+      primaryContactNumber:
+        data?.primaryContactNumber === data?.parentDetails?.motherPhoneNumber ? 'Mother' : 'Father',
+      email: data?.email ?? '',
+      address: data?.address ?? '',
+      parentDetails: data?.parentDetails ?? {
+        fatherName: data?.parentDetails?.fatherName ?? '',
+        motherName: data?.parentDetails?.motherName ?? '',
+        fatherPhoneNumber: data?.parentDetails?.fatherPhoneNumber ?? '',
+        motherPhoneNumber: data?.parentDetails?.motherPhoneNumber ?? '',
+        fatherEmail: data?.parentDetails?.fatherEmail ?? '',
+        motherEmail: data?.parentDetails?.motherEmail ?? '',
+        fatherOccupation: data?.parentDetails?.fatherOccupation ?? '',
+        motherOccupation: data?.parentDetails?.motherOccupation ?? '',
+      },
     }),
     [data],
   );
 
   const handleSubmit = useCallback(
-    async (values: CreateStaff) => {
+    async (values: CreateStudent) => {
       try {
+        const formValue: CreateStudent = {
+          ...values,
+          primaryContactNumber:
+            values?.primaryContactNumber === 'Father'
+              ? (values?.parentDetails?.fatherPhoneNumber ?? '')
+              : (values?.parentDetails?.motherPhoneNumber ?? ''),
+        };
         if (data) {
-          await updateStaff({ ...values, staffId: data.staffId });
-          navigate(`/staff/${data.staffId}`);
+          await updateStudent({ ...formValue, studentId: Number(data.studentId) });
+          navigate(PATH.STUDENT_DETAILS.replace(':studentId', data.studentId.toString()));
         } else {
-          await createStaff(values);
-          navigate(PATH.STAFF);
+          await createStudent(formValue);
+          navigate(PATH.STUDENT);
         }
         showSnackbar({
-          message: `Staff ${data ? 'updated' : 'added'} successfully!`,
+          message: `Student ${data ? 'updated' : 'added'} successfully!`,
           severity: 'success',
         });
       } catch (error: unknown) {
@@ -84,11 +107,11 @@ const StaffForm: React.FC = () => {
         });
       }
     },
-    [data, showSnackbar, navigate],
+    [data, navigate, showSnackbar],
   );
 
   const addLevel = useCallback(
-    (values: CreateStaff, setFieldValue: FormikHelpers<CreateStaff>['setFieldValue']) => {
+    (values: CreateStudent, setFieldValue: FormikHelpers<CreateStudent>['setFieldValue']) => {
       if ((values.levelDetails?.length ?? 0) < 8) {
         setFieldValue('levelDetails', [
           ...(values.levelDetails ?? []),
@@ -102,7 +125,7 @@ const StaffForm: React.FC = () => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={StaffValidationSchema}
+      validationSchema={StudentValidationSchema}
       enableReinitialize
       onSubmit={handleSubmit}
       validateOnChange={false}
@@ -115,7 +138,7 @@ const StaffForm: React.FC = () => {
               {/* Header */}
               <Box display="flex" justifyContent="space-between" alignItems="center" p={2} px={0}>
                 <Typography variant="h3" fontWeight="bold">
-                  {data ? 'Edit Staff' : 'Add Staff'}
+                  {data ? 'Edit Student' : 'Add Student'}
                 </Typography>
               </Box>
 
@@ -129,12 +152,12 @@ const StaffForm: React.FC = () => {
                 }
               >
                 <>
-                  {/* Avatar Upload */}
+                  {/* Avatar Upload (memoized subcomponent) */}
                   <AvatarUpload />
 
                   <Grid container spacing={2}>
                     {/* Example Basic Details usage */}
-                    {StaffBasicInfo.map((item, index) => (
+                    {StudentBasicInfo.map((item, index) => (
                       <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`student-form${index}`}>
                         <FastField name={item.value}>
                           {({ field, form, meta }: FieldProps<string>) => (
@@ -147,6 +170,7 @@ const StaffForm: React.FC = () => {
                                   <Select
                                     {...field}
                                     size="small"
+                                    multiple={item.isMultiple}
                                     displayEmpty
                                     error={meta.touched && Boolean(meta.error)}
                                     onChange={(e) => {
@@ -207,9 +231,88 @@ const StaffForm: React.FC = () => {
                 </>
               </TitleCard>
 
+              {/* Parent Details */}
+              <TitleCard
+                title={'Parents Details'}
+                icon={
+                  <FamilyRestroomOutlinedIcon
+                    sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
+                  />
+                }
+              >
+                <>
+                  <FastField name="primaryContactNumber">
+                    {({ field }: FieldProps<string>) => (
+                      <FormControl component="fieldset" sx={{ mb: 2 }}>
+                        <Typography variant="h6" color="secondary">
+                          Primary Contact
+                        </Typography>
+                        <RadioGroup row {...field}>
+                          <FormControlLabel value="Father" control={<Radio />} label="Father" />
+                          <FormControlLabel value="Mother" control={<Radio />} label="Mother" />
+                        </RadioGroup>
+                      </FormControl>
+                    )}
+                  </FastField>
+                  <Typography variant="h5" color="secondary" pb={2}>
+                    Father's Info
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {FatherInfo.map((item, index) => (
+                      <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`father-form${index}`}>
+                        <FastField name={`parentDetails.${item.value}`}>
+                          {({ field, meta }: FieldProps<string>) => (
+                            <FormControl fullWidth>
+                              <Typography mb={1} variant="h6">
+                                {item.label}
+                              </Typography>
+                              {item.type === 'text' && (
+                                <TextField
+                                  {...field}
+                                  size="small"
+                                  error={meta.touched && Boolean(meta.error)}
+                                  helperText={meta.touched && meta.error}
+                                />
+                              )}
+                            </FormControl>
+                          )}
+                        </FastField>
+                      </Grid>
+                    ))}
+                  </Grid>
+                  <Divider sx={{ my: 2 }} />
+                  <Typography variant="h5" color="secondary" pb={2}>
+                    Mother's Info
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {MotherInfo.map((item, index) => (
+                      <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`mother-form${index}`}>
+                        <FastField name={`parentDetails.${item.value}`}>
+                          {({ field, meta }: FieldProps<string>) => (
+                            <FormControl fullWidth>
+                              <Typography mb={1} variant="h6">
+                                {item.label}
+                              </Typography>
+                              {item.type === 'text' && (
+                                <TextField
+                                  {...field}
+                                  size="small"
+                                  error={meta.touched && Boolean(meta.error)}
+                                  helperText={meta.touched && meta.error}
+                                />
+                              )}
+                            </FormControl>
+                          )}
+                        </FastField>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </>
+              </TitleCard>
+
               {/* Academic Level */}
               <TitleCard
-                title={'Academic Level'}
+                title="Academic Level"
                 icon={
                   <LocalLibraryOutlinedIcon
                     sx={{ mr: 1, background: '#fff', p: '2px', borderRadius: '5px' }}
@@ -228,7 +331,13 @@ const StaffForm: React.FC = () => {
                         touched={
                           Array.isArray(touched.levelDetails) ? touched.levelDetails[idx] : {}
                         }
-                        errors={Array.isArray(errors.levelDetails) ? errors.levelDetails[idx] : {}}
+                        errors={
+                          Array.isArray(errors.levelDetails)
+                            ? typeof errors.levelDetails[idx] === 'string'
+                              ? {}
+                              : (errors.levelDetails[idx] ?? {})
+                            : {}
+                        }
                         isMobile={isMobile}
                         levelDetails={values.levelDetails ?? []}
                         setFieldValue={setFieldValue}
@@ -264,4 +373,4 @@ const StaffForm: React.FC = () => {
 };
 
 const MemoizedLevelForm = React.memo(LevelForm);
-export default React.memo(StaffForm);
+export default StudentForm;
