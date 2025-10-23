@@ -74,7 +74,7 @@ const Legend = () => (
   </Box>
 );
 
-const CustomToolbar = (toolbar: ToolbarProps) => {
+const CustomToolbar: React.FC<ToolbarProps<AttendanceEvent>> = (toolbar) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
