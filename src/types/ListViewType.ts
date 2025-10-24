@@ -10,8 +10,7 @@ export type CellRender<T> = {
   rows: T[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ColumnDefsProps<T = any> = {
+export type ColumnDefsProps<T = unknown> = {
   id: string;
   label: string | React.ReactNode;
   onSort?: (orderBy: string, direction: 'asc' | 'desc') => void;
@@ -23,11 +22,11 @@ export type ColumnDefsProps<T = any> = {
 };
 
 export type Row = {
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export type ListViewProps<T extends Row = Row> = {
-  columns: ColumnDefsProps[];
+  columns: ColumnDefsProps<T>[];
   rows: T[];
   showCheckbox?: boolean;
   sort?: { orderBy: string; order?: 'asc' | 'desc' } | null;

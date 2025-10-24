@@ -170,12 +170,26 @@ const StaffForm: React.FC = () => {
                                   )}
                                 </>
                               )}
-                              {item.type === 'text' && (
+                              {(item.type === 'text' || item.type === 'email' || item.type === 'number') && (
                                 <TextField
                                   {...field}
+                                  type={item.type}
                                   size="small"
                                   error={meta.touched && Boolean(meta.error)}
                                   helperText={meta.touched && meta.error}
+                                  inputProps={
+                                    item.type === 'number'
+                                      ? { inputMode: 'numeric', pattern: '\\d*', maxLength: 10 }
+                                      : undefined
+                                  }
+                                  onChange={(e) => {
+                                    if (item.type === 'number') {
+                                      const v = (e.target as HTMLInputElement).value.replace(/\D/g, '').slice(0, 10);
+                                      form.setFieldValue(field.name, v);
+                                    } else {
+                                      form.setFieldValue(field.name, (e.target as HTMLInputElement).value);
+                                    }
+                                  }}
                                 />
                               )}
                               {item.type === 'date' && (
