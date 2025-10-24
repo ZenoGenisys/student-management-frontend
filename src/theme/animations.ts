@@ -78,6 +78,78 @@ export const pulseAnimation = keyframes`
   }
 `;
 
+// Login specific animations
+export const loginContainerFadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+export const loginPaperScaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+`;
+
+export const formElementSlideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+export const backgroundGradientShift = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+`;
+
+export const buttonHoverPulse = keyframes`
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(25, 118, 210, 0.4);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(25, 118, 210, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(25, 118, 210, 0);
+  }
+`;
+
+export const fadeUpAnimation = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 // Common animation durations and easings
 export const durations = {
   shortest: 150,
@@ -167,5 +239,22 @@ export const transitions = {
   },
   pulse: {
     animation: `${pulseAnimation} ${durations.complex}ms ${easings.easeInOut} infinite`,
+  },
+  login: {
+    container: {
+      animation: `${fadeUpAnimation} ${durations.standard}ms ${easings.easeOut}`,
+    },
+    paper: {
+      animation: `${fadeUpAnimation} ${durations.complex}ms ${easings.easeOut}`,
+    },
+    formElement: {
+      animation: `${fadeUpAnimation} ${durations.shorter}ms ${easings.easeOut}`,
+    },
+    background: {
+      animation: `${backgroundGradientShift} 8s ${easings.easeInOut} infinite`,
+    },
+    buttonHover: {
+      animation: `${buttonHoverPulse} ${durations.complex}ms ${easings.easeInOut}`,
+    },
   },
 } as const;
