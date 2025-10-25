@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Typography, Paper, Button, Grid, Divider } from '@mui/material';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import StudentIcon from '../assets/images/student.svg';
 import StaffIcon from '../assets/images/staff.svg';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 
 const Dashboard: React.FC = () => {
   const [showBackground, setShowBackground] = React.useState(false);
@@ -59,17 +59,9 @@ const Dashboard: React.FC = () => {
             variant="outlined"
             color="primary"
             size="large"
-            startIcon={<AddCircleOutlineOutlinedIcon />}
+            startIcon={<CloudDownloadOutlinedIcon />}
           >
-            Add Student
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            startIcon={<AddCircleOutlineOutlinedIcon />}
-          >
-            Add Staff
+            Export
           </Button>
         </Box>
       </Box>
