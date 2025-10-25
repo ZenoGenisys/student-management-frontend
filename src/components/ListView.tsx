@@ -11,44 +11,40 @@ import {
 } from '@mui/material';
 import type { ListViewProps, Row } from '../types';
 import { useTheme } from '@mui/material/styles';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { getFormattedDate } from '../utils';
 
 const ListView = <T extends Row = Row>({
   columns,
   rows,
+  selectedRows = [],
   showCheckbox = true,
   sort = null,
   handleSort,
-  onChangeSelectedRows,
+  onSelectedRowsChange,
   getRowId = (row: T) => (row as Row).id,
 }: ListViewProps<T>) => {
   const theme = useTheme();
-  const [selectedRows, setSelectedRows] = useState<string[]>([]);
-
-  useEffect(() => {
-    onChangeSelectedRows?.(selectedRows);
-  }, [selectedRows, onChangeSelectedRows]);
 
   const handleSelectAllClick = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.checked) {
-        const newSelectedRows = rows.map((row) => getRowId(row));
-        setSelectedRows(newSelectedRows);
+        onSelectedRowsChange?.(rows);
         return;
       }
-      setSelectedRows([]);
+      onSelectedRowsChange?.([]);
     },
-    [rows, getRowId],
+    [rows, onSelectedRowsChange],
   );
 
   const handleRowClick = useCallback(
-    (rowId: string) => {
-      const selectedIndex = selectedRows.indexOf(rowId);
-      let newSelectedRows: string[] = [];
+    (row: T) => {
+      const rowId = getRowId(row);
+      const selectedIndex = selectedRows.findIndex((selected) => getRowId(selected) === rowId);
+      let newSelectedRows: T[] = [];
 
       if (selectedIndex === -1) {
-        newSelectedRows = newSelectedRows.concat(selectedRows, rowId);
+        newSelectedRows = newSelectedRows.concat(selectedRows, row);
       } else if (selectedIndex === 0) {
         newSelectedRows = newSelectedRows.concat(selectedRows.slice(1));
       } else if (selectedIndex === selectedRows.length - 1) {
@@ -60,9 +56,9 @@ const ListView = <T extends Row = Row>({
         );
       }
 
-      setSelectedRows(newSelectedRows);
+      onSelectedRowsChange?.(newSelectedRows);
     },
-    [selectedRows],
+    [selectedRows, onSelectedRowsChange, getRowId],
   );
 
   const handleRequestSort = useCallback(
@@ -103,8 +99,10 @@ const ListView = <T extends Row = Row>({
                 <TableCell padding="checkbox">
                   <Checkbox
                     color="primary"
-                    indeterminate={selectedRows.length > 0 && selectedRows.length < rows.length}
-                    checked={selectedRows.length === rows.length}
+                    indeterminate={
+                      selectedRows.length > 0 && selectedRows.length < (rows?.length ?? 0)
+                    }
+                    checked={(rows?.length ?? 0) > 0 && selectedRows.length === (rows?.length ?? 0)}
                     onChange={handleSelectAllClick}
                     inputProps={{
                       'aria-label': 'select all',
@@ -138,15 +136,17 @@ const ListView = <T extends Row = Row>({
             {rows.map((row) => (
               <TableRow
                 key={getRowId(row)}
-                selected={selectedRows.indexOf(getRowId(row)) !== -1}
+                selected={selectedRows.some((selected) => getRowId(selected) === getRowId(row))}
                 sx={{ borderBottom: '1px solid #ddd' }}
               >
                 {showCheckbox && (
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={selectedRows.indexOf(getRowId(row)) !== -1}
-                      onChange={() => handleRowClick(getRowId(row))}
+                      checked={selectedRows.some(
+                        (selected) => getRowId(selected) === getRowId(row),
+                      )}
+                      onChange={() => handleRowClick(row)}
                     />
                   </TableCell>
                 )}

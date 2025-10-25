@@ -48,3 +48,10 @@ button {
   padding: 0;
   cursor: pointer;
 }
+
+/* Optimize animations for better performance */
+.animated-element {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}

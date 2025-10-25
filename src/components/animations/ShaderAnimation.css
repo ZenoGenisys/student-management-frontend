@@ -1,0 +1,35 @@
+.shader-container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  background: transparent;
+}
+
+.shader-container.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.transition-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #202C4B;
+  font-size: 2rem;
+  z-index: 1000000;
+  pointer-events: none;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

@@ -8,6 +8,7 @@ export type GetStudentRequest = {
   search?: string;
   sortBy?: string;
   sortOrder?: 'ASC' | 'DESC';
+  status?: 'Active' | 'Inactive';
 };
 
 export type ParentDetails = {

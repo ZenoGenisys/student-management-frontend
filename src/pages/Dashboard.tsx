@@ -1,14 +1,52 @@
 import React from 'react';
-import { Box, Typography, Paper, Button, Grid, Divider } from '@mui/material';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { Box, Typography, Paper, Button, Grid, Divider, Card } from '@mui/material';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import StudentIcon from '../assets/images/student.svg';
 import StaffIcon from '../assets/images/staff.svg';
+import IncomeIcon from '../assets/images/income.png';
+import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
+import RevenueChart from '../components/RevenueChart';
 
 const Dashboard: React.FC = () => {
+  const [showBackground, setShowBackground] = React.useState(false);
+  const [showContent, setShowContent] = React.useState(false);
+
+  React.useEffect(() => {
+    // First fade in the background
+    setShowBackground(true);
+
+    // Then fade in the content after background is visible
+    const contentTimer = setTimeout(() => {
+      setShowContent(true);
+    }, 600);
+
+    return () => clearTimeout(contentTimer);
+  }, []);
+
   return (
     <>
+      {/* Background fade in layer */}
       <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'background.default',
+          opacity: showBackground ? 1 : 0,
+          transition: 'opacity 0.6s ease-in-out',
+          zIndex: -1,
+        }}
+      />
+
+      {/* Content container with fade in */}
+      <Box
+        sx={{
+          opacity: showContent ? 1 : 0,
+          transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s ease-in-out',
+        }}
         display={'flex'}
         flexWrap={'wrap'}
         justifyContent="space-between"
@@ -23,24 +61,25 @@ const Dashboard: React.FC = () => {
             variant="outlined"
             color="primary"
             size="large"
-            startIcon={<AddCircleOutlineOutlinedIcon />}
+            startIcon={<CloudDownloadOutlinedIcon />}
           >
-            Add Student
-          </Button>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            startIcon={<AddCircleOutlineOutlinedIcon />}
-          >
-            Add Staff
+            Export
           </Button>
         </Box>
       </Box>
 
       <Paper
         elevation={2}
-        sx={{ p: 3, backgroundColor: '#202C4B !important', border: '1px solid #202C4B !important' }}
+        sx={{
+          p: 3,
+          marginBottom: '20px',
+          backgroundColor: '#202C4B !important',
+          border: '1px solid #202C4B !important',
+          opacity: showContent ? 1 : 0,
+          transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s ease-in-out',
+          transitionDelay: '0.2s',
+        }}
       >
         <Box
           display={'flex'}
@@ -65,7 +104,17 @@ const Dashboard: React.FC = () => {
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-          <Paper elevation={2} sx={{ p: 2, mt: 3, maxWidth: '100%' }}>
+          <Card
+            elevation={2}
+            sx={{
+              p: 2,
+              maxWidth: '100%',
+              opacity: showContent ? 1 : 0,
+              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s ease-in-out',
+              transitionDelay: '0.4s',
+            }}
+          >
             <Box display={'flex'} alignItems="center" gap={2}>
               <Box
                 sx={{
@@ -81,7 +130,7 @@ const Dashboard: React.FC = () => {
                 <img
                   src={StudentIcon}
                   alt="Student illustration"
-                  style={{ width: '100%', height: 'auto' }}
+                  style={{ width: '90%', height: 'auto' }}
                 />
               </Box>
               <Box>
@@ -117,11 +166,21 @@ const Dashboard: React.FC = () => {
                 </Typography>
               </Box>
             </Box>
-          </Paper>
+          </Card>
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-          <Paper elevation={2} sx={{ p: 2, mt: 3, maxWidth: '100%' }}>
+          <Card
+            elevation={2}
+            sx={{
+              p: 2,
+              maxWidth: '100%',
+              opacity: showContent ? 1 : 0,
+              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s ease-in-out',
+              transitionDelay: '0.6s',
+            }}
+          >
             <Box display={'flex'} alignItems="center" gap={2}>
               <Box
                 sx={{
@@ -169,7 +228,74 @@ const Dashboard: React.FC = () => {
                 </Typography>
               </Box>
             </Box>
-          </Paper>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+          <Card
+            elevation={2}
+            sx={{
+              p: 2,
+              maxWidth: '100%',
+              opacity: showContent ? 1 : 0,
+              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s ease-in-out',
+              transitionDelay: '0.6s',
+            }}
+          >
+            <Box display={'flex'} alignItems="center" gap={2}>
+              <Box
+                sx={{
+                  backgroundColor: 'primary.lighter',
+                  borderRadius: '50%',
+                  width: 60,
+                  height: 60,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <img src={IncomeIcon} alt="income" style={{ width: '100%', height: 'auto' }} />
+              </Box>
+              <Box>
+                <Typography variant="h4" fontWeight="bold">
+                  12,000
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Total Income
+                </Typography>
+              </Box>
+            </Box>
+            <Divider sx={{ marginTop: '15px', marginBottom: '15px' }} />
+            <Box
+              display={'flex'}
+              flexDirection={'row'}
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            >
+              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+                <Typography variant="body1" color="text.secondary">
+                  Fees collected (This Month):
+                </Typography>
+                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
+                  10,000
+                </Typography>
+              </Box>
+              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}></Box>
+            </Box>
+          </Card>
+        </Grid>
+
+        <Grid
+          size={{ xs: 12, md: 12, lg: 12, xl: 12 }}
+          sx={{
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s ease-in-out',
+            transitionDelay: '0.8s',
+          }}
+        >
+          <RevenueChart />
         </Grid>
       </Grid>
     </>

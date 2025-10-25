@@ -194,12 +194,35 @@ const StudentForm = () => {
                                   )}
                                 </>
                               )}
-                              {item.type === 'text' && (
+                              {(item.type === 'text' ||
+                                item.type === 'email' ||
+                                item.type === 'number') && (
                                 <TextField
                                   {...field}
+                                  type={item.type}
                                   size="small"
                                   error={meta.touched && Boolean(meta.error)}
                                   helperText={meta.touched && meta.error}
+                                  inputProps={
+                                    item.type === 'number'
+                                      ? { inputMode: 'numeric', pattern: '\\d*', maxLength: 10 }
+                                      : undefined
+                                  }
+                                  onChange={(e) => {
+                                    if (item.type === 'number') {
+                                      const v = (e.target as HTMLInputElement).value
+                                        .replace(/\D/g, '')
+                                        .slice(0, 10);
+                                      form.setFieldValue(field.name, v);
+                                      setFieldValue(field.name, v);
+                                    } else {
+                                      // Use setFieldValue to avoid casting to `any`
+                                      form.setFieldValue(
+                                        field.name,
+                                        (e.target as HTMLInputElement).value,
+                                      );
+                                    }
+                                  }}
                                 />
                               )}
                               {item.type === 'date' && (
@@ -261,17 +284,38 @@ const StudentForm = () => {
                     {FatherInfo.map((item, index) => (
                       <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`father-form${index}`}>
                         <FastField name={`parentDetails.${item.value}`}>
-                          {({ field, meta }: FieldProps<string>) => (
+                          {({ field, form, meta }: FieldProps<string>) => (
                             <FormControl fullWidth>
                               <Typography mb={1} variant="h6">
                                 {item.label}
                               </Typography>
-                              {item.type === 'text' && (
+                              {(item.type === 'text' ||
+                                item.type === 'email' ||
+                                item.type === 'number') && (
                                 <TextField
                                   {...field}
+                                  type={item.type}
                                   size="small"
                                   error={meta.touched && Boolean(meta.error)}
                                   helperText={meta.touched && meta.error}
+                                  inputProps={
+                                    item.type === 'number'
+                                      ? { inputMode: 'numeric', pattern: '\\d*', maxLength: 10 }
+                                      : undefined
+                                  }
+                                  onChange={(e) => {
+                                    if (item.type === 'number') {
+                                      const v = (e.target as HTMLInputElement).value
+                                        .replace(/\D/g, '')
+                                        .slice(0, 10);
+                                      form.setFieldValue(field.name, v);
+                                    } else {
+                                      form.setFieldValue(
+                                        field.name,
+                                        (e.target as HTMLInputElement).value,
+                                      );
+                                    }
+                                  }}
                                 />
                               )}
                             </FormControl>
@@ -288,17 +332,38 @@ const StudentForm = () => {
                     {MotherInfo.map((item, index) => (
                       <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }} key={`mother-form${index}`}>
                         <FastField name={`parentDetails.${item.value}`}>
-                          {({ field, meta }: FieldProps<string>) => (
+                          {({ field, form, meta }: FieldProps<string>) => (
                             <FormControl fullWidth>
                               <Typography mb={1} variant="h6">
                                 {item.label}
                               </Typography>
-                              {item.type === 'text' && (
+                              {(item.type === 'text' ||
+                                item.type === 'email' ||
+                                item.type === 'number') && (
                                 <TextField
                                   {...field}
+                                  type={item.type}
                                   size="small"
                                   error={meta.touched && Boolean(meta.error)}
                                   helperText={meta.touched && meta.error}
+                                  inputProps={
+                                    item.type === 'number'
+                                      ? { inputMode: 'numeric', pattern: '\\d*', maxLength: 10 }
+                                      : undefined
+                                  }
+                                  onChange={(e) => {
+                                    if (item.type === 'number') {
+                                      const v = (e.target as HTMLInputElement).value
+                                        .replace(/\D/g, '')
+                                        .slice(0, 10);
+                                      form.setFieldValue(field.name, v);
+                                    } else {
+                                      form.setFieldValue(
+                                        field.name,
+                                        (e.target as HTMLInputElement).value,
+                                      );
+                                    }
+                                  }}
                                 />
                               )}
                             </FormControl>
@@ -319,7 +384,10 @@ const StudentForm = () => {
                   />
                 }
                 suffixIcon={
-                  <AddCircleOutlineOutlinedIcon onClick={() => addLevel(values, setFieldValue)} />
+                  <AddCircleOutlineOutlinedIcon
+                    onClick={() => addLevel(values, setFieldValue)}
+                    sx={{ cursor: 'pointer' }}
+                  />
                 }
               >
                 <Grid container spacing={2} mt={2}>

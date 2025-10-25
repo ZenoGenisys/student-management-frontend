@@ -4,13 +4,16 @@ export type PaginationType = {
   totalRows: number;
 };
 
-export type CellRender<T> = {
+export type Row = {
+  [key: string]: any;
+};
+
+export type CellRender<T = any> = {
   column: ColumnDefsProps<T>;
   row: T;
   rows: T[];
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ColumnDefsProps<T = any> = {
   id: string;
   label: string | React.ReactNode;
@@ -22,18 +25,16 @@ export type ColumnDefsProps<T = any> = {
   cellRenderer?: ({ column, row, rows }: CellRender<T>) => React.ReactNode;
 };
 
-export type Row = {
-  [key: string]: any;
-};
-
 export type ListViewProps<T extends Row = Row> = {
-  columns: ColumnDefsProps[];
+  columns: ColumnDefsProps<T>[];
   rows: T[];
   showCheckbox?: boolean;
   sort?: { orderBy: string; order?: 'asc' | 'desc' } | null;
   handleSort?: (orderBy: string, order?: 'asc' | 'desc') => void;
-  onChangeSelectedRows?: (selectedRows: string[]) => void;
+  onChangeSelectedRows?: (selectedRows: T[]) => void;
   getRowId?: (row: T) => string;
+  selectedRows?: T[];
+  onSelectedRowsChange?: (selectedRows: T[]) => void;
 };
 
 export type GridViewProps<T extends Row = Row> = {

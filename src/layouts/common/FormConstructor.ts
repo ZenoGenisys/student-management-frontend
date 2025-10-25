@@ -22,7 +22,7 @@ export const StudentBasicInfo = [
   },
   {
     label: 'Email',
-    type: 'text',
+    type: 'email',
     value: 'email',
   },
   {
@@ -44,7 +44,7 @@ export const StudentBasicInfo = [
     label: 'Center',
     type: 'select',
     value: 'center',
-    option: ['Puliyur', 'Karur'],
+    option: ['Puliyur', 'Thanthonimalai'],
   },
   {
     label: 'Student Type',
@@ -63,7 +63,7 @@ export const StudentBasicInfo = [
     type: 'select',
     isMultiple: true,
     value: 'batch',
-    option: ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'],
+    option: ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
   },
 ];
 
@@ -75,12 +75,12 @@ export const FatherInfo = [
   },
   {
     label: 'Phone Number',
-    type: 'text',
+    type: 'number',
     value: 'fatherPhoneNumber',
   },
   {
     label: 'Email',
-    type: 'text',
+    type: 'email',
     value: 'fatherEmail',
   },
   {
@@ -98,12 +98,12 @@ export const MotherInfo = [
   },
   {
     label: 'Phone Number',
-    type: 'text',
+    type: 'number',
     value: 'motherPhoneNumber',
   },
   {
     label: 'Email',
-    type: 'text',
+    type: 'email',
     value: 'motherEmail',
   },
   {
@@ -142,12 +142,12 @@ export const StaffBasicInfo = [
   },
   {
     label: 'Contact Number',
-    type: 'text',
+    type: 'number',
     value: 'contactNumber',
   },
   {
     label: 'Email',
-    type: 'text',
+    type: 'email',
     value: 'email',
   },
   {
@@ -170,7 +170,7 @@ export const StaffBasicInfo = [
     label: 'Center',
     type: 'select',
     value: 'center',
-    option: ['Puliyur', 'Karur'],
+    option: ['Puliyur', 'Thanthonimalai'],
   },
   {
     label: 'Status',
