@@ -73,7 +73,13 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
               }}
               size={12}
             >
-              <Grid display="flex" flexDirection="row" alignItems="center" gap={1} size={3}>
+              <Grid
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap={1}
+                size={{ xs: 12, sm: 12, md: 3 }}
+              >
                 <Avatar variant="square" sx={{ borderRadius: 1 }}>
                   {parentDetails['Father Name']?.charAt(0)}
                 </Avatar>
@@ -85,7 +91,7 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                 </Box>
               </Grid>
 
-              <Grid size={3}>
+              <Grid size={{ xs: 12, sm: 12, md: 3 }}>
                 <Typography variant="h6">Phone</Typography>
                 <Typography variant="body2" color="text.secondary">
                   {parentDetails['Father Phone Number']}
@@ -98,7 +104,7 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                 justifyContent={'space-between'}
                 alignItems={'center'}
                 gap={0.5}
-                size={6}
+                size={{ xs: 12, sm: 12, md: 4 }}
               >
                 <Box>
                   <Typography variant="h6">Email</Typography>
@@ -106,6 +112,15 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                     {parentDetails['Father Email']}
                   </Typography>
                 </Box>
+              </Grid>
+              <Grid
+                display={'flex'}
+                flexDirection="row"
+                justifyContent={'flex-end'}
+                alignItems={'center'}
+                gap={0.5}
+                size={{ xs: 12, sm: 12, md: 2 }}
+              >
                 <Box>
                   <IconButton
                     aria-label="Call"
@@ -115,7 +130,11 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                       mr: 1,
                     }}
                     component="a"
-                    href={parentDetails['Father Phone Number'] ? `tel:${parentDetails['Father Phone Number']}` : undefined}
+                    href={
+                      parentDetails['Father Phone Number']
+                        ? `tel:${parentDetails['Father Phone Number']}`
+                        : undefined
+                    }
                     disabled={!parentDetails['Father Phone Number']}
                   >
                     <CallOutlinedIcon />
@@ -128,7 +147,11 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                       mr: 1,
                     }}
                     component="a"
-                    href={parentDetails['Father Phone Number'] ? `https://wa.me/${parentDetails['Father Phone Number']}` : undefined}
+                    href={
+                      parentDetails['Father Phone Number']
+                        ? `https://wa.me/${parentDetails['Father Phone Number']}`
+                        : undefined
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     disabled={!parentDetails['Father Phone Number']}
@@ -142,7 +165,11 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                       borderRadius: 5,
                     }}
                     component="a"
-                    href={parentDetails['Father Email'] ? `mailto:${parentDetails['Father Email']}` : undefined}
+                    href={
+                      parentDetails['Father Email']
+                        ? `mailto:${parentDetails['Father Email']}`
+                        : undefined
+                    }
                     disabled={!parentDetails['Father Email']}
                   >
                     <MailOutlineOutlinedIcon />
@@ -150,7 +177,7 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                 </Box>
               </Grid>
             </Grid>
-            
+
             <Grid
               container
               alignItems="center"
@@ -162,7 +189,13 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
               }}
               size={12}
             >
-              <Grid display="flex" flexDirection="row" alignItems="center" gap={1} size={3}>
+              <Grid
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                gap={1}
+                size={{ xs: 12, sm: 12, md: 3 }}
+              >
                 <Avatar variant="square" sx={{ borderRadius: 1 }}>
                   {parentDetails['Mother Name']?.charAt(0)}
                 </Avatar>
@@ -174,7 +207,7 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                 </Box>
               </Grid>
 
-              <Grid size={3}>
+              <Grid size={{ xs: 12, sm: 12, md: 3 }}>
                 <Typography variant="h6">Phone</Typography>
                 <Typography variant="body2" color="text.secondary">
                   {parentDetails['Mother Phone Number']}
@@ -187,7 +220,7 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                 justifyContent={'space-between'}
                 alignItems={'center'}
                 gap={0.5}
-                size={6}
+                size={{ xs: 12, sm: 12, md: 4 }}
               >
                 <Box>
                   <Typography variant="h6">Email</Typography>
@@ -195,6 +228,15 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                     {parentDetails['Mother Email']}
                   </Typography>
                 </Box>
+              </Grid>
+              <Grid
+                display={'flex'}
+                flexDirection="row"
+                justifyContent={'flex-end'}
+                alignItems={'center'}
+                gap={0.5}
+                size={{ xs: 12, sm: 12, md: 2 }}
+              >
                 <Box>
                   <IconButton
                     aria-label="Call"
@@ -204,7 +246,11 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                       mr: 1,
                     }}
                     component="a"
-                    href={parentDetails['Mother Phone Number'] ? `tel:${parentDetails['Mother Phone Number']}` : undefined}
+                    href={
+                      parentDetails['Mother Phone Number']
+                        ? `tel:${parentDetails['Mother Phone Number']}`
+                        : undefined
+                    }
                     disabled={!parentDetails['Mother Phone Number']}
                   >
                     <CallOutlinedIcon />
@@ -217,7 +263,11 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                       mr: 1,
                     }}
                     component="a"
-                    href={parentDetails['Mother Phone Number'] ? `https://wa.me/${parentDetails['Mother Phone Number']}` : undefined}
+                    href={
+                      parentDetails['Mother Phone Number']
+                        ? `https://wa.me/${parentDetails['Mother Phone Number']}`
+                        : undefined
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     disabled={!parentDetails['Mother Phone Number']}
@@ -231,7 +281,11 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                       borderRadius: 5,
                     }}
                     component="a"
-                    href={parentDetails['Mother Email'] ? `mailto:${parentDetails['Mother Email']}` : undefined}
+                    href={
+                      parentDetails['Mother Email']
+                        ? `mailto:${parentDetails['Mother Email']}`
+                        : undefined
+                    }
                     disabled={!parentDetails['Mother Email']}
                   >
                     <MailOutlineOutlinedIcon />
