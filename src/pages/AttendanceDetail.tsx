@@ -2,9 +2,10 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Typography, Paper, Button } from '@mui/material';
 import moment from 'moment';
-import { Pagination } from '../components';
 import ListView from '../components/ListView';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { useAttendanceDetails } from '../hooks';
+import DeleteConfirmation from '../components/DeleteConfirmation';
+import AttendanceModal from '../layouts/AttendanceDetails/AttendanceModal';
 
 const AttendanceDetail: React.FC = () => {
   const { date: paramDate } = useParams<{ date: string }>();
@@ -13,18 +14,28 @@ const AttendanceDetail: React.FC = () => {
   const isDateValid = paramDate ? moment(paramDate, 'YYYY-MM-DD', true).isValid() : false;
   const selectedDate = isDateValid ? moment(paramDate, 'YYYY-MM-DD') : null;
 
-  // Dummy data for student attendance
-  const dummyStudents = [
-    { studentId: 1, name: 'John Doe', batch: '', status: 'Present' },
-    { studentId: 2, name: 'Jane Smith', batch: '', status: 'Absent' },
-    { studentId: 3, name: 'Alice Johnson', batch: '', status: 'Present' },
-  ];
-  const dummyColumns = [
+  const {
+    data,
+    disableDelete,
+    disableEdit,
+    showModal,
+    studentOption,
+    selectedRows,
+    onClickAdd,
+    onClickEdit,
+    onClickDelete,
+    onCancel,
+    onConfirm,
+    onDelete,
+    onSelectedRowsChange,
+  } = useAttendanceDetails(paramDate);
+
+  const Columns = [
     { id: 'studentId', label: 'Student ID', sortable: true },
     { id: 'name', label: 'Name', sortable: true },
+    { id: 'attendance', label: 'Attendance', sortable: true },
     { id: 'batch', label: 'Batch', sortable: true },
-    { id: 'status', label: 'Status', sortable: true },
-    { id: 'actions', label: 'Action', sortable: false },
+    { id: 'center', label: 'Center', sortable: true },
   ];
 
   return (
@@ -51,46 +62,29 @@ const AttendanceDetail: React.FC = () => {
               <Typography variant="h5" gutterBottom>
                 Student Attendance
               </Typography>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                startIcon={<AddCircleOutlineOutlinedIcon />}
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: 2,
+                }}
               >
-                Add Student
-              </Button>
+                <Button onClick={onClickAdd}>Add</Button>
+                <Button disabled={disableEdit} onClick={onClickEdit}>
+                  Edit
+                </Button>
+                <Button disabled={disableDelete} onClick={onClickDelete}>
+                  Delete
+                </Button>
+              </Box>
             </Box>
-            <Pagination
-              page={1}
-              pagination={{
-                currentPage: 1,
-                totalPages: 1,
-                totalRows: dummyStudents.length,
-              }}
-              rowsPerPage={50}
-              search=""
-              handleSearch={() => {}}
-              handlePageChange={() => {}}
-              handleRowPerPageChange={() => {}}
-            >
-              <ListView
-                columns={dummyColumns}
-                rows={dummyStudents}
-                showCheckbox={false}
-                getRowId={(row) => row.studentId.toString()}
-              />
-            </Pagination>
-          </Box>
-          <Box
-            display="flex"
-            flexWrap="wrap"
-            alignItems="center"
-            justifyContent="space-between"
-            flexGrow={1}
-            p={2}
-            sx={{ bgcolor: '#fff', border: '1px solid #E3E8EE' }}
-          >
-            <Typography variant="h5">Staff Attendace</Typography>
+            <ListView
+              columns={Columns}
+              rows={data ?? []}
+              showCheckbox={true}
+              getRowId={(row) => row.studentId.toString()}
+              selectedRows={selectedRows}
+              onSelectedRowsChange={onSelectedRowsChange}
+            />
           </Box>
         </>
       ) : (
@@ -101,6 +95,16 @@ const AttendanceDetail: React.FC = () => {
           </Typography>
         </Paper>
       )}
+      {showModal === 'DELETE' && (
+        <DeleteConfirmation open={showModal === 'DELETE'} onClose={onCancel} onConfirm={onDelete} />
+      )}
+      <AttendanceModal
+        open={showModal === 'ADD' || showModal === 'EDIT'}
+        data={selectedRows.map((row) => row.studentId.toString())}
+        onClose={onCancel}
+        onSave={onConfirm}
+        option={studentOption}
+      />
     </>
   );
 };

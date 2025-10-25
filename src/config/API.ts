@@ -10,4 +10,5 @@ export const API_PATH = {
   STUDENT_ATTENDANCE: '/student-attendance',
   STUDENT_ATTENDANCE_SUMMARY: '/student-attendance/summary',
   ATTENDANCE_SUMMARY: '/attendance/summary',
+  STUDENT_ATTENDANCE_DAY: '/attendance/student',
 };

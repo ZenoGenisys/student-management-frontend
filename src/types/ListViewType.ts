@@ -32,8 +32,10 @@ export type ListViewProps<T extends Row = Row> = {
   showCheckbox?: boolean;
   sort?: { orderBy: string; order?: 'asc' | 'desc' } | null;
   handleSort?: (orderBy: string, order?: 'asc' | 'desc') => void;
-  onChangeSelectedRows?: (selectedRows: string[]) => void;
+  onChangeSelectedRows?: (selectedRows: T[]) => void;
   getRowId?: (row: T) => string;
+  selectedRows?: T[];
+  onSelectedRowsChange?: (selectedRows: T[]) => void;
 };
 
 export type GridViewProps<T extends Row = Row> = {

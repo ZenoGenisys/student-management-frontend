@@ -44,7 +44,7 @@ export const StudentBasicInfo = [
     label: 'Center',
     type: 'select',
     value: 'center',
-    option: ['Puliyur', 'Karur'],
+    option: ['Puliyur', 'Thanthonimalai'],
   },
   {
     label: 'Student Type',
@@ -63,7 +63,7 @@ export const StudentBasicInfo = [
     type: 'select',
     isMultiple: true,
     value: 'batch',
-    option: ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'],
+    option: ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
   },
 ];
 
@@ -170,7 +170,7 @@ export const StaffBasicInfo = [
     label: 'Center',
     type: 'select',
     value: 'center',
-    option: ['Puliyur', 'Karur'],
+    option: ['Puliyur', 'Thanthonimalai'],
   },
   {
     label: 'Status',
