@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Typography, Paper, ToggleButtonGroup, ToggleButton, styled } from '@mui/material';
+import { Box, Typography, Paper, ToggleButtonGroup, ToggleButton, styled, Chip } from '@mui/material';
 import moment from 'moment';
 import ListView from '../components/ListView';
 import { useAttendanceDetails } from '../hooks';
@@ -8,7 +8,7 @@ import DeleteConfirmation from '../components/DeleteConfirmation';
 import AttendanceModal from '../layouts/AttendanceDetails/AttendanceModal';
 import AttendanceActions from '../layouts/AttendanceDetails/AttendanceActions';
 import { AttendanceLayout } from '../layouts';
-import type { StaffAttendanceDay, StudentAttendanceDay } from '../types';
+import type { StaffAttendanceDay, StudentAttendanceDay, AttendanceStatus } from '../types';
 
 const isStudentAttendance = (
   item: StudentAttendanceDay | StaffAttendanceDay,
@@ -62,17 +62,46 @@ const AttendanceDetail: React.FC = () => {
     if (newEntityType !== null) setEntityType(newEntityType);
   };
 
+  const renderAttendanceCell = ({
+    row,
+  }: {
+    row: StudentAttendanceDay | StaffAttendanceDay;
+  }) => {
+    const rawStatus = row.attendance;
+    const status = typeof rawStatus === 'string' ? rawStatus.toUpperCase() : undefined;
+
+    let chipProps: {
+      label: string;
+      color: 'success' | 'error' | 'warning'; // Removed 'default' as it's not a standard MUI color for Chip
+      variant: 'filled' | 'outlined';
+    };
+
+    switch (status) {
+      case 'PRESENT':
+        chipProps = { label: 'Present', color: 'success', variant: 'filled' };
+        break;
+      case 'ABSENT':
+        chipProps = { label: 'Absent', color: 'error', variant: 'filled' };
+        break;
+      default:
+        chipProps = { label: 'Not Marked', color: 'warning', variant: 'outlined' };
+        break;
+    }
+
+    return <Chip {...chipProps} size="small" sx={{ color: chipProps.variant === 'filled' ? 'white' : chipProps.color + '.main' }} />;
+  };
+
   const studentColumns = [
     { id: 'studentId', label: 'Student ID', sortable: true },
     { id: 'name', label: 'Name', sortable: true },
-    { id: 'attendance', label: 'Attendance', sortable: true },
+    { id: 'attendance', label: 'Attendance', sortable: true, cellRenderer: renderAttendanceCell },
     { id: 'center', label: 'Center', sortable: true },
   ];
 
   const staffColumns = [
     { id: 'staffId', label: 'Staff ID', sortable: true },
     { id: 'name', label: 'Name', sortable: true },
-    { id: 'attendance', label: 'Attendance', sortable: true },
+    { id: 'attendance', label: 'Attendance', sortable: true, cellRenderer: renderAttendanceCell },
     { id: 'center', label: 'Center', sortable: true },
   ];
 
