@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Typography, Paper, FormGroup, FormControlLabel, Switch } from '@mui/material';
+import { Box, Typography, Paper, ToggleButtonGroup, ToggleButton, styled } from '@mui/material';
 import moment from 'moment';
 import ListView from '../components/ListView';
 import { useAttendanceDetails } from '../hooks';
@@ -13,6 +13,18 @@ const isStudentAttendance = (
   item: StudentAttendanceDay | StaffAttendanceDay,
 ): item is StudentAttendanceDay => 'studentId' in item;
 
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  '& .MuiToggleButton-root': {
+    '&.Mui-selected': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.light,
+      '&:hover': {
+        backgroundColor: theme.palette.primary.light,
+      },
+    },
+  },
+}));
+
 const AttendanceDetail: React.FC = () => {
   const { date: paramDate } = useParams<{ date: string }>();
 
@@ -20,7 +32,7 @@ const AttendanceDetail: React.FC = () => {
   const isDateValid = paramDate ? moment(paramDate, 'YYYY-MM-DD', true).isValid() : false;
   const selectedDate = isDateValid ? moment(paramDate, 'YYYY-MM-DD') : null;
 
-  const [isStudent, setIsStudent] = useState(true);
+  const [entityType, setEntityType] = useState<'STUDENT' | 'STAFF'>('STUDENT');
 
   const {
     data,
@@ -40,13 +52,19 @@ const AttendanceDetail: React.FC = () => {
     onDelete,
     handleSearch,
     onSelectedRowsChange,
-  } = useAttendanceDetails(isStudent ? 'STUDENT' : 'STAFF', paramDate);
+  } = useAttendanceDetails(entityType, paramDate);
+
+  const handleEntityTypeChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newEntityType: 'STUDENT' | 'STAFF' | null,
+  ) => {
+    if (newEntityType !== null) setEntityType(newEntityType);
+  };
 
   const studentColumns = [
     { id: 'studentId', label: 'Student ID', sortable: true },
     { id: 'name', label: 'Name', sortable: true },
     { id: 'attendance', label: 'Attendance', sortable: true },
-    { id: 'batch', label: 'Batch', sortable: true },
     { id: 'center', label: 'Center', sortable: true },
   ];
 
@@ -59,47 +77,63 @@ const AttendanceDetail: React.FC = () => {
 
   return (
     <>
-      <Box display="flex" alignItems="center" p={2} gap={2}>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        flexDirection="row"
+        flexWrap="wrap"
+        gap={2}
+        mb={2}
+      >
         <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
           {isDateValid && selectedDate
             ? `Attendance for ${selectedDate.format('MMMM D, YYYY')}`
             : 'Attendance for Invalid Date'}
         </Typography>
+        <StyledToggleButtonGroup
+          value={entityType}
+          exclusive
+          onChange={handleEntityTypeChange}
+          aria-label="attendance type"
+        >
+          <ToggleButton
+            value="STUDENT"
+            aria-label="student attendance"
+            sx={{ fontWeight: 'bold', fontSize: 14 }}
+          >
+            Student
+          </ToggleButton>
+          <ToggleButton value="STAFF" aria-label="staff attendance" sx={{ fontWeight: 'bold', fontSize: 14 }}>
+            Staff
+          </ToggleButton>
+        </StyledToggleButtonGroup>
       </Box>
-      <FormGroup>
-        <FormControlLabel
-          control={<Switch value={isStudent} />}
-          label="Label"
-          onChange={() => setIsStudent((prev) => !prev)}
-        />
-      </FormGroup>
 
       {isDateValid ? (
-        <>
-          <AttendanceLayout
-            entity={isStudent ? 'STUDENT' : 'STAFF'}
-            search={search}
-            disableDelete={disableDelete}
-            disableEdit={disableEdit}
-            handleSearch={handleSearch}
-            onClickAdd={onClickAdd}
-            onClickEdit={onClickEdit}
-            onClickDelete={onClickDelete}
-          >
-            <ListView
-              columns={isStudent ? studentColumns : staffColumns}
-              rows={data ?? []}
-              showCheckbox={true}
-              sort={sort}
-              handleSort={handleSort}
-              getRowId={(row) =>
-                isStudentAttendance(row) ? row.studentId.toString() : row.staffId.toString()
-              }
-              selectedRows={selectedRows}
-              onSelectedRowsChange={onSelectedRowsChange}
-            />
-          </AttendanceLayout>
-        </>
+        <AttendanceLayout
+          entity={entityType}
+          search={search}
+          disableDelete={disableDelete}
+          disableEdit={disableEdit}
+          handleSearch={handleSearch}
+          onClickAdd={onClickAdd}
+          onClickEdit={onClickEdit}
+          onClickDelete={onClickDelete}
+        >
+          <ListView
+            columns={entityType === 'STUDENT' ? studentColumns : staffColumns}
+            rows={data ?? []}
+            showCheckbox={true}
+            sort={sort}
+            handleSort={handleSort}
+            getRowId={(row) =>
+              isStudentAttendance(row) ? row.studentId.toString() : row.staffId.toString()
+            }
+            selectedRows={selectedRows}
+            onSelectedRowsChange={onSelectedRowsChange}
+          />
+        </AttendanceLayout>
       ) : (
         <Paper elevation={2} sx={{ p: 3, mt: 2, borderColor: 'error.main' }}>
           <Typography color="error">
