@@ -6,6 +6,7 @@ import ListView from '../components/ListView';
 import { useAttendanceDetails } from '../hooks';
 import DeleteConfirmation from '../components/DeleteConfirmation';
 import AttendanceModal from '../layouts/AttendanceDetails/AttendanceModal';
+import AttendanceActions from '../layouts/AttendanceDetails/AttendanceActions';
 import { AttendanceLayout } from '../layouts';
 import type { StaffAttendanceDay, StudentAttendanceDay } from '../types';
 
@@ -104,7 +105,11 @@ const AttendanceDetail: React.FC = () => {
           >
             Student
           </ToggleButton>
-          <ToggleButton value="STAFF" aria-label="staff attendance" sx={{ fontWeight: 'bold', fontSize: 14 }}>
+          <ToggleButton
+            value="STAFF"
+            aria-label="staff attendance"
+            sx={{ fontWeight: 'bold', fontSize: 14 }}
+          >
             Staff
           </ToggleButton>
         </StyledToggleButtonGroup>
@@ -114,13 +119,15 @@ const AttendanceDetail: React.FC = () => {
         <AttendanceLayout
           entity={entityType}
           search={search}
-          disableDelete={disableDelete}
-          disableEdit={disableEdit}
           handleSearch={handleSearch}
-          onClickAdd={onClickAdd}
-          onClickEdit={onClickEdit}
-          onClickDelete={onClickDelete}
         >
+          <AttendanceActions
+            onClickAdd={onClickAdd}
+            onClickEdit={onClickEdit}
+            onClickDelete={onClickDelete}
+            disableEdit={disableEdit}
+            disableDelete={disableDelete}
+          />
           <ListView
             columns={entityType === 'STUDENT' ? studentColumns : staffColumns}
             rows={data ?? []}

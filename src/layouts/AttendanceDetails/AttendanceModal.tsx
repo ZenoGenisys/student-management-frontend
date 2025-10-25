@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import React, { useState, useCallback, useEffect } from 'react';
 import { type TransitionProps } from '@mui/material/transitions';
 import {
+  Box,
   Checkbox,
   FormControl,
   FormControlLabel,
@@ -17,6 +18,7 @@ import {
   RadioGroup,
   Select,
   Slide,
+  Typography,
   type SelectChangeEvent,
 } from '@mui/material';
 
@@ -78,47 +80,48 @@ const AttendanceModal = ({ open, option, data, onClose, onSave }: AttendanceModa
       aria-describedby="attendance-dialog-description"
     >
       <DialogTitle id="attendance-dialog-title" variant="h5">
-        Attendance
+        Add Attendance
       </DialogTitle>
       <DialogContent>
-        <FormControl sx={{ m: 1, width: 300 }}>
-          <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
-          <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
-            multiple
-            value={selectData}
-            onChange={handleChange}
-            input={<OutlinedInput label="Name" />}
-            renderValue={(selected) =>
-              selected
-                .map((value) => option.find((opt) => opt.value === value)?.label ?? value)
-                .join(', ')
-            }
-            MenuProps={MenuProps}
-          >
-            {option.map((item) => (
-              <MenuItem key={item.value} value={item.value}>
-                <Checkbox checked={selectData.includes(item.value)} />
-                <ListItemText primary={item.label} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl component="fieldset">
-          <RadioGroup
-            row
-            aria-label="attendance-status"
-            name="attendance-status"
-            value={value}
-            onChange={(_: React.ChangeEvent<HTMLInputElement>, newValue: string) => {
-              setValue(newValue as Status);
-            }}
-          >
-            <FormControlLabel value={'Present'} control={<Radio />} label="Present" />
-            <FormControlLabel value={'Absent'} control={<Radio />} label="Absent" />
-          </RadioGroup>
-        </FormControl>
+        <Box display="flex" flexDirection="column" gap={1}>
+          <FormControl sx={{ width: 300 }}>
+            <Typography variant="h6" color="secondary" mb={1}>Select Students: </Typography>
+            <Select
+              size='medium'
+              multiple
+              value={selectData}
+              onChange={handleChange}
+              input={<OutlinedInput />}
+              renderValue={(selected) =>
+                selected
+                  .map((value) => option.find((opt) => opt.value === value)?.label ?? value)
+                  .join(', ')
+              }
+              MenuProps={MenuProps}
+            >
+              {option.map((item) => (
+                <MenuItem key={item.value} value={item.value}>
+                  <Checkbox checked={selectData.includes(item.value)} />
+                  <ListItemText primary={item.label} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl component="fieldset">
+            <RadioGroup
+              row
+              aria-label="attendance-status"
+              name="attendance-status"
+              value={value}
+              onChange={(_: React.ChangeEvent<HTMLInputElement>, newValue: string) => {
+                setValue(newValue as Status);
+              }}
+            >
+              <FormControlLabel value={'Present'} control={<Radio />} label="Present" />
+              <FormControlLabel value={'Absent'} control={<Radio />} label="Absent" />
+            </RadioGroup>
+          </FormControl>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} variant="outlined">
