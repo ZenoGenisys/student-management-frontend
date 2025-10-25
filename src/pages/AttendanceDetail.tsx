@@ -8,7 +8,7 @@ import DeleteConfirmation from '../components/DeleteConfirmation';
 import AttendanceModal from '../layouts/AttendanceDetails/AttendanceModal';
 import AttendanceActions from '../layouts/AttendanceDetails/AttendanceActions';
 import { AttendanceLayout } from '../layouts';
-import type { StaffAttendanceDay, StudentAttendanceDay, AttendanceStatus } from '../types';
+import type { StaffAttendanceDay, StudentAttendanceDay } from '../types';
 
 const isStudentAttendance = (
   item: StudentAttendanceDay | StaffAttendanceDay,
