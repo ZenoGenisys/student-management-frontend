@@ -6,9 +6,45 @@ import StudentIcon from '../assets/images/student.svg';
 import StaffIcon from '../assets/images/staff.svg';
 
 const Dashboard: React.FC = () => {
+  const [showBackground, setShowBackground] = React.useState(false);
+  const [showContent, setShowContent] = React.useState(false);
+
+  React.useEffect(() => {
+    // First fade in the background
+    setShowBackground(true);
+
+    // Then fade in the content after background is visible
+    const contentTimer = setTimeout(() => {
+      setShowContent(true);
+    }, 600);
+
+    return () => clearTimeout(contentTimer);
+  }, []);
+
   return (
     <>
+      {/* Background fade in layer */}
       <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'background.default',
+          opacity: showBackground ? 1 : 0,
+          transition: 'opacity 0.6s ease-in-out',
+          zIndex: -1
+        }}
+      />
+
+      {/* Content container with fade in */}
+      <Box
+        sx={{
+          opacity: showContent ? 1 : 0,
+          transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s ease-in-out',
+        }}
         display={'flex'}
         flexWrap={'wrap'}
         justifyContent="space-between"
@@ -40,7 +76,15 @@ const Dashboard: React.FC = () => {
 
       <Paper
         elevation={2}
-        sx={{ p: 3, backgroundColor: '#202C4B !important', border: '1px solid #202C4B !important' }}
+        sx={{
+          p: 3,
+          backgroundColor: '#202C4B !important',
+          border: '1px solid #202C4B !important',
+          opacity: showContent ? 1 : 0,
+          transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 0.8s ease-in-out',
+          transitionDelay: '0.2s'
+        }}
       >
         <Box
           display={'flex'}
@@ -65,7 +109,17 @@ const Dashboard: React.FC = () => {
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-          <Paper elevation={2} sx={{ p: 2, mt: 3, maxWidth: '100%' }}>
+          <Paper 
+            elevation={2} 
+            sx={{ 
+              p: 2, 
+              mt: 3, 
+              maxWidth: '100%',
+              opacity: showContent ? 1 : 0,
+              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s ease-in-out',
+              transitionDelay: '0.4s'
+            }}>
             <Box display={'flex'} alignItems="center" gap={2}>
               <Box
                 sx={{
@@ -121,7 +175,17 @@ const Dashboard: React.FC = () => {
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-          <Paper elevation={2} sx={{ p: 2, mt: 3, maxWidth: '100%' }}>
+          <Paper 
+            elevation={2} 
+            sx={{ 
+              p: 2, 
+              mt: 3, 
+              maxWidth: '100%',
+              opacity: showContent ? 1 : 0,
+              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s ease-in-out',
+              transitionDelay: '0.6s'
+            }}>
             <Box display={'flex'} alignItems="center" gap={2}>
               <Box
                 sx={{

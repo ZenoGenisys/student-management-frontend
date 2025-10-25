@@ -5,18 +5,21 @@ import Sidebar from './Sidebar';
 import Appbar from './Appbar';
 import { DRAWER_WIDTH, MOBILE_BREAKPOINT, APPBAR_HEIGHT } from '../constants/layout';
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' && prop !== 'show' })<{
   open?: boolean;
-}>(({ theme, open }) => ({
+  show?: boolean;
+}>(({ theme, open, show }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
   paddingTop: theme.spacing(2),
   minHeight: `calc(100vh - ${APPBAR_HEIGHT}px)`,
   backgroundColor: theme.palette.background.default,
   zIndex: 1,
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+  opacity: show ? 1 : 0,
+  transform: show ? 'translateY(0)' : 'translateY(20px)',
+  transition: theme.transitions.create(['margin', 'width', 'opacity', 'transform'], {
+    easing: theme.transitions.easing.easeOut,
+    duration: theme.transitions.duration.enteringScreen,
   }),
   marginLeft: 0,
   width: '100%',
@@ -35,10 +38,20 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
 const Layout = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down(MOBILE_BREAKPOINT));
-  const [open, setOpen] = useState(!isMobile);
+  const [open, setOpen] = useState(false);
+  const [showLayout, setShowLayout] = useState(false);
 
   useEffect(() => {
-    setOpen(!isMobile);
+    // Initial delay to wait for dashboard to start loading
+    const layoutTimer = setTimeout(() => {
+      setShowLayout(true);
+      // Open sidebar after layout is visible (for desktop)
+      if (!isMobile) {
+        setTimeout(() => setOpen(true), 300);
+      }
+    }, 600); // Start after background begins to fade in
+
+    return () => clearTimeout(layoutTimer);
   }, [isMobile]);
 
   const handleDrawerOpen = () => {
@@ -66,7 +79,7 @@ const Layout = () => {
           pt: `${APPBAR_HEIGHT}px`,
         }}
       >
-        <Main open={open}>
+        <Main open={open} show={showLayout}>
           <Outlet />
         </Main>
       </Box>

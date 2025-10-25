@@ -67,9 +67,11 @@ const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
             boxSizing: 'border-box',
             borderLeft: isMobile ? 'none' : `1px solid ${theme.palette.divider}`,
             borderRight: 'none',
-            transition: theme.transitions.create(['width', 'margin', 'transform'], {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
+            opacity: open ? 1 : 0,
+            transform: open ? 'translateX(0)' : 'translateX(-20px)',
+            transition: theme.transitions.create(['width', 'margin', 'transform', 'opacity'], {
+              easing: theme.transitions.easing.easeOut,
+              duration: theme.transitions.duration.enteringScreen,
             }),
           },
         }}

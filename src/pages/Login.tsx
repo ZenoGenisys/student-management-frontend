@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth, useSnackbar } from '../state';
 import { PATH } from '../routes/path';
 import { Box, Typography, TextField, Button, Paper, CircularProgress, IconButton, InputAdornment } from '@mui/material';
+import { ShaderAnimation } from '../components/animations/ShaderAnimation';
 import { styled } from '@mui/material/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { loginService } from '../repositories';
@@ -48,12 +49,12 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showElements, setShowElements] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showShaderAnimation, setShowShaderAnimation] = useState(false);
 
   // Trigger animations on component mount
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowElements(true);
-      console.log('Animations triggered!');
     }, 50);
     return () => clearTimeout(timer);
   }, []);
@@ -64,35 +65,76 @@ const Login: React.FC = () => {
 
   const handleLogin = useCallback(
     async (e: React.FormEvent) => {
+      e.preventDefault();
+      setIsLoading(true);
+      
       try {
-        e.preventDefault();
-        setIsLoading(true);
+        // First validate credentials
         const response = await loginService(email, password);
-        login(response);
+        
+        // Show success message and start animation BEFORE updating auth state
         showSnackbar({
           message: 'Login successful!',
           severity: 'success',
         });
-        navigate(PATH.DASHBOARD, { replace: true });
+        
+        setIsLoading(false);
+        
+        // 1. Start fade out of login page (0.6s)
+        setShowElements(false);
+        await new Promise(resolve => setTimeout(resolve, 600));
+        
+        // 2. Start shader animation after login form has faded out
+        setShowShaderAnimation(true);
+        
+        // 3. Wait for shader animation to complete (4s)
+        await new Promise(resolve => setTimeout(resolve, 4000));
+        
+        // 4. Complete the login process
+        login(response);
       } catch (e: unknown) {
+        setIsLoading(false);
+        setShowShaderAnimation(false);
         showSnackbar({
           message: (e as Error).message || 'Login failed. Please check your credentials.',
           severity: 'error',
         });
-      } finally {
-        setIsLoading(false);
       }
     },
     [navigate, login, showSnackbar, email, password],
   );
 
   return (
-    <AnimatedContainer 
-      display="flex" 
-      justifyContent="center" 
-      alignItems="center" 
-      minHeight="100vh"
-    >
+    <>
+      {/* Shader Animation Container */}
+      <div 
+        className={`shader-container ${showShaderAnimation ? 'visible' : ''}`}
+      >
+        <ShaderAnimation />
+        <div 
+          className="transition-message"
+          style={{
+            opacity: showShaderAnimation ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out',
+            transitionDelay: '0.3s'
+          }}
+        >
+          Welcome to Dashboard
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <AnimatedContainer 
+        display="flex" 
+        justifyContent="center" 
+        alignItems="center" 
+        minHeight="100vh"
+        sx={{ 
+          position: 'relative',
+          opacity: showShaderAnimation ? 0 : 1,
+          transition: 'opacity 0.6s ease-out',
+        }}
+      >
       <AnimatedPaper 
         elevation={0} 
         sx={{ p: 4, maxWidth: 400, width: '100%' }}
@@ -236,33 +278,36 @@ const Login: React.FC = () => {
               transitionDelay: '0.9s',
             }}
           >
-            <AnimatedButton 
-              type="submit" 
-              variant="contained" 
-              color="primary" 
-              fullWidth
-              disabled={isLoading}
-              sx={{
-                py: 1.5,
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                },
-                '&:disabled': {
-                  background: 'rgba(0, 0, 0, 0.12)',
-                },
-              }}
-            >
-              {isLoading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                'Sign In'
-              )}
-            </AnimatedButton>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <AnimatedButton 
+                type="submit" 
+                variant="contained" 
+                color="primary" 
+                fullWidth
+                disabled={isLoading}
+                sx={{
+                  py: 1.5,
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                  },
+                  '&:disabled': {
+                    background: 'rgba(0, 0, 0, 0.12)',
+                  },
+                }}
+              >
+                {isLoading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  'Sign In'
+                )}
+              </AnimatedButton>
+            </Box>
           </AnimatedFormElement>
         </Box>
       </AnimatedPaper>
-    </AnimatedContainer>
+      </AnimatedContainer>
+    </>
   );
 };
 
