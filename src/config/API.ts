@@ -11,4 +11,5 @@ export const API_PATH = {
   STUDENT_ATTENDANCE_SUMMARY: '/student-attendance/summary',
   ATTENDANCE_SUMMARY: '/attendance/summary',
   STUDENT_ATTENDANCE_DAY: '/attendance/student',
+  STAFF_ATTENDANCE_DAY: '/attendance/staff',
 };

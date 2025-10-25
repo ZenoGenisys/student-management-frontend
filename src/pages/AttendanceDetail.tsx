@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Typography, Paper, Button } from '@mui/material';
+import { Box, Typography, Paper, FormGroup, FormControlLabel, Switch } from '@mui/material';
 import moment from 'moment';
 import ListView from '../components/ListView';
 import { useAttendanceDetails } from '../hooks';
 import DeleteConfirmation from '../components/DeleteConfirmation';
 import AttendanceModal from '../layouts/AttendanceDetails/AttendanceModal';
-import { Search } from '../components';
+import { AttendanceLayout } from '../layouts';
+import type { StaffAttendanceDay, StudentAttendanceDay } from '../types';
+
+const isStudentAttendance = (
+  item: StudentAttendanceDay | StaffAttendanceDay,
+): item is StudentAttendanceDay => 'studentId' in item;
 
 const AttendanceDetail: React.FC = () => {
   const { date: paramDate } = useParams<{ date: string }>();
@@ -15,12 +20,14 @@ const AttendanceDetail: React.FC = () => {
   const isDateValid = paramDate ? moment(paramDate, 'YYYY-MM-DD', true).isValid() : false;
   const selectedDate = isDateValid ? moment(paramDate, 'YYYY-MM-DD') : null;
 
+  const [isStudent, setIsStudent] = useState(true);
+
   const {
     data,
     disableDelete,
     disableEdit,
     showModal,
-    studentOption,
+    option,
     selectedRows,
     search,
     sort,
@@ -33,13 +40,20 @@ const AttendanceDetail: React.FC = () => {
     onDelete,
     handleSearch,
     onSelectedRowsChange,
-  } = useAttendanceDetails(paramDate);
+  } = useAttendanceDetails(isStudent ? 'STUDENT' : 'STAFF', paramDate);
 
-  const Columns = [
+  const studentColumns = [
     { id: 'studentId', label: 'Student ID', sortable: true },
     { id: 'name', label: 'Name', sortable: true },
     { id: 'attendance', label: 'Attendance', sortable: true },
     { id: 'batch', label: 'Batch', sortable: true },
+    { id: 'center', label: 'Center', sortable: true },
+  ];
+
+  const staffColumns = [
+    { id: 'staffId', label: 'Staff ID', sortable: true },
+    { id: 'name', label: 'Name', sortable: true },
+    { id: 'attendance', label: 'Attendance', sortable: true },
     { id: 'center', label: 'Center', sortable: true },
   ];
 
@@ -52,48 +66,39 @@ const AttendanceDetail: React.FC = () => {
             : 'Attendance for Invalid Date'}
         </Typography>
       </Box>
+      <FormGroup>
+        <FormControlLabel
+          control={<Switch value={isStudent} />}
+          label="Label"
+          onChange={() => setIsStudent((prev) => !prev)}
+        />
+      </FormGroup>
 
       {isDateValid ? (
         <>
-          <Box mb={2}>
-            <Box
-              display={'flex'}
-              flexWrap={'wrap'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-              p={2}
-              sx={{ bgcolor: '#fff', border: '1px solid #E3E8EE' }}
-            >
-              <Typography variant="h5" gutterBottom>
-                Student Attendance
-              </Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: 2,
-                }}
-              >
-                <Search search={search} onChange={handleSearch} />
-                <Button onClick={onClickAdd}>Add</Button>
-                <Button disabled={disableEdit} onClick={onClickEdit}>
-                  Edit
-                </Button>
-                <Button disabled={disableDelete} onClick={onClickDelete}>
-                  Delete
-                </Button>
-              </Box>
-            </Box>
+          <AttendanceLayout
+            entity={isStudent ? 'STUDENT' : 'STAFF'}
+            search={search}
+            disableDelete={disableDelete}
+            disableEdit={disableEdit}
+            handleSearch={handleSearch}
+            onClickAdd={onClickAdd}
+            onClickEdit={onClickEdit}
+            onClickDelete={onClickDelete}
+          >
             <ListView
-              columns={Columns}
+              columns={isStudent ? studentColumns : staffColumns}
               rows={data ?? []}
               showCheckbox={true}
               sort={sort}
               handleSort={handleSort}
-              getRowId={(row) => row.studentId.toString()}
+              getRowId={(row) =>
+                isStudentAttendance(row) ? row.studentId.toString() : row.staffId.toString()
+              }
               selectedRows={selectedRows}
               onSelectedRowsChange={onSelectedRowsChange}
             />
-          </Box>
+          </AttendanceLayout>
         </>
       ) : (
         <Paper elevation={2} sx={{ p: 3, mt: 2, borderColor: 'error.main' }}>
@@ -108,10 +113,12 @@ const AttendanceDetail: React.FC = () => {
       )}
       <AttendanceModal
         open={showModal === 'ADD' || showModal === 'EDIT'}
-        data={selectedRows.map((row) => row.studentId.toString())}
+        data={selectedRows.map((row) =>
+          isStudentAttendance(row) ? row.studentId.toString() : row.staffId.toString(),
+        )}
         onClose={onCancel}
         onSave={onConfirm}
-        option={studentOption}
+        option={option}
       />
     </>
   );

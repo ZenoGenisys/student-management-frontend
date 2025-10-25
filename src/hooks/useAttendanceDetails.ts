@@ -1,15 +1,21 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
+  deleteStaffAttendance,
   deleteStudentAttendance,
+  getStaff,
+  getStaffAttendanceForDay,
   getStudent,
   getStudentAttendanceForDay,
+  markStaffAttendance,
   markStudentAttendance,
 } from '../repositories';
 import { useQuery } from '@tanstack/react-query';
 import { useSnackbar } from '../state';
-import type { StudentAttendanceDay } from '../types';
+import type { StaffAttendanceDay, StudentAttendanceDay } from '../types';
 
-const useAttendanceDetails = (date?: string) => {
+type AttendanceDay = StudentAttendanceDay | StaffAttendanceDay;
+
+const useAttendanceDetails = (entity: 'STUDENT' | 'STAFF', date?: string) => {
   const { showSnackbar } = useSnackbar();
   const [search, setSearch] = useState<string>();
   const [debouncedSearch, setDebouncedSearch] = useState<string>();
@@ -17,7 +23,7 @@ const useAttendanceDetails = (date?: string) => {
     orderBy: string;
     order: 'asc' | 'desc';
   } | null>(null);
-  const [selectedRows, setSelectedRows] = useState<StudentAttendanceDay[]>([]);
+  const [selectedRows, setSelectedRows] = useState<AttendanceDay[]>([]);
   const [showModal, setShowModal] = useState<'ADD' | 'EDIT' | 'DELETE' | null>(null);
 
   useEffect(() => {
@@ -29,10 +35,28 @@ const useAttendanceDetails = (date?: string) => {
     };
   }, [search]);
 
-  const { data, refetch } = useQuery({
-    queryKey: ['student', date, debouncedSearch, sort],
+  const { getAttendanceForDay, deleteAttendance, markAttendance } = useMemo(() => {
+    if (entity === 'STAFF') {
+      return {
+        getAttendanceForDay: getStaffAttendanceForDay,
+        deleteAttendance: deleteStaffAttendance,
+        markAttendance: markStaffAttendance,
+        getEntities: getStaff,
+      };
+    }
+    // Default to STUDENT
+    return {
+      getAttendanceForDay: getStudentAttendanceForDay,
+      deleteAttendance: deleteStudentAttendance,
+      markAttendance: markStudentAttendance,
+      getEntities: getStudent,
+    };
+  }, [entity]);
+
+  const { data, refetch } = useQuery<AttendanceDay[]>({
+    queryKey: [entity.toLowerCase(), 'attendance', date, debouncedSearch, sort],
     queryFn: () =>
-      getStudentAttendanceForDay({
+      getAttendanceForDay({
         date: date ?? '',
         search: debouncedSearch,
         ...(sort
@@ -42,6 +66,7 @@ const useAttendanceDetails = (date?: string) => {
             }
           : {}),
       }),
+    enabled: !!date,
   });
 
   const { data: studentData } = useQuery({
@@ -49,19 +74,36 @@ const useAttendanceDetails = (date?: string) => {
     queryFn: () =>
       getStudent({
         page: 1,
-        size: 1000,
+        size: 10000,
       }),
+    enabled: entity === 'STUDENT',
   });
 
-  const studentOption = useMemo(() => {
-    if (studentData?.data) {
-      return studentData.data.map((item) => ({
+  const { data: staffData } = useQuery({
+    queryKey: ['staff-data'],
+    queryFn: () =>
+      getStaff({
+        page: 1,
+        size: 10000,
+      }),
+    enabled: entity === 'STAFF',
+  });
+
+  const option = useMemo(() => {
+    if (entity === 'STAFF') {
+      return (staffData?.data ?? []).map((item) => ({
+        value: String(item.staffId),
+        label: `${item.name} (${item.center})`,
+      }));
+    }
+    if (entity === 'STUDENT') {
+      return (studentData?.data ?? []).map((item) => ({
         value: String(item.studentId),
         label: `${item.name} (${item.center})`,
       }));
     }
     return [];
-  }, [studentData?.data]);
+  }, [studentData?.data, staffData?.data, entity]);
 
   const handleSort = useCallback((orderBy: string, order?: 'asc' | 'desc') => {
     setSort({ orderBy: orderBy, order: order === 'asc' ? 'desc' : 'asc' });
@@ -80,7 +122,7 @@ const useAttendanceDetails = (date?: string) => {
     };
   }, [selectedRows]);
 
-  const onSelectedRowsChange = useCallback((rows: StudentAttendanceDay[]) => {
+  const onSelectedRowsChange = useCallback((rows: AttendanceDay[]) => {
     setSelectedRows(rows);
   }, []);
 
@@ -103,7 +145,7 @@ const useAttendanceDetails = (date?: string) => {
   const onDelete = useCallback(async () => {
     try {
       const attendanceIds = selectedRows.map((item) => item.id);
-      await deleteStudentAttendance(attendanceIds);
+      await deleteAttendance(attendanceIds);
       setShowModal(null);
       setSelectedRows([]);
       showSnackbar({
@@ -117,21 +159,25 @@ const useAttendanceDetails = (date?: string) => {
         severity: 'error',
       });
     }
-  }, [showSnackbar, refetch, selectedRows]);
+  }, [showSnackbar, refetch, selectedRows, deleteAttendance]);
 
   const onConfirm = useCallback(
     async (status: boolean, ids?: string[]) => {
       try {
         if (showModal === 'EDIT' || showModal === 'ADD') {
-          const params = (ids ?? []).map((item) => ({
-            studentId: ids ? Number(item) : undefined,
-            date: date ?? '',
-            attendance: status,
-          }));
-          await markStudentAttendance(params);
+          const payload = (ids ?? []).map((id) => {
+            const common = { date: date ?? '', attendance: status };
+            if (entity === 'STUDENT') {
+              return { ...common, studentId: Number(id) };
+            }
+            return { ...common, staffId: Number(id) };
+          });
+
+          await markAttendance(payload);
         }
         setShowModal(null);
         setSelectedRows([]);
+
         showSnackbar({
           message: 'Attendance Marked successfully!',
           severity: 'success',
@@ -144,7 +190,7 @@ const useAttendanceDetails = (date?: string) => {
         });
       }
     },
-    [date, refetch, showSnackbar, showModal],
+    [date, refetch, showSnackbar, showModal, entity, markAttendance],
   );
 
   return useMemo(
@@ -155,7 +201,7 @@ const useAttendanceDetails = (date?: string) => {
       disableEdit,
       disableDelete,
       showModal,
-      studentOption,
+      option,
       selectedRows,
       onClickAdd,
       onClickEdit,
@@ -174,7 +220,7 @@ const useAttendanceDetails = (date?: string) => {
       search,
       disableDelete,
       disableEdit,
-      studentOption,
+      option,
       selectedRows,
       onClickEdit,
       onClickDelete,
