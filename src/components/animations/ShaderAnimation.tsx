@@ -2,7 +2,11 @@ import { useEffect, useRef } from "react"
 import * as THREE from "three"
 import "./ShaderAnimation.css"
 
-export function ShaderAnimation() {
+interface ShaderAnimationProps {
+  isVisible?: boolean;
+}
+
+export function ShaderAnimation({ isVisible = false }: ShaderAnimationProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const sceneRef = useRef<{
     camera: THREE.Camera
@@ -10,7 +14,16 @@ export function ShaderAnimation() {
     renderer: THREE.WebGLRenderer
     uniforms: any
     animationId: number
+    startTime: number
   } | null>(null)
+
+  useEffect(() => {
+    // Reset animation when visibility changes to true
+    if (isVisible && sceneRef.current) {
+      sceneRef.current.startTime = performance.now()
+      sceneRef.current.uniforms.time.value = 0
+    }
+  }, [isVisible])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -33,7 +46,7 @@ export function ShaderAnimation() {
 
       void main(void) {
         vec2 uv = (gl_FragCoord.xy * 2.0 - resolution.xy) / min(resolution.x, resolution.y);
-        float t = time*0.05;
+        float t = time*0.2; // Increased speed multiplier
         float lineWidth = 0.002;
 
         vec3 color = vec3(0.0);
@@ -87,10 +100,11 @@ export function ShaderAnimation() {
 
     const animate = () => {
       const animationId = requestAnimationFrame(animate)
-      uniforms.time.value += 0.05
-      renderer.render(scene, camera)
-
+      const currentTime = performance.now()
       if (sceneRef.current) {
+        const elapsed = (currentTime - sceneRef.current.startTime) * 0.001 // Convert to seconds
+        uniforms.time.value = elapsed
+        renderer.render(scene, camera)
         sceneRef.current.animationId = animationId
       }
     }
@@ -101,6 +115,7 @@ export function ShaderAnimation() {
       renderer,
       uniforms,
       animationId: 0,
+      startTime: performance.now()
     }
 
     animate()

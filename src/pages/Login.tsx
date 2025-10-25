@@ -87,8 +87,8 @@ const Login: React.FC = () => {
         // 2. Start shader animation after login form has faded out
         setShowShaderAnimation(true);
         
-        // 3. Wait for shader animation to complete (4s)
-        await new Promise(resolve => setTimeout(resolve, 4000));
+        // 3. Wait for shader animation to complete (3s)
+        await new Promise(resolve => setTimeout(resolve, 3000));
         
         // 4. Complete the login process
         login(response);
@@ -110,7 +110,7 @@ const Login: React.FC = () => {
       <div 
         className={`shader-container ${showShaderAnimation ? 'visible' : ''}`}
       >
-        <ShaderAnimation />
+        <ShaderAnimation isVisible={showShaderAnimation} />
         <div 
           className="transition-message"
           style={{
