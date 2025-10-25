@@ -194,7 +194,9 @@ const StudentForm = () => {
                                   )}
                                 </>
                               )}
-                              {(item.type === 'text' || item.type === 'email' || item.type === 'number') && (
+                              {(item.type === 'text' ||
+                                item.type === 'email' ||
+                                item.type === 'number') && (
                                 <TextField
                                   {...field}
                                   type={item.type}
@@ -208,12 +210,17 @@ const StudentForm = () => {
                                   }
                                   onChange={(e) => {
                                     if (item.type === 'number') {
-                                      const v = (e.target as HTMLInputElement).value.replace(/\D/g, '').slice(0, 10);
+                                      const v = (e.target as HTMLInputElement).value
+                                        .replace(/\D/g, '')
+                                        .slice(0, 10);
                                       form.setFieldValue(field.name, v);
                                       setFieldValue(field.name, v);
                                     } else {
                                       // Use setFieldValue to avoid casting to `any`
-                                      form.setFieldValue(field.name, (e.target as HTMLInputElement).value);
+                                      form.setFieldValue(
+                                        field.name,
+                                        (e.target as HTMLInputElement).value,
+                                      );
                                     }
                                   }}
                                 />
@@ -282,7 +289,9 @@ const StudentForm = () => {
                               <Typography mb={1} variant="h6">
                                 {item.label}
                               </Typography>
-                              {(item.type === 'text' || item.type === 'email' || item.type === 'number') && (
+                              {(item.type === 'text' ||
+                                item.type === 'email' ||
+                                item.type === 'number') && (
                                 <TextField
                                   {...field}
                                   type={item.type}
@@ -296,10 +305,15 @@ const StudentForm = () => {
                                   }
                                   onChange={(e) => {
                                     if (item.type === 'number') {
-                                      const v = (e.target as HTMLInputElement).value.replace(/\D/g, '').slice(0, 10);
+                                      const v = (e.target as HTMLInputElement).value
+                                        .replace(/\D/g, '')
+                                        .slice(0, 10);
                                       form.setFieldValue(field.name, v);
                                     } else {
-                                      form.setFieldValue(field.name, (e.target as HTMLInputElement).value);
+                                      form.setFieldValue(
+                                        field.name,
+                                        (e.target as HTMLInputElement).value,
+                                      );
                                     }
                                   }}
                                 />
@@ -323,7 +337,9 @@ const StudentForm = () => {
                               <Typography mb={1} variant="h6">
                                 {item.label}
                               </Typography>
-                              {(item.type === 'text' || item.type === 'email' || item.type === 'number') && (
+                              {(item.type === 'text' ||
+                                item.type === 'email' ||
+                                item.type === 'number') && (
                                 <TextField
                                   {...field}
                                   type={item.type}
@@ -337,10 +353,15 @@ const StudentForm = () => {
                                   }
                                   onChange={(e) => {
                                     if (item.type === 'number') {
-                                      const v = (e.target as HTMLInputElement).value.replace(/\D/g, '').slice(0, 10);
+                                      const v = (e.target as HTMLInputElement).value
+                                        .replace(/\D/g, '')
+                                        .slice(0, 10);
                                       form.setFieldValue(field.name, v);
                                     } else {
-                                      form.setFieldValue(field.name, (e.target as HTMLInputElement).value);
+                                      form.setFieldValue(
+                                        field.name,
+                                        (e.target as HTMLInputElement).value,
+                                      );
                                     }
                                   }}
                                 />

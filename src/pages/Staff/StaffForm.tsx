@@ -170,7 +170,9 @@ const StaffForm: React.FC = () => {
                                   )}
                                 </>
                               )}
-                              {(item.type === 'text' || item.type === 'email' || item.type === 'number') && (
+                              {(item.type === 'text' ||
+                                item.type === 'email' ||
+                                item.type === 'number') && (
                                 <TextField
                                   {...field}
                                   type={item.type}
@@ -184,10 +186,15 @@ const StaffForm: React.FC = () => {
                                   }
                                   onChange={(e) => {
                                     if (item.type === 'number') {
-                                      const v = (e.target as HTMLInputElement).value.replace(/\D/g, '').slice(0, 10);
+                                      const v = (e.target as HTMLInputElement).value
+                                        .replace(/\D/g, '')
+                                        .slice(0, 10);
                                       form.setFieldValue(field.name, v);
                                     } else {
-                                      form.setFieldValue(field.name, (e.target as HTMLInputElement).value);
+                                      form.setFieldValue(
+                                        field.name,
+                                        (e.target as HTMLInputElement).value,
+                                      );
                                     }
                                   }}
                                 />

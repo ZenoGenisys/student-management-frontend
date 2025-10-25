@@ -1,40 +1,40 @@
-import { useEffect, useRef } from "react"
-import * as THREE from "three"
-import "./ShaderAnimation.css"
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import './ShaderAnimation.css';
 
 interface ShaderAnimationProps {
   isVisible?: boolean;
 }
 
 export function ShaderAnimation({ isVisible = false }: ShaderAnimationProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<{
-    camera: THREE.Camera
-    scene: THREE.Scene
-    renderer: THREE.WebGLRenderer
-    uniforms: any
-    animationId: number
-    startTime: number
-  } | null>(null)
+    camera: THREE.Camera;
+    scene: THREE.Scene;
+    renderer: THREE.WebGLRenderer;
+    uniforms: any;
+    animationId: number;
+    startTime: number;
+  } | null>(null);
 
   useEffect(() => {
     // Reset animation when visibility changes to true
     if (isVisible && sceneRef.current) {
-      sceneRef.current.startTime = performance.now()
-      sceneRef.current.uniforms.time.value = 0
+      sceneRef.current.startTime = performance.now();
+      sceneRef.current.uniforms.time.value = 0;
     }
-  }, [isVisible])
+  }, [isVisible]);
 
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!containerRef.current) return;
 
-    const container = containerRef.current
+    const container = containerRef.current;
 
     const vertexShader = `
       void main() {
         gl_Position = vec4( position, 1.0 );
       }
-    `
+    `;
 
     const fragmentShader = `
       #define TWO_PI 6.2831853072
@@ -58,56 +58,56 @@ export function ShaderAnimation({ isVisible = false }: ShaderAnimationProps) {
         
         gl_FragColor = vec4(color[0],color[1],color[2],1.0);
       }
-    `
+    `;
 
-    const camera = new THREE.Camera()
-    camera.position.z = 1
+    const camera = new THREE.Camera();
+    camera.position.z = 1;
 
-    const scene = new THREE.Scene()
-    const geometry = new THREE.PlaneGeometry(2, 2)
+    const scene = new THREE.Scene();
+    const geometry = new THREE.PlaneGeometry(2, 2);
 
     const uniforms = {
-      time: { type: "f", value: 0 },
-      resolution: { type: "v2", value: new THREE.Vector2() },
-    }
+      time: { type: 'f', value: 0 },
+      resolution: { type: 'v2', value: new THREE.Vector2() },
+    };
 
     const material = new THREE.ShaderMaterial({
       uniforms: uniforms,
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
-    })
+    });
 
-    const mesh = new THREE.Mesh(geometry, material)
-    scene.add(mesh)
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
 
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer = new THREE.WebGLRenderer({
       antialias: true,
-    })
-    renderer.setPixelRatio(window.devicePixelRatio)
+    });
+    renderer.setPixelRatio(window.devicePixelRatio);
 
-    container.appendChild(renderer.domElement)
+    container.appendChild(renderer.domElement);
 
     const onWindowResize = () => {
-      const width = container.clientWidth
-      const height = container.clientHeight
-      renderer.setSize(width, height)
-      uniforms.resolution.value.x = renderer.domElement.width
-      uniforms.resolution.value.y = renderer.domElement.height
-    }
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      renderer.setSize(width, height);
+      uniforms.resolution.value.x = renderer.domElement.width;
+      uniforms.resolution.value.y = renderer.domElement.height;
+    };
 
-    onWindowResize()
-    window.addEventListener("resize", onWindowResize, false)
+    onWindowResize();
+    window.addEventListener('resize', onWindowResize, false);
 
     const animate = () => {
-      const animationId = requestAnimationFrame(animate)
-      const currentTime = performance.now()
+      const animationId = requestAnimationFrame(animate);
+      const currentTime = performance.now();
       if (sceneRef.current) {
-        const elapsed = (currentTime - sceneRef.current.startTime) * 0.001 // Convert to seconds
-        uniforms.time.value = elapsed
-        renderer.render(scene, camera)
-        sceneRef.current.animationId = animationId
+        const elapsed = (currentTime - sceneRef.current.startTime) * 0.001; // Convert to seconds
+        uniforms.time.value = elapsed;
+        renderer.render(scene, camera);
+        sceneRef.current.animationId = animationId;
       }
-    }
+    };
 
     sceneRef.current = {
       camera,
@@ -115,27 +115,27 @@ export function ShaderAnimation({ isVisible = false }: ShaderAnimationProps) {
       renderer,
       uniforms,
       animationId: 0,
-      startTime: performance.now()
-    }
+      startTime: performance.now(),
+    };
 
-    animate()
+    animate();
 
     return () => {
-      window.removeEventListener("resize", onWindowResize)
+      window.removeEventListener('resize', onWindowResize);
 
       if (sceneRef.current) {
-        cancelAnimationFrame(sceneRef.current.animationId)
+        cancelAnimationFrame(sceneRef.current.animationId);
 
         if (container && sceneRef.current.renderer.domElement) {
-          sceneRef.current.renderer.domElement.remove()
+          sceneRef.current.renderer.domElement.remove();
         }
 
-        sceneRef.current.renderer.dispose()
-        geometry.dispose()
-        material.dispose()
+        sceneRef.current.renderer.dispose();
+        geometry.dispose();
+        material.dispose();
       }
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <div
@@ -143,9 +143,9 @@ export function ShaderAnimation({ isVisible = false }: ShaderAnimationProps) {
       style={{
         width: '100%',
         height: '100vh',
-        background: "transparent",
-        overflow: "hidden",
+        background: 'transparent',
+        overflow: 'hidden',
       }}
     />
-  )
+  );
 }
