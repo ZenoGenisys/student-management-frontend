@@ -1,8 +1,9 @@
 import { type ToolbarProps } from 'react-big-calendar';
+import { type AttendanceEvent } from '../../types/events';
 import { Box, Button, ButtonGroup, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useCallback } from 'react';
 
-const Toolbar = (toolbar: ToolbarProps) => {
+const Toolbar = (toolbar: ToolbarProps<AttendanceEvent, object>) => {
   const today = new Date();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

@@ -4,13 +4,17 @@ export type PaginationType = {
   totalRows: number;
 };
 
-export type CellRender<T> = {
+export type Row = {
+  [key: string]: any;
+};
+
+export type CellRender<T = any> = {
   column: ColumnDefsProps<T>;
   row: T;
   rows: T[];
 };
 
-export type ColumnDefsProps<T = unknown> = {
+export type ColumnDefsProps<T = any> = {
   id: string;
   label: string | React.ReactNode;
   onSort?: (orderBy: string, direction: 'asc' | 'desc') => void;
@@ -19,10 +23,6 @@ export type ColumnDefsProps<T = unknown> = {
   width?: string;
   dateFormat?: boolean;
   cellRenderer?: ({ column, row, rows }: CellRender<T>) => React.ReactNode;
-};
-
-export type Row = {
-  [key: string]: unknown;
 };
 
 export type ListViewProps<T extends Row = Row> = {

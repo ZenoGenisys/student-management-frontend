@@ -56,7 +56,7 @@ const AttendanceDetail: React.FC = () => {
   } = useAttendanceDetails(entityType, paramDate);
 
   const handleEntityTypeChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newEntityType: 'STUDENT' | 'STAFF' | null,
   ) => {
     if (newEntityType !== null) setEntityType(newEntityType);

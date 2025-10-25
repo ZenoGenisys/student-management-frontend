@@ -40,7 +40,7 @@ const RevenueChart = () => {
   const data = timeframe === 'monthly' ? monthlyData : yearlyData;
 
   const handleTimeframeChange = (
-    event: React.MouseEvent<HTMLElement>,
+    _event: React.MouseEvent<HTMLElement>,
     newTimeframe: string | null,
   ) => {
     if (newTimeframe !== null) {
