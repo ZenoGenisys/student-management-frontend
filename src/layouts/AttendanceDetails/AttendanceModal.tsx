@@ -10,7 +10,6 @@ import {
   Checkbox,
   FormControl,
   FormControlLabel,
-  InputLabel,
   ListItemText,
   MenuItem,
   OutlinedInput,
