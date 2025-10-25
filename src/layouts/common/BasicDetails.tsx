@@ -59,7 +59,17 @@ const BasicDetails = ({ name, status, data, contactNumber, email }: BasicDetails
                 <Grid size={6}>
                   <b>{key}:</b>
                 </Grid>
-                <Grid size={6}>{data[key]}</Grid>
+                <Grid
+                  size={6}
+                  sx={{
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                  title={String(data[key])}
+                >
+                  {data[key]}
+                </Grid>
               </Grid>
             ))}
           </Box>

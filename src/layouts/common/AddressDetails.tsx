@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Card,
   CardContent,
@@ -11,7 +12,9 @@ import {
 import { useTheme } from '@mui/material/styles';
 import CottageOutlinedIcon from '@mui/icons-material/CottageOutlined';
 import { GrDocumentPdf } from 'react-icons/gr';
-import { FaDownload } from 'react-icons/fa6';
+import { FaDownload, FaWhatsapp } from 'react-icons/fa6';
+import CallOutlinedIcon from '@mui/icons-material/CallOutlined';
+import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import React from 'react';
 
 type AddressDetailsProps = {
@@ -47,22 +50,194 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
       {/* Parents Details */}
       {parentDetails && (
         <Card>
-          <CardHeader title={<Typography variant="h5">Parents Details</Typography>} />
+          <CardHeader
+            sx={{ background: '#E9EDF4' }}
+            title={<Typography variant="h5">Parents Information</Typography>}
+          />
           <CardContent
             sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
               borderTop: `1px solid ${theme.palette.divider}`,
             }}
           >
-            <Grid container spacing={2} columns={12} mb={1}>
-              {Object.keys(parentDetails).map((key) => (
-                <React.Fragment key={key}>
-                  <Grid size={3}>
-                    <b>{key}:</b>
-                  </Grid>
+            <Grid
+              container
+              alignItems="center"
+              spacing={2}
+              p={2}
+              sx={{
+                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: 1,
+              }}
+              size={12}
+            >
+              <Grid display="flex" flexDirection="row" alignItems="center" gap={1} size={3}>
+                <Avatar variant="square" sx={{ borderRadius: 1 }}>
+                  {parentDetails['Father Name']?.charAt(0)}
+                </Avatar>
+                <Box>
+                  <Typography variant="h6">{parentDetails['Father Name']}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Father
+                  </Typography>
+                </Box>
+              </Grid>
 
-                  <Grid size={3}>{parentDetails[key]}</Grid>
-                </React.Fragment>
-              ))}
+              <Grid size={3}>
+                <Typography variant="h6">Phone</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {parentDetails['Father Phone Number']}
+                </Typography>
+              </Grid>
+
+              <Grid
+                display={'flex'}
+                flexDirection="row"
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                gap={0.5}
+                size={6}
+              >
+                <Box>
+                  <Typography variant="h6">Email</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {parentDetails['Father Email']}
+                  </Typography>
+                </Box>
+                <Box>
+                  <IconButton
+                    aria-label="Call"
+                    sx={{
+                      border: `1px solid ${theme.palette.divider}`,
+                      borderRadius: 5,
+                      mr: 1,
+                    }}
+                    component="a"
+                    href={parentDetails['Father Phone Number'] ? `tel:${parentDetails['Father Phone Number']}` : undefined}
+                    disabled={!parentDetails['Father Phone Number']}
+                  >
+                    <CallOutlinedIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="Message"
+                    sx={{
+                      border: `1px solid ${theme.palette.divider}`,
+                      borderRadius: 5,
+                      mr: 1,
+                    }}
+                    component="a"
+                    href={parentDetails['Father Phone Number'] ? `https://wa.me/${parentDetails['Father Phone Number']}` : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    disabled={!parentDetails['Father Phone Number']}
+                  >
+                    <FaWhatsapp />
+                  </IconButton>
+                  <IconButton
+                    aria-label="Mail"
+                    sx={{
+                      border: `1px solid ${theme.palette.divider}`,
+                      borderRadius: 5,
+                    }}
+                    component="a"
+                    href={parentDetails['Father Email'] ? `mailto:${parentDetails['Father Email']}` : undefined}
+                    disabled={!parentDetails['Father Email']}
+                  >
+                    <MailOutlineOutlinedIcon />
+                  </IconButton>
+                </Box>
+              </Grid>
+            </Grid>
+            
+            <Grid
+              container
+              alignItems="center"
+              spacing={2}
+              p={2}
+              sx={{
+                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: 1,
+              }}
+              size={12}
+            >
+              <Grid display="flex" flexDirection="row" alignItems="center" gap={1} size={3}>
+                <Avatar variant="square" sx={{ borderRadius: 1 }}>
+                  {parentDetails['Mother Name']?.charAt(0)}
+                </Avatar>
+                <Box>
+                  <Typography variant="h6">{parentDetails['Mother Name']}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Mother
+                  </Typography>
+                </Box>
+              </Grid>
+
+              <Grid size={3}>
+                <Typography variant="h6">Phone</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {parentDetails['Mother Phone Number']}
+                </Typography>
+              </Grid>
+
+              <Grid
+                display={'flex'}
+                flexDirection="row"
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                gap={0.5}
+                size={6}
+              >
+                <Box>
+                  <Typography variant="h6">Email</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {parentDetails['Mother Email']}
+                  </Typography>
+                </Box>
+                <Box>
+                  <IconButton
+                    aria-label="Call"
+                    sx={{
+                      border: `1px solid ${theme.palette.divider}`,
+                      borderRadius: 5,
+                      mr: 1,
+                    }}
+                    component="a"
+                    href={parentDetails['Mother Phone Number'] ? `tel:${parentDetails['Mother Phone Number']}` : undefined}
+                    disabled={!parentDetails['Mother Phone Number']}
+                  >
+                    <CallOutlinedIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="Message"
+                    sx={{
+                      border: `1px solid ${theme.palette.divider}`,
+                      borderRadius: 5,
+                      mr: 1,
+                    }}
+                    component="a"
+                    href={parentDetails['Mother Phone Number'] ? `https://wa.me/${parentDetails['Mother Phone Number']}` : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    disabled={!parentDetails['Mother Phone Number']}
+                  >
+                    <FaWhatsapp />
+                  </IconButton>
+                  <IconButton
+                    aria-label="Mail"
+                    sx={{
+                      border: `1px solid ${theme.palette.divider}`,
+                      borderRadius: 5,
+                    }}
+                    component="a"
+                    href={parentDetails['Mother Email'] ? `mailto:${parentDetails['Mother Email']}` : undefined}
+                    disabled={!parentDetails['Mother Email']}
+                  >
+                    <MailOutlineOutlinedIcon />
+                  </IconButton>
+                </Box>
+              </Grid>
             </Grid>
           </CardContent>
         </Card>

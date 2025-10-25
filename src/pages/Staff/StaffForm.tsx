@@ -237,7 +237,10 @@ const StaffForm: React.FC = () => {
                   />
                 }
                 suffixIcon={
-                  <AddCircleOutlineOutlinedIcon onClick={() => addLevel(values, setFieldValue)} />
+                  <AddCircleOutlineOutlinedIcon
+                    onClick={() => addLevel(values, setFieldValue)}
+                    sx={{ cursor: 'pointer' }}
+                  />
                 }
               >
                 <Grid container spacing={2} mt={2}>

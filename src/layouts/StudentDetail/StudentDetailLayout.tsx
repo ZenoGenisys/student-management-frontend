@@ -37,7 +37,9 @@ const StudentDetailsLayout = ({ data, tabValue, handleTabChange }: StudentDetail
             'Blood Group': data?.bloodGroup,
             Grade: data?.grade,
             'School Name': data?.schoolName,
-            Batch: data?.batch.toString(),
+            Batch: data?.batch
+              .map((b: string) => b.charAt(0).toUpperCase() + b.slice(1).toLowerCase())
+              .join(', '),
             Center: data?.center,
             Type: data?.studentType ?? '',
           }}
