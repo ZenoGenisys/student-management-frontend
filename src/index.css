@@ -49,11 +49,6 @@ button {
   cursor: pointer;
 }
 
-/* Smooth animations and transitions */
-* {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
 /* Optimize animations for better performance */
 .animated-element {
   will-change: transform, opacity;
