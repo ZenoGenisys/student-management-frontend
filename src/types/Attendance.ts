@@ -1,3 +1,10 @@
+export type getStudentAttendanceForDayRequest = {
+  date: string;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+};
+
 export type AttendanceSummary = {
   date: string;
   userType: 'student' | 'staff';

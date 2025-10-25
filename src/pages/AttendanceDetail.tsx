@@ -6,6 +6,7 @@ import ListView from '../components/ListView';
 import { useAttendanceDetails } from '../hooks';
 import DeleteConfirmation from '../components/DeleteConfirmation';
 import AttendanceModal from '../layouts/AttendanceDetails/AttendanceModal';
+import { Search } from '../components';
 
 const AttendanceDetail: React.FC = () => {
   const { date: paramDate } = useParams<{ date: string }>();
@@ -21,12 +22,16 @@ const AttendanceDetail: React.FC = () => {
     showModal,
     studentOption,
     selectedRows,
+    search,
+    sort,
+    handleSort,
     onClickAdd,
     onClickEdit,
     onClickDelete,
     onCancel,
     onConfirm,
     onDelete,
+    handleSearch,
     onSelectedRowsChange,
   } = useAttendanceDetails(paramDate);
 
@@ -68,6 +73,7 @@ const AttendanceDetail: React.FC = () => {
                   gap: 2,
                 }}
               >
+                <Search search={search} onChange={handleSearch} />
                 <Button onClick={onClickAdd}>Add</Button>
                 <Button disabled={disableEdit} onClick={onClickEdit}>
                   Edit
@@ -81,6 +87,8 @@ const AttendanceDetail: React.FC = () => {
               columns={Columns}
               rows={data ?? []}
               showCheckbox={true}
+              sort={sort}
+              handleSort={handleSort}
               getRowId={(row) => row.studentId.toString()}
               selectedRows={selectedRows}
               onSelectedRowsChange={onSelectedRowsChange}

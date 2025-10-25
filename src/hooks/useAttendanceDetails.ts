@@ -31,7 +31,17 @@ const useAttendanceDetails = (date?: string) => {
 
   const { data, refetch } = useQuery({
     queryKey: ['student', date, debouncedSearch, sort],
-    queryFn: () => getStudentAttendanceForDay(date ?? ''),
+    queryFn: () =>
+      getStudentAttendanceForDay({
+        date: date ?? '',
+        search: debouncedSearch,
+        ...(sort
+          ? {
+              sortBy: sort.orderBy,
+              order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
+            }
+          : {}),
+      }),
   });
 
   const { data: studentData } = useQuery({
