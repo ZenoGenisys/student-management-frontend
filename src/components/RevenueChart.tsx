@@ -12,26 +12,26 @@ import {
 import { ToggleButton, ToggleButtonGroup, Card, CardContent, Typography } from '@mui/material';
 
 const monthlyData = [
-  { name: 'Jan', Revenue: 4000 },
-  { name: 'Feb', Revenue: 3000 },
-  { name: 'Mar', Revenue: 5000 },
-  { name: 'Apr', Revenue: 4500 },
-  { name: 'May', Revenue: 6000 },
-  { name: 'Jun', Revenue: 5500 },
-  { name: 'Jul', Revenue: 6500 },
-  { name: 'Aug', Revenue: 7000 },
-  { name: 'Sep', Revenue: 6800 },
-  { name: 'Oct', Revenue: 7200 },
-  { name: 'Nov', Revenue: 7500 },
-  { name: 'Dec', Revenue: 8000 },
+  { name: 'Jan', Puliyur: 2500, Thanthonimalai: 1500, Total: 4000 },
+  { name: 'Feb', Puliyur: 1800, Thanthonimalai: 1200, Total: 3000 },
+  { name: 'Mar', Puliyur: 3000, Thanthonimalai: 2000, Total: 5000 },
+  { name: 'Apr', Puliyur: 2800, Thanthonimalai: 1700, Total: 4500 },
+  { name: 'May', Puliyur: 3500, Thanthonimalai: 2500, Total: 6000 },
+  { name: 'Jun', Puliyur: 3200, Thanthonimalai: 2300, Total: 5500 },
+  { name: 'Jul', Puliyur: 4000, Thanthonimalai: 2500, Total: 6500 },
+  { name: 'Aug', Puliyur: 4200, Thanthonimalai: 2800, Total: 7000 },
+  { name: 'Sep', Puliyur: 4100, Thanthonimalai: 2700, Total: 6800 },
+  { name: 'Oct', Puliyur: 4500, Thanthonimalai: 2700, Total: 7200 },
+  { name: 'Nov', Puliyur: 4800, Thanthonimalai: 2700, Total: 7500 },
+  { name: 'Dec', Puliyur: 5000, Thanthonimalai: 3000, Total: 8000 },
 ];
 
 const yearlyData = [
-  { name: '2021', Revenue: 50000 },
-  { name: '2022', Revenue: 65000 },
-  { name: '2023', Revenue: 72000 },
-  { name: '2024', Revenue: 80000 },
-  { name: '2025', Revenue: 95000 },
+  { name: '2021', Puliyur: 30000, Thanthonimalai: 20000, Total: 50000 },
+  { name: '2022', Puliyur: 38000, Thanthonimalai: 27000, Total: 65000 },
+  { name: '2023', Puliyur: 42000, Thanthonimalai: 30000, Total: 72000 },
+  { name: '2024', Puliyur: 45000, Thanthonimalai: 35000, Total: 80000 },
+  { name: '2025', Puliyur: 55000, Thanthonimalai: 40000, Total: 95000 },
 ];
 
 const RevenueChart = () => {
@@ -84,7 +84,9 @@ const RevenueChart = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="Revenue" fill="#506EE4" />
+            <Bar dataKey="Puliyur" fill="#e1de3dff" />
+            <Bar dataKey="Thanthonimalai" fill="#82ca9d" />
+            <Bar dataKey="Total" fill="#506EE4" />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
