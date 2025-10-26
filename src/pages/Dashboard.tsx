@@ -1,5 +1,13 @@
 import React from 'react';
-import { Box, Typography, Paper, Button, Grid, Divider, Card } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Grid,
+  Divider,
+  Card,
+} from '@mui/material';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import StudentIcon from '../assets/images/student.svg';
 import StaffIcon from '../assets/images/staff.svg';
@@ -7,6 +15,7 @@ import FeesIcon from '../assets/images/fees.png';
 import SalaryIcon from '../assets/images/salary.png';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import RevenueChart from '../components/RevenueChart';
+import FeesPending from '../components/FeesPending';
 
 const Dashboard: React.FC = () => {
   const [showBackground, setShowBackground] = React.useState(false);
@@ -366,6 +375,30 @@ const Dashboard: React.FC = () => {
           }}
         >
           <RevenueChart />
+        </Grid>
+
+        <Grid
+          size={{ xs: 12, md: 12, lg: 4, xl: 4 }}
+          sx={{
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s ease-in-out',
+            transitionDelay: '1.2s',
+          }}
+        >
+          <Card>pie chart related to fees</Card>
+        </Grid>
+
+        <Grid
+          size={{ xs: 12, md: 12, lg: 8, xl: 8 }}
+          sx={{
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s ease-in-out',
+            transitionDelay: '1.2s',
+          }}
+        >
+          <FeesPending />
         </Grid>
       </Grid>
     </>

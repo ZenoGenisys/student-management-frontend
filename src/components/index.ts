@@ -9,6 +9,7 @@ import NameCell from './cellRender/NameCell';
 import MenuCell from './cellRender/MenuCell';
 import Pagination from './Pagination';
 import TitleCard from './TitleCard';
+import FeesPending from './FeesPending';
 
 export {
   Layout,
@@ -22,4 +23,5 @@ export {
   MenuCell,
   Pagination,
   TitleCard,
+  FeesPending,
 };
