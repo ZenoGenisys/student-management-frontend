@@ -84,7 +84,7 @@ const RevenueChart = () => {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="Puliyur" fill="#e1de3dff" />
+            <Bar dataKey="Puliyur" fill="#ce3de1af" />
             <Bar dataKey="Thanthonimalai" fill="#82ca9d" />
             <Bar dataKey="Total" fill="#506EE4" />
           </BarChart>
