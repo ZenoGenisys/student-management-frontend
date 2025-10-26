@@ -18,7 +18,7 @@ import SalaryIcon from '../assets/images/salary.png';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import RevenueChart from '../components/RevenueChart';
 import FeesPendingList from '../components/FeesPendingList';
-import { theme } from '../theme';
+import FeesPieChart from '../components/FeesPieChart';
 
 const pendingFeesData = [
   { id: '1', name: 'John Doe', totalAmount: 5000, outstanding: 1500 },
@@ -391,33 +391,43 @@ const Dashboard: React.FC = () => {
 
         <Grid
           size={{ xs: 12, md: 12, lg: 6, xl: 6 }}
-          sx={{
+          sx={(theme) => ({
             opacity: showContent ? 1 : 0,
             transform: showContent ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.8s ease-in-out',
             transitionDelay: '1.2s',
-          }}
+            [theme.breakpoints.up('lg')]: { height: '450px' },
+          })}
         >
-          <Card>pie chart related to fees</Card>
+          <FeesPieChart />
         </Grid>
 
         <Grid
           size={{ xs: 12, md: 12, lg: 6, xl: 6 }}
-          sx={{
+          sx={(theme) => ({
             opacity: showContent ? 1 : 0,
             transform: showContent ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.8s ease-in-out',
             transitionDelay: '1.2s',
-          }}
+            [theme.breakpoints.up('lg')]: { height: '450px' },
+          })}
         >
-          <Card>
+          <Card
+            sx={(theme) => ({
+              height: '100%',
+              [theme.breakpoints.down('lg')]: { height: 'auto' },
+            })}
+          >
             <CardHeader title={<Typography variant="h5">Fees Pending</Typography>} />
             <CardContent
-              sx={{
+              sx={(theme) => ({
                 display: 'flex',
                 flexDirection: 'column',
                 borderTop: `1px solid ${theme.palette.divider}`,
-              }}
+                height: 'calc(100% - 64px)',
+                [theme.breakpoints.down('lg')]: { height: 'auto' },
+                [theme.breakpoints.up('lg')]: { overflowY: 'auto' },
+              })}
             >
               <FeesPendingList data={pendingFeesData} />
             </CardContent>

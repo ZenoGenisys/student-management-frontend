@@ -9,7 +9,14 @@ import {
   Legend,
   ResponsiveContainer,
 } from 'recharts';
-import { ToggleButton, ToggleButtonGroup, Card, CardContent, Typography } from '@mui/material';
+import {
+  ToggleButton,
+  ToggleButtonGroup,
+  Card,
+  CardContent,
+  Typography,
+  CardHeader,
+} from '@mui/material';
 
 const monthlyData = [
   { name: 'Jan', Puliyur: 2500, Thanthonimalai: 1500, Total: 4000 },
@@ -50,25 +57,27 @@ const RevenueChart = () => {
 
   return (
     <Card>
-      <CardContent>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6" component="div">
-            Revenue
-          </Typography>
+      <CardHeader
+        title={<Typography variant="h5">Revenue</Typography>}
+        action={
           <ToggleButtonGroup
             value={timeframe}
             exclusive
             onChange={handleTimeframeChange}
             aria-label="timeframe"
+            size="small"
+            sx={{background: '#fff'}}
           >
-            <ToggleButton value="monthly" aria-label="monthly">
+            <ToggleButton value="monthly" aria-label="monthly" sx={{ fontWeight: 'bold' }}>
               Monthly
             </ToggleButton>
-            <ToggleButton value="yearly" aria-label="yearly">
+            <ToggleButton value="yearly" aria-label="yearly" sx={{ fontWeight: 'bold' }}>
               Yearly
             </ToggleButton>
           </ToggleButtonGroup>
-        </div>
+        }
+      />
+      <CardContent>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart
             data={data}
