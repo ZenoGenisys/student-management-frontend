@@ -1,15 +1,37 @@
 import React from 'react';
-import { Box, Typography, Paper, Button, Grid, Divider, Card } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Grid,
+  Divider,
+  Card,
+  CardContent,
+  CardHeader,
+} from '@mui/material';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import StudentIcon from '../assets/images/student.svg';
 import StaffIcon from '../assets/images/staff.svg';
-import IncomeIcon from '../assets/images/income.png';
+import FeesIcon from '../assets/images/fees.png';
+import SalaryIcon from '../assets/images/salary.png';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import RevenueChart from '../components/RevenueChart';
 import { SummaryCard } from '../layouts';
 import { useAuth } from '../state';
 import useDashboard from '../hooks/useDashboard';
 import { formatNumberWithCommas } from '../utils';
+import FeesPendingList from '../components/FeesPendingList';
+import FeesPieChart from '../components/FeesPieChart';
+
+const pendingFeesData = [
+  { id: '1', name: 'John Doe', totalAmount: 5000, outstanding: 1500 },
+  { id: '2', name: 'Jane Smith', totalAmount: 4500, outstanding: 500 },
+  { id: '3', name: 'Peter Jones', totalAmount: 6000, outstanding: 2000 },
+  { id: '4', name: 'Mary Johnson', totalAmount: 5500, outstanding: 1000 },
+  { id: '5', name: 'David Williams', totalAmount: 4800, outstanding: 800 },
+  { id: '6', name: 'Emily Brown', totalAmount: 5200, outstanding: 1200 },
+];
 
 const Dashboard: React.FC = () => {
   const { name } = useAuth();
@@ -155,14 +177,14 @@ const Dashboard: React.FC = () => {
                   justifyContent: 'center',
                 }}
               >
-                <img src={IncomeIcon} alt="income" style={{ width: '100%', height: 'auto' }} />
+                <img src={FeesIcon} alt="fees" style={{ width: '80%', height: 'auto' }} />
               </Box>
               <Box>
                 <Typography variant="h4" fontWeight="bold">
                   ₹ {formatNumberWithCommas(dashboardSummary?.fees?.totalIncome)}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  Total Income
+                  Fees to be collected
                 </Typography>
               </Box>
             </Box>
@@ -175,13 +197,82 @@ const Dashboard: React.FC = () => {
             >
               <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
                 <Typography variant="body1" color="text.secondary">
-                  Fees collected (This Month):
+                  Collected:
                 </Typography>
                 <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
                   ₹ {formatNumberWithCommas(dashboardSummary?.fees?.currentMonthIncome)}
                 </Typography>
               </Box>
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}></Box>
+              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+                <Typography variant="body1" color="text.secondary">
+                  Pending:
+                </Typography>
+                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
+                  2,000
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
+          <Card
+            elevation={2}
+            sx={{
+              p: 2,
+              maxWidth: '100%',
+              opacity: showContent ? 1 : 0,
+              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+              transition: 'all 0.8s ease-in-out',
+              transitionDelay: '0.8s',
+            }}
+          >
+            <Box display={'flex'} alignItems="center" gap={2}>
+              <Box
+                sx={{
+                  backgroundColor: 'primary.lighter',
+                  borderRadius: '50%',
+                  width: 60,
+                  height: 60,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <img src={SalaryIcon} alt="fees" style={{ width: '80%', height: 'auto' }} />
+              </Box>
+              <Box>
+                <Typography variant="h4" fontWeight="bold">
+                  ₹ 8,500
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  Total Salary
+                </Typography>
+              </Box>
+            </Box>
+            <Divider sx={{ marginTop: '15px', marginBottom: '15px' }} />
+            <Box
+              display={'flex'}
+              flexDirection={'row'}
+              alignItems={'center'}
+              justifyContent={'space-between'}
+            >
+              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+                <Typography variant="body1" color="text.secondary">
+                  Paid:
+                </Typography>
+                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
+                  ₹ 6,500
+                </Typography>
+              </Box>
+              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+                <Typography variant="body1" color="text.secondary">
+                  Unpaid:
+                </Typography>
+                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
+                  ₹ 2,000
+                </Typography>
+              </Box>
             </Box>
           </Card>
         </Grid>
@@ -192,10 +283,55 @@ const Dashboard: React.FC = () => {
             opacity: showContent ? 1 : 0,
             transform: showContent ? 'translateY(0)' : 'translateY(20px)',
             transition: 'all 0.8s ease-in-out',
-            transitionDelay: '0.8s',
+            transitionDelay: '1.0s',
           }}
         >
           <RevenueChart />
+        </Grid>
+
+        <Grid
+          size={{ xs: 12, md: 12, lg: 6, xl: 6 }}
+          sx={(theme) => ({
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s ease-in-out',
+            transitionDelay: '1.2s',
+            [theme.breakpoints.up('lg')]: { height: '450px' },
+          })}
+        >
+          <FeesPieChart />
+        </Grid>
+
+        <Grid
+          size={{ xs: 12, md: 12, lg: 6, xl: 6 }}
+          sx={(theme) => ({
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'all 0.8s ease-in-out',
+            transitionDelay: '1.2s',
+            [theme.breakpoints.up('lg')]: { height: '450px' },
+          })}
+        >
+          <Card
+            sx={(theme) => ({
+              height: '100%',
+              [theme.breakpoints.down('lg')]: { height: 'auto' },
+            })}
+          >
+            <CardHeader title={<Typography variant="h5">Fees Pending</Typography>} />
+            <CardContent
+              sx={(theme) => ({
+                display: 'flex',
+                flexDirection: 'column',
+                borderTop: `1px solid ${theme.palette.divider}`,
+                height: 'calc(100% - 64px)',
+                [theme.breakpoints.down('lg')]: { height: 'auto' },
+                [theme.breakpoints.up('lg')]: { overflowY: 'auto' },
+              })}
+            >
+              <FeesPendingList data={pendingFeesData} />
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </>
