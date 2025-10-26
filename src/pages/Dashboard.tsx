@@ -7,6 +7,8 @@ import {
   Grid,
   Divider,
   Card,
+  CardContent,
+  CardHeader,
 } from '@mui/material';
 import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import StudentIcon from '../assets/images/student.svg';
@@ -15,7 +17,17 @@ import FeesIcon from '../assets/images/fees.png';
 import SalaryIcon from '../assets/images/salary.png';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import RevenueChart from '../components/RevenueChart';
-import FeesPending from '../components/FeesPending';
+import FeesPendingList from '../components/FeesPendingList';
+import { theme } from '../theme';
+
+const pendingFeesData = [
+  { id: '1', name: 'John Doe', totalAmount: 5000, outstanding: 1500 },
+  { id: '2', name: 'Jane Smith', totalAmount: 4500, outstanding: 500 },
+  { id: '3', name: 'Peter Jones', totalAmount: 6000, outstanding: 2000 },
+  { id: '4', name: 'Mary Johnson', totalAmount: 5500, outstanding: 1000 },
+  { id: '5', name: 'David Williams', totalAmount: 4800, outstanding: 800 },
+  { id: '6', name: 'Emily Brown', totalAmount: 5200, outstanding: 1200 },
+];
 
 const Dashboard: React.FC = () => {
   const [showBackground, setShowBackground] = React.useState(false);
@@ -378,7 +390,7 @@ const Dashboard: React.FC = () => {
         </Grid>
 
         <Grid
-          size={{ xs: 12, md: 12, lg: 4, xl: 4 }}
+          size={{ xs: 12, md: 12, lg: 6, xl: 6 }}
           sx={{
             opacity: showContent ? 1 : 0,
             transform: showContent ? 'translateY(0)' : 'translateY(20px)',
@@ -390,7 +402,7 @@ const Dashboard: React.FC = () => {
         </Grid>
 
         <Grid
-          size={{ xs: 12, md: 12, lg: 8, xl: 8 }}
+          size={{ xs: 12, md: 12, lg: 6, xl: 6 }}
           sx={{
             opacity: showContent ? 1 : 0,
             transform: showContent ? 'translateY(0)' : 'translateY(20px)',
@@ -398,7 +410,18 @@ const Dashboard: React.FC = () => {
             transitionDelay: '1.2s',
           }}
         >
-          <FeesPending />
+          <Card>
+            <CardHeader title={<Typography variant="h5">Fees Pending</Typography>} />
+            <CardContent
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                borderTop: `1px solid ${theme.palette.divider}`,
+              }}
+            >
+              <FeesPendingList data={pendingFeesData} />
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </>
