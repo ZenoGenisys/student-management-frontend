@@ -61,7 +61,7 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
     validationSchema,
     enableReinitialize: true,
     onSubmit: (formValues) => {
-      if (data?.outstandingAmount && Number(formValues.amount) > data.outstandingAmount) {
+      if (Number(formValues.amount) > Number(data?.outstandingAmount ?? 0)) {
         setFieldError('amount', 'Amount cannot be greater than outstanding amount');
         return;
       }
@@ -73,6 +73,7 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
         amount: Number(formValues.amount),
         ...(editData && { feesId: editData.feesId }),
       });
+      resetForm();
     },
   });
   const { data } = useQuery({
@@ -110,6 +111,7 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
         <DialogTitle>{editData ? 'Edit Fees' : 'Add Fees'}</DialogTitle>
         <DialogContent>
           <Typography>outstanding Amount: {data?.outstandingAmount}</Typography>
+          <Typography>Total Amount: {data?.totalAmount}</Typography>
           <Grid container spacing={2} mt={1}>
             {/* payment Month */}
             <Grid size={{ xs: 12, md: 6, lg: 6, xl: 4 }}>
