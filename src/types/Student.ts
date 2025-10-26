@@ -132,6 +132,7 @@ export type StudentFeesType = {
   level: number;
   mode: string;
   amount: number;
+  totalAmount: number;
   outstandingAmount: number;
   paymentDate: string;
   paymentMonth: string;
@@ -160,4 +161,5 @@ export type getOutstandingStudentFeesRequest = {
 
 export type OutstandingStudentFeesResponse = {
   outstandingAmount: number;
+  totalAmount: number;
 };
