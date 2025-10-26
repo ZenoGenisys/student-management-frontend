@@ -1,14 +1,15 @@
 import { Box, Button, Typography } from '@mui/material';
 import ListView from '../../components/ListView';
-import { useStaffSalary } from '../../hooks';
+import { useStudentFees } from '../../hooks';
 import { MenuCell, Pagination } from '../../components';
-import type { CellRender, ColumnDefsProps, StaffSalaryRequest, StaffSalaryType } from '../../types';
+import type { CellRender, ColumnDefsProps, StudentFeesRequest, StudentFeesType } from '../../types';
 import { useCallback, useMemo, useState } from 'react';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import AddSalaryModal from './AddSalaryModal';
+import FeesModal from './FeesModal';
 
-const StaffSalaryTab = () => {
+const StudentFees = () => {
   const {
+    studentId,
     data,
     search,
     sort,
@@ -21,9 +22,9 @@ const StaffSalaryTab = () => {
     handleDelete,
     handleAdd,
     handleUpdate,
-  } = useStaffSalary();
+  } = useStudentFees();
   const [open, setOpen] = useState(false);
-  const [editSalary, setEditSalary] = useState<StaffSalaryType | null>(null);
+  const [editSalary, setEditSalary] = useState<StudentFeesType | null>(null);
 
   const handleToggleModal = useCallback(() => {
     setOpen((prev) => !prev);
@@ -42,7 +43,7 @@ const StaffSalaryTab = () => {
   );
 
   const handleSave = useCallback(
-    (salary: StaffSalaryRequest) => {
+    (salary: StudentFeesRequest) => {
       handleToggleModal();
       if (editSalary) {
         handleUpdate(salary);
@@ -56,15 +57,16 @@ const StaffSalaryTab = () => {
   const Column = useMemo<ColumnDefsProps[]>(
     () => [
       { id: 'feesId', label: 'Fees ID', sortable: true },
-      { id: 'salaryMonth', label: 'Salary For', sortable: true, dateFormat: true },
-      { id: 'amount', label: 'Net Salary', sortable: true },
+      { id: 'paymentMonth', label: 'Fees For', sortable: true, dateFormat: true },
+      { id: 'amount', label: 'Net Amount', sortable: true },
+      { id: 'outstandingAmount', label: 'Outstanding Amount', sortable: true },
       { id: 'mode', label: 'Mode', sortable: true },
       { id: 'paymentDate', label: 'Payment Date', sortable: true, dateFormat: true },
       {
         id: 'actions',
         label: 'Action',
         sortable: false,
-        cellRenderer: (cellProps: CellRender<StaffSalaryType>) => (
+        cellRenderer: (cellProps: CellRender<StudentFeesType>) => (
           <MenuCell
             id={cellProps.row?.feesId}
             onClickEdit={() => handleEdit(cellProps.row.feesId)}
@@ -73,9 +75,8 @@ const StaffSalaryTab = () => {
         ),
       },
     ],
-    [handleDelete, handleEdit],
+    [handleEdit, handleDelete],
   );
-
   return (
     <Box>
       <Box
@@ -94,7 +95,7 @@ const StaffSalaryTab = () => {
             pb: { xs: '10px', sm: '0px', md: '0px', lg: '0px', xl: '0px' },
           }}
         >
-          Staff Salary
+          Student Fees
         </Typography>
         <Box display={'flex'} alignItems={'center'} gap={2}>
           <Button
@@ -103,7 +104,7 @@ const StaffSalaryTab = () => {
             startIcon={<AddCircleOutlineOutlinedIcon />}
             onClick={handleToggleModal}
           >
-            Add Salary
+            Add Fees
           </Button>
         </Box>
       </Box>
@@ -127,7 +128,8 @@ const StaffSalaryTab = () => {
           />
         </Box>
       </Pagination>
-      <AddSalaryModal
+      <FeesModal
+        id={Number(studentId)}
         open={open}
         onClose={handleToggleModal}
         editData={editSalary}
@@ -137,4 +139,4 @@ const StaffSalaryTab = () => {
   );
 };
 
-export default StaffSalaryTab;
+export default StudentFees;

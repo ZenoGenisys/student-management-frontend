@@ -1,5 +1,5 @@
 import type { Dayjs } from 'dayjs';
-import type { LevelDetails } from './Staff';
+import type { LevelDetails, Payment } from './Staff';
 import type { PaginationType } from './ListViewType';
 
 export type GetStudentRequest = {
@@ -42,7 +42,8 @@ export type StudentType = {
   email: string;
   address: string;
   bloodGroup: string;
-  studentType?: string;
+  studentType: 'regular' | 'crash_course';
+  amount: number;
   primaryContactNumber?: string;
   levelDetails?: LevelDetails[];
   parentDetails?: ParentDetails;
@@ -74,6 +75,8 @@ export type CreateStudent = {
   status: 'Active' | 'Inactive';
   additionalDetails: string;
   bloodGroup: string;
+  studentType: string;
+  amount: number;
   levelDetails?: LevelDetails[];
   parentDetails?: ParentDetails;
 };
@@ -109,4 +112,52 @@ export type MarkStudentAttendanceRequest = {
   studentId?: number;
   date: string;
   attendance: boolean;
+};
+
+export type getStudentFeesRequest = {
+  page: number;
+  size: number;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  studentId?: number;
+  paymentMonth?: string;
+};
+
+export type StudentFeesType = {
+  feesId: number;
+  studentId: number;
+  name: string;
+  email: string;
+  level: number;
+  mode: string;
+  amount: number;
+  outstandingAmount: number;
+  paymentDate: string;
+  paymentMonth: string;
+  updatedBy: string;
+};
+
+export type StudentFeesResponse = {
+  data: StudentFeesType[];
+  pagination: PaginationType;
+};
+
+export type StudentFeesRequest = {
+  feesId?: number;
+  studentId?: number;
+  mode: Payment;
+  amount: number;
+  paymentDate: Date | null;
+  paymentMonth: string;
+};
+
+export type getOutstandingStudentFeesRequest = {
+  studentId: number;
+  paymentMonth: string;
+  feesId?: number;
+};
+
+export type OutstandingStudentFeesResponse = {
+  outstandingAmount: number;
 };

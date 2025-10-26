@@ -84,9 +84,11 @@ const AttendanceModal = ({ open, option, data, onClose, onSave }: AttendanceModa
       <DialogContent>
         <Box display="flex" flexDirection="column" gap={1}>
           <FormControl sx={{ width: 300 }}>
-            <Typography variant="h6" color="secondary" mb={1}>Select Students: </Typography>
+            <Typography variant="h6" color="secondary" mb={1}>
+              Select Students:{' '}
+            </Typography>
             <Select
-              size='medium'
+              size="medium"
               multiple
               value={selectData}
               onChange={handleChange}

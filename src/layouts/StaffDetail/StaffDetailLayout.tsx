@@ -5,8 +5,8 @@ import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { BasicDetails, AcademicDetails, AddressDetails, AttendanceSection } from '../common';
 import type { StaffType } from '../../types';
-import StaffSalaryTab from './StaffSalaryTab';
 import { getFormattedDate } from '../../utils';
+import StaffSalaryTab from './StaffSalaryTab';
 
 type StaffDetailLayoutProps = {
   data: StaffType;
