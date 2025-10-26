@@ -6,8 +6,14 @@ import StaffIcon from '../assets/images/staff.svg';
 import IncomeIcon from '../assets/images/income.png';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import RevenueChart from '../components/RevenueChart';
+import { SummaryCard } from '../layouts';
+import { useAuth } from '../state';
+import useDashboard from '../hooks/useDashboard';
+import { formatNumberWithCommas } from '../utils';
 
 const Dashboard: React.FC = () => {
+  const { name } = useAuth();
+  const { dashboardSummary } = useDashboard();
   const [showBackground, setShowBackground] = React.useState(false);
   const [showContent, setShowContent] = React.useState(false);
 
@@ -91,7 +97,7 @@ const Dashboard: React.FC = () => {
         >
           <Box>
             <Typography variant="h2" color="white">
-              Welcome Back, Ajith Kumar
+              Welcome Back, {name}
             </Typography>
             <Typography color="white">Have a good day!</Typography>
           </Box>
@@ -104,131 +110,25 @@ const Dashboard: React.FC = () => {
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-          <Card
-            elevation={2}
-            sx={{
-              p: 2,
-              maxWidth: '100%',
-              opacity: showContent ? 1 : 0,
-              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 0.8s ease-in-out',
-              transitionDelay: '0.4s',
-            }}
-          >
-            <Box display={'flex'} alignItems="center" gap={2}>
-              <Box
-                sx={{
-                  backgroundColor: 'primary.lighter',
-                  borderRadius: '50%',
-                  width: 60,
-                  height: 60,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <img
-                  src={StudentIcon}
-                  alt="Student illustration"
-                  style={{ width: '90%', height: 'auto' }}
-                />
-              </Box>
-              <Box>
-                <Typography variant="h4" fontWeight="bold">
-                  1,530
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Total Students
-                </Typography>
-              </Box>
-            </Box>
-            <Divider sx={{ marginTop: '15px', marginBottom: '15px' }} />
-            <Box
-              display={'flex'}
-              flexDirection={'row'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-            >
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                <Typography variant="body1" color="text.secondary">
-                  Active:
-                </Typography>
-                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  1,530
-                </Typography>
-              </Box>
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                <Typography variant="body1" color="text.secondary">
-                  Inactive:
-                </Typography>
-                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  1,530
-                </Typography>
-              </Box>
-            </Box>
-          </Card>
+          <SummaryCard
+            title="Total Students"
+            showContent={showContent}
+            icon={StudentIcon}
+            activeCount={dashboardSummary?.student?.active ?? 0}
+            inactiveCount={dashboardSummary?.student?.inactive ?? 0}
+            totalCount={dashboardSummary?.student?.total ?? 0}
+          />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-          <Card
-            elevation={2}
-            sx={{
-              p: 2,
-              maxWidth: '100%',
-              opacity: showContent ? 1 : 0,
-              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 0.8s ease-in-out',
-              transitionDelay: '0.6s',
-            }}
-          >
-            <Box display={'flex'} alignItems="center" gap={2}>
-              <Box
-                sx={{
-                  backgroundColor: 'primary.lighter',
-                  borderRadius: '50%',
-                  width: 60,
-                  height: 60,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <img src={StaffIcon} alt="Staff" style={{ width: '100%', height: 'auto' }} />
-              </Box>
-              <Box>
-                <Typography variant="h4" fontWeight="bold">
-                  500
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Total Staffs
-                </Typography>
-              </Box>
-            </Box>
-            <Divider sx={{ marginTop: '15px', marginBottom: '15px' }} />
-            <Box
-              display={'flex'}
-              flexDirection={'row'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-            >
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                <Typography variant="body1" color="text.secondary">
-                  Active:
-                </Typography>
-                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  350
-                </Typography>
-              </Box>
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                <Typography variant="body1" color="text.secondary">
-                  Inactive:
-                </Typography>
-                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  150
-                </Typography>
-              </Box>
-            </Box>
-          </Card>
+          <SummaryCard
+            title="Total Staffs"
+            showContent={showContent}
+            icon={StaffIcon}
+            activeCount={dashboardSummary?.staff?.active ?? 0}
+            inactiveCount={dashboardSummary?.staff?.inactive ?? 0}
+            totalCount={dashboardSummary?.staff?.total ?? 0}
+          />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
@@ -259,7 +159,7 @@ const Dashboard: React.FC = () => {
               </Box>
               <Box>
                 <Typography variant="h4" fontWeight="bold">
-                  12,000
+                  ₹ {formatNumberWithCommas(dashboardSummary?.fees?.totalIncome)}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
                   Total Income
@@ -278,7 +178,7 @@ const Dashboard: React.FC = () => {
                   Fees collected (This Month):
                 </Typography>
                 <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  10,000
+                  ₹ {formatNumberWithCommas(dashboardSummary?.fees?.currentMonthIncome)}
                 </Typography>
               </Box>
               <Box display={'flex'} flexDirection={'row'} alignItems={'center'}></Box>
