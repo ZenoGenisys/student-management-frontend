@@ -17,7 +17,7 @@ const useAttendanceSummary = () => {
   });
 
   const handleSelectSlot = useCallback(
-    (slotInfo: { start: Date; end: Date; slots: Date[] }) => {
+    (slotInfo: { start: Date; end: Date; slots: Date[] | string[] }) => {
       navigate(`/attendance-detail/${moment(slotInfo.start).format('YYYY-MM-DD')}`);
     },
     [navigate],
