@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   Grid,
+  Box,
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -17,10 +18,13 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useCallback, useEffect } from 'react';
 import type { Payment, StudentFeesRequest, StudentFeesType } from '../../types';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { getOutstandingStudentFees } from '../../repositories';
 import { useQuery } from '@tanstack/react-query';
+
+dayjs.extend(utc);
 
 type FeesModalProps = {
   id: number;
@@ -68,8 +72,8 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
 
       onSave({
         mode: formValues.paymentMethod as Payment,
-        paymentMonth: String(formValues.paymentMonth?.format('YYYY-MM')),
-        paymentDate: formValues.paymentDate ? formValues.paymentDate.toDate() : null,
+        paymentMonth: dayjs(formValues.paymentMonth)?.format('YYYY-MM'),
+        paymentDate: formValues.paymentDate ? dayjs(values.paymentDate).format('YYYY-MM-DD') : null,
         amount: Number(formValues.amount),
         ...(editData && { feesId: editData.feesId }),
       });
@@ -91,8 +95,8 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
     if (editData) {
       setValues({
         paymentMethod: editData.mode || '',
-        paymentMonth: dayjs(editData.paymentMonth) || null,
-        paymentDate: dayjs(editData.paymentDate) || null,
+        paymentMonth: dayjs.utc(editData.paymentMonth) || null,
+        paymentDate: dayjs.utc(editData.paymentDate) || null,
         amount: editData.amount?.toString() || '',
       });
     } else {
@@ -110,8 +114,16 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
       <form onSubmit={handleSubmit}>
         <DialogTitle>{editData ? 'Edit Fees' : 'Add Fees'}</DialogTitle>
         <DialogContent>
-          <Typography>outstanding Amount: {data?.outstandingAmount}</Typography>
-          <Typography>Total Amount: {data?.totalAmount}</Typography>
+          <Box display={'flex'} flexDirection={'row'} flexWrap={'wrap'} gap="0 20px">
+            <Typography variant="h6">
+              Total Amount:{' '}
+              <span style={{ fontWeight: 'bold', color: '#1f33e9ff' }}>{data?.totalAmount}</span>
+            </Typography>
+            <Typography variant="h6">
+              Outstanding Amount:{' '}
+              <span style={{ fontWeight: 'bold', color: 'red' }}>{data?.outstandingAmount}</span>
+            </Typography>
+          </Box>
           <Grid container spacing={2} mt={1}>
             {/* payment Month */}
             <Grid size={{ xs: 12, md: 6, lg: 6, xl: 4 }}>
@@ -131,7 +143,7 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
                     },
                   }}
                   value={values.paymentMonth}
-                  onChange={(newValue) => setFieldValue('paymentMonth', newValue)}
+                  onChange={(newValue) => setFieldValue('paymentMonth', newValue ? dayjs.utc(newValue) : null)}
                 />
               </LocalizationProvider>
             </Grid>
@@ -194,7 +206,7 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
                     },
                   }}
                   value={values.paymentDate}
-                  onChange={(newValue) => setFieldValue('paymentDate', newValue)}
+                  onChange={(newValue) => setFieldValue('paymentDate', newValue ? dayjs.utc(newValue) : null)}
                 />
               </LocalizationProvider>
             </Grid>

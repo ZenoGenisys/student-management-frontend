@@ -10,6 +10,7 @@ import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 import StudentFees from './StudentFees';
+import dayjs from 'dayjs';
 
 type StudentDetailsLayoutProps = {
   data: StudentType;
@@ -33,7 +34,7 @@ const StudentDetailsLayout = ({ data, tabValue, handleTabChange }: StudentDetail
             'Email Id': data?.email,
             Gender: data?.gender,
             'Date of Birth': getFormattedDate(data?.dateOfBirth),
-            Age: data?.age,
+            Age: data?.age ?? (data?.dateOfBirth ? dayjs().diff(data.dateOfBirth, 'year') : '-'),
             'Date of Joining': getFormattedDate(data?.joiningDate),
             'Blood Group': data?.bloodGroup,
             Grade: data?.grade,

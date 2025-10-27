@@ -12,7 +12,12 @@ export function ShaderAnimation({ isVisible = false }: ShaderAnimationProps) {
     camera: THREE.Camera;
     scene: THREE.Scene;
     renderer: THREE.WebGLRenderer;
-    uniforms: any;
+    uniforms: {
+      time: { value: number };
+      resolution: {
+        value: THREE.Vector2;
+      };
+    };
     animationId: number;
     startTime: number;
   } | null>(null);

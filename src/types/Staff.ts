@@ -1,5 +1,6 @@
 import type { Dayjs } from 'dayjs';
 import type { PaginationType } from './ListViewType';
+import type dayjs from 'dayjs';
 
 export type GetStaffRequest = {
   page: number;
@@ -11,7 +12,7 @@ export type GetStaffRequest = {
 
 export type LevelDetails = {
   level: number;
-  date: Dayjs | null;
+  date: string | Dayjs | null;
   document: string;
   remarks: string;
 };
@@ -42,8 +43,8 @@ export type CreateStaff = {
   staffId?: number;
   name: string;
   gender: string;
-  joiningDate: Dayjs | null;
-  dateOfBirth: Dayjs | null;
+  joiningDate: string | Dayjs | null;
+  dateOfBirth: string | Dayjs | null;
   maritalStatus: string;
   contactNumber: string;
   email: string;
@@ -80,7 +81,7 @@ export type StaffSalaryRequest = {
   staffId?: number;
   mode: Payment;
   amount: number;
-  paymentDate: Date | null;
+  paymentDate: string | dayjs.Dayjs | null;
   salaryMonth: string;
 };
 

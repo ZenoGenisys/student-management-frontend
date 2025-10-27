@@ -1,9 +1,13 @@
 import * as Yup from 'yup';
+import dayjs from 'dayjs';
 
 export const StudentValidationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   gender: Yup.string().required('Gender is required'),
-  dateOfBirth: Yup.date().nullable().required('Date of Birth is required'),
+  dateOfBirth: Yup.date()
+    .nullable()
+    .required('Date of Birth is required')
+    .max(dayjs().subtract(3, 'year').toDate(), 'Student must be at least 3 years old'),
   bloodGroup: Yup.string().required('Blood Group is required'),
   joiningDate: Yup.date().nullable().required('Joining Date is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
@@ -43,7 +47,10 @@ export const StudentValidationSchema = Yup.object({
 export const StaffValidationSchema = Yup.object({
   name: Yup.string().required('Name is required'),
   gender: Yup.string().required('Gender is required'),
-  dateOfBirth: Yup.date().nullable().required('Date of Birth is required'),
+  dateOfBirth: Yup.date()
+    .nullable()
+    .required('Date of Birth is required')
+    .max(dayjs().subtract(18, 'year').toDate(), 'Staff must be at least 18 years old'),
   bloodGroup: Yup.string().required('Blood Group is required'),
   joiningDate: Yup.date().nullable().required('Joining Date is required'),
   contactNumber: Yup.string().required('Contact Number is required'),

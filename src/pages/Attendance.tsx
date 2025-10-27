@@ -3,12 +3,12 @@ import { Box, Typography } from '@mui/material';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './Attendance.css'; // Import the new stylesheet
+import './Attendance.css';
 import { type AttendanceEvent } from '../types/events';
 import { useAttendanceSummary } from '../hooks';
 import { Events, Legend, Toolbar } from '../layouts';
+import { useSnackbar } from '../state';
 
-// Setup the localizer by providing the moment Object
 const localizer = momentLocalizer(moment);
 
 const eventPropGetter = (event: AttendanceEvent) => {
@@ -17,8 +17,41 @@ const eventPropGetter = (event: AttendanceEvent) => {
 };
 
 const Attendance: React.FC = () => {
-  const { date, attendanceEvents, handleSelectSlot, handleSelectEvent, setDate } =
-    useAttendanceSummary();
+  const {
+    date,
+    attendanceEvents,
+    handleSelectSlot,
+    handleSelectEvent,
+    setDate,
+  } = useAttendanceSummary();
+
+  const { showSnackbar } = useSnackbar();
+
+  const today = new Date();
+
+  // Prevent selecting or clicking future slots
+  const handleSlotSelect = (slotInfo: any) => {
+    if (slotInfo.start > today) {
+      showSnackbar({ message: 'Future dates are disabled', severity: 'error' });
+      return;
+    }
+    handleSelectSlot(slotInfo);
+  };
+
+  // Gray out future cells visually + disable pointer events
+  const dayPropGetter = (date: Date) => {
+    if (date > today) {
+      return {
+        style: {
+          backgroundColor: '#f5f5f5',
+          color: '#aaa',
+          pointerEvents: 'none',
+          cursor: 'not-allowed',
+        },
+      };
+    }
+    return {};
+  };
 
   return (
     <>
@@ -45,16 +78,17 @@ const Attendance: React.FC = () => {
           eventPropGetter={eventPropGetter}
           date={date}
           onNavigate={(newDate) => setDate(newDate)}
-          view="month" // Lock the view to month
-          views={['month']} // Only allow the month view
+          view="month"
+          views={['month']}
           components={{
             event: Events,
             toolbar: Toolbar,
           }}
-          selectable={true}
-          onSelectSlot={handleSelectSlot}
+          selectable
+          onSelectSlot={handleSlotSelect}
           onSelectEvent={handleSelectEvent}
-          max={new Date()}
+          max={today}
+          dayPropGetter={dayPropGetter} // 👈 Add this
         />
       </Box>
     </>

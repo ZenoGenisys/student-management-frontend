@@ -66,11 +66,16 @@ const StaffForm: React.FC = () => {
   const handleSubmit = useCallback(
     async (values: CreateStaff) => {
       try {
+        const formValue: CreateStaff = {
+          ...values,
+          dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null,
+          joiningDate: values.joiningDate ? dayjs(values.joiningDate).format('YYYY-MM-DD') : null,
+        };
         if (data) {
-          await updateStaff({ ...values, staffId: data.staffId });
+          await updateStaff({ ...formValue, staffId: data.staffId });
           navigate(`/staff/${data.staffId}`);
         } else {
-          await createStaff(values);
+          await createStaff(formValue);
           navigate(PATH.STAFF);
         }
         showSnackbar({

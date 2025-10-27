@@ -56,12 +56,12 @@ const StudentFees = () => {
 
   const Column = useMemo<ColumnDefsProps[]>(
     () => [
-      { id: 'feesId', label: 'Fees ID', sortable: true },
       { id: 'paymentMonth', label: 'Fees For', sortable: true, dateFormat: true },
       { id: 'amount', label: 'Amount', sortable: true },
       { id: 'outstandingAmount', label: 'Outstanding Amount', sortable: true },
       { id: 'totalAmount', label: 'Total Amount', sortable: true },
       { id: 'mode', label: 'Mode', sortable: true },
+      { id: 'level', label: 'Level', sortable: true },
       { id: 'paymentDate', label: 'Payment Date', sortable: true, dateFormat: true },
       {
         id: 'actions',

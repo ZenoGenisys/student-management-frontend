@@ -1,55 +1,22 @@
 import React from 'react';
-import {
-  Box,
-  Typography,
-  Paper,
-  Button,
-  Grid,
-  Divider,
-  Card,
-  CardContent,
-  CardHeader,
-} from '@mui/material';
-import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
+import { Box, Typography, Paper, Button, Grid, Card, CardContent, CardHeader } from '@mui/material';
 import StudentIcon from '../assets/images/student.svg';
 import StaffIcon from '../assets/images/staff.svg';
 import FeesIcon from '../assets/images/fees.png';
 import SalaryIcon from '../assets/images/salary.png';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
-import RevenueChart from '../components/RevenueChart';
 import { SummaryCard } from '../layouts';
 import { useAuth } from '../state';
 import useDashboard from '../hooks/useDashboard';
 import { formatNumberWithCommas } from '../utils';
 import FeesPendingList from '../components/FeesPendingList';
 import FeesPieChart from '../components/FeesPieChart';
-
-const pendingFeesData = [
-  { id: '1', name: 'John Doe', totalAmount: 5000, outstanding: 1500 },
-  { id: '2', name: 'Jane Smith', totalAmount: 4500, outstanding: 500 },
-  { id: '3', name: 'Peter Jones', totalAmount: 6000, outstanding: 2000 },
-  { id: '4', name: 'Mary Johnson', totalAmount: 5500, outstanding: 1000 },
-  { id: '5', name: 'David Williams', totalAmount: 4800, outstanding: 800 },
-  { id: '6', name: 'Emily Brown', totalAmount: 5200, outstanding: 1200 },
-];
+import { RevenueChart } from '../components';
 
 const Dashboard: React.FC = () => {
   const { name } = useAuth();
-  const { dashboardSummary } = useDashboard();
-  const [showBackground, setShowBackground] = React.useState(false);
-  const [showContent, setShowContent] = React.useState(false);
-
-  React.useEffect(() => {
-    // First fade in the background
-    setShowBackground(true);
-
-    // Then fade in the content after background is visible
-    const contentTimer = setTimeout(() => {
-      setShowContent(true);
-    }, 600);
-
-    return () => clearTimeout(contentTimer);
-  }, []);
+  const { dashboardSummary, feesPendingList, revenueData, showBackground, showContent } =
+    useDashboard();
 
   return (
     <>
@@ -123,10 +90,6 @@ const Dashboard: React.FC = () => {
             </Typography>
             <Typography color="white">Have a good day!</Typography>
           </Box>
-          <Box display={'flex'} flexDirection={'row'} alignItems={'center'} gap={1}>
-            <CachedOutlinedIcon sx={{ color: 'white' }} />
-            <Typography color="white">Last Checkin: 15 Jun 2025</Typography>
-          </Box>
         </Box>
       </Paper>
 
@@ -136,9 +99,11 @@ const Dashboard: React.FC = () => {
             title="Total Students"
             showContent={showContent}
             icon={StudentIcon}
-            activeCount={dashboardSummary?.student?.active ?? 0}
-            inactiveCount={dashboardSummary?.student?.inactive ?? 0}
-            totalCount={dashboardSummary?.student?.total ?? 0}
+            value={formatNumberWithCommas(dashboardSummary?.student?.total ?? 0)}
+            data={{
+              Active: formatNumberWithCommas(dashboardSummary?.student?.active ?? 0),
+              Inactive: formatNumberWithCommas(dashboardSummary?.student?.inactive ?? 0),
+            }}
           />
         </Grid>
 
@@ -147,134 +112,38 @@ const Dashboard: React.FC = () => {
             title="Total Staffs"
             showContent={showContent}
             icon={StaffIcon}
-            activeCount={dashboardSummary?.staff?.active ?? 0}
-            inactiveCount={dashboardSummary?.staff?.inactive ?? 0}
-            totalCount={dashboardSummary?.staff?.total ?? 0}
+            value={formatNumberWithCommas(dashboardSummary?.staff?.total ?? 0)}
+            data={{
+              'Active:': formatNumberWithCommas(dashboardSummary?.staff?.active ?? 0),
+              'Inactive:': formatNumberWithCommas(dashboardSummary?.staff?.inactive ?? 0),
+            }}
           />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-          <Card
-            elevation={2}
-            sx={{
-              p: 2,
-              maxWidth: '100%',
-              opacity: showContent ? 1 : 0,
-              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 0.8s ease-in-out',
-              transitionDelay: '0.6s',
+          <SummaryCard
+            title="Fees to be collected"
+            showContent={showContent}
+            icon={FeesIcon}
+            value={`₹ ${formatNumberWithCommas(dashboardSummary?.fees?.total ?? 0)}`}
+            data={{
+              'Collected:': `₹ ${formatNumberWithCommas(dashboardSummary?.fees?.collected ?? 0)}`,
+              'Pending:': `₹ ${formatNumberWithCommas(dashboardSummary?.fees?.pending ?? 0)}`,
             }}
-          >
-            <Box display={'flex'} alignItems="center" gap={2}>
-              <Box
-                sx={{
-                  backgroundColor: 'primary.lighter',
-                  borderRadius: '50%',
-                  width: 60,
-                  height: 60,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <img src={FeesIcon} alt="fees" style={{ width: '80%', height: 'auto' }} />
-              </Box>
-              <Box>
-                <Typography variant="h4" fontWeight="bold">
-                  ₹ {formatNumberWithCommas(dashboardSummary?.fees?.totalIncome)}
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Fees to be collected
-                </Typography>
-              </Box>
-            </Box>
-            <Divider sx={{ marginTop: '15px', marginBottom: '15px' }} />
-            <Box
-              display={'flex'}
-              flexDirection={'row'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-            >
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                <Typography variant="body1" color="text.secondary">
-                  Collected:
-                </Typography>
-                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  ₹ {formatNumberWithCommas(dashboardSummary?.fees?.currentMonthIncome)}
-                </Typography>
-              </Box>
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                <Typography variant="body1" color="text.secondary">
-                  Pending:
-                </Typography>
-                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  2,000
-                </Typography>
-              </Box>
-            </Box>
-          </Card>
+          />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 4, xl: 3 }}>
-          <Card
-            elevation={2}
-            sx={{
-              p: 2,
-              maxWidth: '100%',
-              opacity: showContent ? 1 : 0,
-              transform: showContent ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 0.8s ease-in-out',
-              transitionDelay: '0.8s',
+          <SummaryCard
+            title="Total Income"
+            showContent={showContent}
+            icon={SalaryIcon}
+            value={`₹ ${formatNumberWithCommas(dashboardSummary?.income?.total ?? 0)}`}
+            data={{
+              'Month:': `₹ ${formatNumberWithCommas(dashboardSummary?.income?.month ?? 0)}`,
+              'Year:': `₹ ${formatNumberWithCommas(dashboardSummary?.income?.year ?? 0)}`,
             }}
-          >
-            <Box display={'flex'} alignItems="center" gap={2}>
-              <Box
-                sx={{
-                  backgroundColor: 'primary.lighter',
-                  borderRadius: '50%',
-                  width: 60,
-                  height: 60,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <img src={SalaryIcon} alt="fees" style={{ width: '80%', height: 'auto' }} />
-              </Box>
-              <Box>
-                <Typography variant="h4" fontWeight="bold">
-                  ₹ 8,500
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  Total Salary
-                </Typography>
-              </Box>
-            </Box>
-            <Divider sx={{ marginTop: '15px', marginBottom: '15px' }} />
-            <Box
-              display={'flex'}
-              flexDirection={'row'}
-              alignItems={'center'}
-              justifyContent={'space-between'}
-            >
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                <Typography variant="body1" color="text.secondary">
-                  Paid:
-                </Typography>
-                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  ₹ 6,500
-                </Typography>
-              </Box>
-              <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-                <Typography variant="body1" color="text.secondary">
-                  Unpaid:
-                </Typography>
-                <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-                  ₹ 2,000
-                </Typography>
-              </Box>
-            </Box>
-          </Card>
+          />
         </Grid>
 
         <Grid
@@ -286,7 +155,7 @@ const Dashboard: React.FC = () => {
             transitionDelay: '1.0s',
           }}
         >
-          <RevenueChart />
+          <RevenueChart revenueData={revenueData?.data ?? []} />
         </Grid>
 
         <Grid
@@ -299,7 +168,12 @@ const Dashboard: React.FC = () => {
             [theme.breakpoints.up('lg')]: { height: '450px' },
           })}
         >
-          <FeesPieChart />
+          <FeesPieChart
+            data={[
+              { name: 'Pending', value: dashboardSummary?.fees?.pending ?? 0 },
+              { name: 'Collected', value: dashboardSummary?.fees?.collected ?? 0 },
+            ]}
+          />
         </Grid>
 
         <Grid
@@ -329,7 +203,7 @@ const Dashboard: React.FC = () => {
                 [theme.breakpoints.up('lg')]: { overflowY: 'auto' },
               })}
             >
-              <FeesPendingList data={pendingFeesData} />
+              <FeesPendingList data={feesPendingList ?? []} />
             </CardContent>
           </Card>
         </Grid>

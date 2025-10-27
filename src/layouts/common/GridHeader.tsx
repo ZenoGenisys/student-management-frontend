@@ -62,40 +62,6 @@ const GridHeader: React.FC<GridHeaderProps> = ({
         All {title}
       </Typography>
       <Box display={'flex'} gap={2}>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="large"
-          startIcon={<TbFileExport />}
-          id="export-menu"
-          aria-controls={open ? 'export-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}
-          endIcon={<KeyboardArrowDownIcon />}
-        >
-          Export {title}
-        </Button>
-        <StyledMenu
-          id="export-menu"
-          slotProps={{
-            list: {
-              'aria-labelledby': 'export-menu',
-            },
-          }}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={handlePDF} disableRipple>
-            <PictureAsPdfOutlinedIcon />
-            Export as PDF
-          </MenuItem>
-          <MenuItem onClick={handleExcel} disableRipple>
-            <RiFileExcel2Line style={{ marginRight: 12, width: 16, height: 16 }} />
-            Export as Excel
-          </MenuItem>
-        </StyledMenu>
         {onClickAdd && (
           <Button
             variant="contained"
