@@ -91,6 +91,8 @@ const StudentForm = () => {
             values?.primaryContactNumber === 'Father'
               ? (values?.parentDetails?.fatherPhoneNumber ?? '')
               : (values?.parentDetails?.motherPhoneNumber ?? ''),
+          dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null,
+          joiningDate: values.joiningDate ? dayjs(values.joiningDate).format('YYYY-MM-DD') : null,
         };
         if (data) {
           await updateStudent({ ...formValue, studentId: Number(data.studentId) });
@@ -232,8 +234,10 @@ const StudentForm = () => {
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                   <DatePicker
                                     disableFuture
-                                    value={dayjs(field.value)}
-                                    onChange={(v) => form.setFieldValue(field.name, v)}
+                                    value={field.value ? dayjs(field.value) : null}
+                                    onChange={(v) =>
+                                      form.setFieldValue(field.name, v ? v.toDate() : null)
+                                    }
                                     slotProps={{
                                       textField: {
                                         fullWidth: true,
