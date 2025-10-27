@@ -62,6 +62,7 @@ const StudentFees = () => {
       { id: 'outstandingAmount', label: 'Outstanding Amount', sortable: true },
       { id: 'totalAmount', label: 'Total Amount', sortable: true },
       { id: 'mode', label: 'Mode', sortable: true },
+      { id: 'level', label: 'Level', sortable: true },
       { id: 'paymentDate', label: 'Payment Date', sortable: true, dateFormat: true },
       {
         id: 'actions',

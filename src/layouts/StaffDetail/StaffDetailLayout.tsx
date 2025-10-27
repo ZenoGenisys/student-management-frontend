@@ -6,6 +6,7 @@ import { Box, Grid, Tab, Tabs } from '@mui/material';
 import { BasicDetails, AcademicDetails, AddressDetails, AttendanceSection } from '../common';
 import type { StaffType } from '../../types';
 import { getFormattedDate } from '../../utils';
+import dayjs from 'dayjs';
 import StaffSalaryTab from './StaffSalaryTab';
 
 type StaffDetailLayoutProps = {
@@ -30,7 +31,7 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
             'Email Id': data?.email,
             Gender: data?.gender,
             'Date of Birth': getFormattedDate(data?.dateOfBirth),
-            Age: data?.age,
+            Age: data?.age ?? (data?.dateOfBirth ? dayjs().diff(data.dateOfBirth, 'year') : '-'),
             'Marital Status': data?.maritalStatus,
             'Date of Joining': getFormattedDate(data?.joiningDate),
             'Blood Group': data?.bloodGroup,
