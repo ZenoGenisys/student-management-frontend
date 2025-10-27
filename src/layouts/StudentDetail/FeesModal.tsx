@@ -143,7 +143,9 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
                     },
                   }}
                   value={values.paymentMonth}
-                  onChange={(newValue) => setFieldValue('paymentMonth', newValue ? dayjs.utc(newValue) : null)}
+                  onChange={(newValue) =>
+                    setFieldValue('paymentMonth', newValue ? dayjs.utc(newValue) : null)
+                  }
                 />
               </LocalizationProvider>
             </Grid>
@@ -206,7 +208,9 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
                     },
                   }}
                   value={values.paymentDate}
-                  onChange={(newValue) => setFieldValue('paymentDate', newValue ? dayjs.utc(newValue) : null)}
+                  onChange={(newValue) =>
+                    setFieldValue('paymentDate', newValue ? dayjs.utc(newValue) : null)
+                  }
                 />
               </LocalizationProvider>
             </Grid>

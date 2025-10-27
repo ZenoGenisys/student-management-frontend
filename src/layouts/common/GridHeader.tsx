@@ -1,13 +1,7 @@
 import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import MenuItem from '@mui/material/MenuItem';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import PictureAsPdfOutlinedIcon from '@mui/icons-material/PictureAsPdfOutlined';
-import { TbFileExport } from 'react-icons/tb';
-import { RiFileExcel2Line } from 'react-icons/ri';
-import { StyledMenu } from '../../components';
 
 type GridHeaderProps = {
   title: string;
@@ -16,33 +10,7 @@ type GridHeaderProps = {
   onClickExcel?: () => void;
 };
 
-const GridHeader: React.FC<GridHeaderProps> = ({
-  title,
-  onClickAdd,
-  onClickPDF,
-  onClickExcel,
-}: GridHeaderProps) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setAnchorEl(null);
-  }, []);
-
-  const handlePDF = useCallback(() => {
-    handleClose();
-    onClickPDF?.();
-  }, [onClickPDF, handleClose]);
-
-  const handleExcel = useCallback(() => {
-    handleClose();
-    onClickExcel?.();
-  }, [onClickExcel, handleClose]);
-
+const GridHeader: React.FC<GridHeaderProps> = ({ title, onClickAdd }: GridHeaderProps) => {
   return (
     <Box
       flexGrow={1}

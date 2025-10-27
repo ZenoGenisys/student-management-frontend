@@ -17,20 +17,15 @@ const eventPropGetter = (event: AttendanceEvent) => {
 };
 
 const Attendance: React.FC = () => {
-  const {
-    date,
-    attendanceEvents,
-    handleSelectSlot,
-    handleSelectEvent,
-    setDate,
-  } = useAttendanceSummary();
+  const { date, attendanceEvents, handleSelectSlot, handleSelectEvent, setDate } =
+    useAttendanceSummary();
 
   const { showSnackbar } = useSnackbar();
 
   const today = new Date();
 
   // Prevent selecting or clicking future slots
-  const handleSlotSelect = (slotInfo: any) => {
+  const handleSlotSelect = (slotInfo: { start: Date; end: Date; slots: Date[] | string[] }) => {
     if (slotInfo.start > today) {
       showSnackbar({ message: 'Future dates are disabled', severity: 'error' });
       return;
@@ -41,16 +36,16 @@ const Attendance: React.FC = () => {
   // Gray out future cells visually + disable pointer events
   const dayPropGetter = (date: Date) => {
     if (date > today) {
-      return {
-        style: {
-          backgroundColor: '#f5f5f5',
-          color: '#aaa',
-          pointerEvents: 'none',
-          cursor: 'not-allowed',
-        },
+      const style: React.CSSProperties = {
+        backgroundColor: '#f5f5f5',
+        color: '#aaa',
+        pointerEvents: 'none',
+        cursor: 'not-allowed',
       };
+      return { style };
     }
-    return {};
+
+    return { style: {} };
   };
 
   return (
@@ -88,7 +83,7 @@ const Attendance: React.FC = () => {
           onSelectSlot={handleSlotSelect}
           onSelectEvent={handleSelectEvent}
           max={today}
-          dayPropGetter={dayPropGetter} // 👈 Add this
+          dayPropGetter={dayPropGetter}
         />
       </Box>
     </>
