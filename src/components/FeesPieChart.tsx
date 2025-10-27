@@ -33,7 +33,7 @@ const FeesPieChart: React.FC = () => {
   return (
     <Card>
       <CardHeader title={<Typography variant="h5">Fees Overview</Typography>} />
-      <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}`, height: '100%'}}>
+      <CardContent sx={{ borderTop: `1px solid ${theme.palette.divider}`, height: '100%' }}>
         <Box sx={{ height: 350, width: '100%' }}>
           <ResponsiveContainer>
             <PieChart>
@@ -48,7 +48,7 @@ const FeesPieChart: React.FC = () => {
                 labelLine={false}
                 label={renderCustomizedLabel}
               >
-                {data.map((entry, index) => (
+                {data.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>

@@ -66,7 +66,7 @@ const RevenueChart = () => {
             onChange={handleTimeframeChange}
             aria-label="timeframe"
             size="small"
-            sx={{background: '#fff'}}
+            sx={{ background: '#fff' }}
           >
             <ToggleButton value="monthly" aria-label="monthly" sx={{ fontWeight: 'bold' }}>
               Monthly
