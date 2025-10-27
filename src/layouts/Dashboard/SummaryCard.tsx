@@ -55,7 +55,7 @@ const SummaryCard = ({ title, showContent, icon, value, data }: Props) => {
         justifyContent={'space-between'}
       >
         {Object.keys(data).map((key) => (
-          <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+          <Box display={'flex'} flexDirection={'row'} alignItems={'center'} key={key}>
             <Typography variant="body1" color="text.secondary">
               {key}
             </Typography>

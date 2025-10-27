@@ -32,6 +32,7 @@ const FeesPendingList = ({ data }: FeesPendingListProps) => {
               '&:hover': {
                 backgroundColor: 'action.hover',
               },
+              cursor: 'pointer',
             }}
             onClick={() =>
               navigate(PATH.STUDENT_DETAILS.replace(':studentId', row.studentId.toString()))

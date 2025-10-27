@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
-import { getDashboardSummary, getFeesPendingList } from '../repositories';
+import { getDashboardSummary, getFeesPendingList, getRevenueGraph } from '../repositories';
 
 const useDashboard = () => {
   const [showBackground, setShowBackground] = useState(false);
@@ -28,14 +28,20 @@ const useDashboard = () => {
     queryFn: () => getFeesPendingList(),
   });
 
+  const { data: revenueData } = useQuery({
+    queryKey: ['revenue-graph'],
+    queryFn: () => getRevenueGraph(),
+  });
+
   return useMemo(
     () => ({
       dashboardSummary,
       feesPendingList,
       showBackground,
       showContent,
+      revenueData,
     }),
-    [dashboardSummary, feesPendingList, showBackground, showContent],
+    [dashboardSummary, feesPendingList, showBackground, showContent, revenueData],
   );
 };
 

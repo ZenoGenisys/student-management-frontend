@@ -1,22 +1,22 @@
 import React from 'react';
 import { Box, Typography, Paper, Button, Grid, Card, CardContent, CardHeader } from '@mui/material';
-import CachedOutlinedIcon from '@mui/icons-material/CachedOutlined';
 import StudentIcon from '../assets/images/student.svg';
 import StaffIcon from '../assets/images/staff.svg';
 import FeesIcon from '../assets/images/fees.png';
 import SalaryIcon from '../assets/images/salary.png';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
-import RevenueChart from '../components/RevenueChart';
 import { SummaryCard } from '../layouts';
 import { useAuth } from '../state';
 import useDashboard from '../hooks/useDashboard';
 import { formatNumberWithCommas } from '../utils';
 import FeesPendingList from '../components/FeesPendingList';
 import FeesPieChart from '../components/FeesPieChart';
+import { RevenueChart } from '../components';
 
 const Dashboard: React.FC = () => {
   const { name } = useAuth();
-  const { dashboardSummary, feesPendingList, showBackground, showContent } = useDashboard();
+  const { dashboardSummary, feesPendingList, revenueData, showBackground, showContent } =
+    useDashboard();
 
   return (
     <>
@@ -90,10 +90,6 @@ const Dashboard: React.FC = () => {
             </Typography>
             <Typography color="white">Have a good day!</Typography>
           </Box>
-          <Box display={'flex'} flexDirection={'row'} alignItems={'center'} gap={1}>
-            <CachedOutlinedIcon sx={{ color: 'white' }} />
-            <Typography color="white">Last Checkin: 15 Jun 2025</Typography>
-          </Box>
         </Box>
       </Paper>
 
@@ -159,7 +155,7 @@ const Dashboard: React.FC = () => {
             transitionDelay: '1.0s',
           }}
         >
-          <RevenueChart />
+          <RevenueChart revenueData={revenueData?.data ?? []} />
         </Grid>
 
         <Grid

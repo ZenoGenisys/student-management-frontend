@@ -15,4 +15,5 @@ export const API_PATH = {
   STUDENT_FEES: '/fees',
   DASHBOARD_SUMMARY: '/dashboard/summary',
   FEES_PENDING_LIST: '/dashboard/pending/fees',
+  REVENUE_GRAPH: '/dashboard/revenue/graph',
 };

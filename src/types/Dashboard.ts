@@ -25,3 +25,13 @@ export type FeesPending = {
   totalAmount: number;
   outstandingAmount: number;
 };
+
+export type RevenueGraphType = {
+  month: string;
+  center: string;
+  amount: number;
+};
+
+export type RevenueGraphResponse = {
+  data: RevenueGraphType[];
+};

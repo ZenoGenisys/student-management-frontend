@@ -10,7 +10,6 @@ import { FaUserCheck } from 'react-icons/fa';
 import { FaUserXmark } from 'react-icons/fa6';
 import AttendanceDialog from '../../components/AttendanceDialog';
 import { useAttendance } from '../../hooks';
-import { getFormattedDate } from '../../utils';
 
 type AttendanceSectionProps = {
   type: 'staff' | 'student';
@@ -62,9 +61,6 @@ const AttendanceSection = ({ type }: AttendanceSectionProps) => {
           Staff Attendance
         </Typography>
         <Box display={'flex'} alignItems={'center'} gap={2}>
-          <Typography>
-            Last Updated on: {getFormattedDate(attendanceSummary?.lastAttendanceDate)}
-          </Typography>
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
             <Select id="attendance-filter" value={attendanceFilter} onChange={handleChange}>
               <MenuItem value={'year'}>This Year</MenuItem>
