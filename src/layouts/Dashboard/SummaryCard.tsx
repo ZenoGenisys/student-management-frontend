@@ -2,25 +2,16 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import { formatNumberWithCommas } from '../../utils';
 
 type Props = {
   title: string;
   showContent: boolean;
   icon: string;
-  activeCount: number;
-  inactiveCount: number;
-  totalCount: number;
+  value: string;
+  data: { [key: string]: string | number };
 };
 
-const SummaryCard = ({
-  title,
-  showContent,
-  icon,
-  activeCount,
-  inactiveCount,
-  totalCount,
-}: Props) => {
+const SummaryCard = ({ title, showContent, icon, value, data }: Props) => {
   return (
     <Card
       elevation={2}
@@ -49,7 +40,7 @@ const SummaryCard = ({
         </Box>
         <Box>
           <Typography variant="h4" fontWeight="bold">
-            {formatNumberWithCommas(totalCount)}
+            {value}
           </Typography>
           <Typography variant="body1" color="text.secondary">
             {title}
@@ -63,22 +54,16 @@ const SummaryCard = ({
         alignItems={'center'}
         justifyContent={'space-between'}
       >
-        <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-          <Typography variant="body1" color="text.secondary">
-            Active:
-          </Typography>
-          <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-            {formatNumberWithCommas(activeCount)}
-          </Typography>
-        </Box>
-        <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
-          <Typography variant="body1" color="text.secondary">
-            Inactive:
-          </Typography>
-          <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
-            {formatNumberWithCommas(inactiveCount)}
-          </Typography>
-        </Box>
+        {Object.keys(data).map((key) => (
+          <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+            <Typography variant="body1" color="text.secondary">
+              {key}
+            </Typography>
+            <Typography variant="h6" fontWeight="bold" sx={{ paddingLeft: '5px' }}>
+              {data[key]}
+            </Typography>
+          </Box>
+        ))}
       </Box>
     </Card>
   );

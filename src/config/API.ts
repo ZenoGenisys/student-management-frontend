@@ -14,4 +14,5 @@ export const API_PATH = {
   STAFF_ATTENDANCE_DAY: '/attendance/staff',
   STUDENT_FEES: '/fees',
   DASHBOARD_SUMMARY: '/dashboard/summary',
+  FEES_PENDING_LIST: '/dashboard/pending/fees',
 };

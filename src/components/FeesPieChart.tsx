@@ -1,31 +1,45 @@
-import React from 'react';
 import { Card, CardContent, CardHeader, Typography, Box, useTheme } from '@mui/material';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  type PieLabelRenderProps,
+} from 'recharts';
 
-const data = [
-  { name: 'Pending', value: 2000 },
-  { name: 'Collected', value: 6500 },
-];
+type Props = {
+  data: { name: string; value: number }[];
+};
 
-const FeesPieChart: React.FC = () => {
+const FeesPieChart = ({ data }: Props) => {
   const theme = useTheme();
   const COLORS = [theme.palette.success.main, theme.palette.warning.main];
 
   const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
-    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-    const x = cx + radius * Math.cos(-midAngle * RADIAN);
-    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+  }: PieLabelRenderProps) => {
+    const radius =
+      (innerRadius as number) + ((outerRadius as number) - (innerRadius as number)) * 0.5;
+    const x = (cx as number) + radius * Math.cos(-(midAngle as number) * RADIAN);
+    const y = (cy as number) + radius * Math.sin(-(midAngle as number) * RADIAN);
 
     return (
       <text
         x={x}
         y={y}
         fill="white"
-        textAnchor={x > cx ? 'start' : 'end'}
+        textAnchor={x > (cx as number) ? 'start' : 'end'}
         dominantBaseline="central"
       >
-        {`${(percent * 100).toFixed(0)}%`}
+        {`${((percent as number) * 100).toFixed(0)}%`}
       </text>
     );
   };

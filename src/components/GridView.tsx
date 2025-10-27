@@ -13,7 +13,6 @@ import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
 import { useTheme } from '@mui/material/styles';
 import type { GridViewProps } from '../types';
 import { getAvatarProps } from '../utils/avatar';
-import { useNavigate } from 'react-router-dom';
 import MenuCell from './cellRender/MenuCell';
 
 const GridView: React.FC<GridViewProps> = ({
@@ -24,7 +23,6 @@ const GridView: React.FC<GridViewProps> = ({
   onClickView,
 }) => {
   const theme = useTheme();
-  const navigate = useNavigate();
 
   return (
     <Box>
@@ -63,7 +61,7 @@ const GridView: React.FC<GridViewProps> = ({
                       {row?.status}
                     </Typography>
                     <MenuCell
-                      id={row?.staffId}
+                      id={type === 'STAFF' ? row?.staffId : row?.studentId}
                       onClickEdit={onClickEdit}
                       onClickDelete={onClickDelete}
                       onClickView={onClickView}
@@ -172,7 +170,11 @@ const GridView: React.FC<GridViewProps> = ({
                     variant="contained"
                     color="primary"
                     sx={{ fontWeight: 'bold', fontSize: 12 }}
-                    onClick={() => navigate(`/staff/${row.staffId}`)}
+                    onClick={() =>
+                      onClickView?.(
+                        type === 'STAFF' ? Number(row?.staffId) : Number(row?.studentId),
+                      )
+                    }
                   >
                     View Profile
                   </Button>

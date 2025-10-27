@@ -8,25 +8,23 @@ import {
   Typography,
 } from '@mui/material';
 import { getAvatarProps } from '../utils/avatar';
-
-type FeeData = {
-  id: string;
-  name: string;
-  totalAmount: number;
-  outstanding: number;
-};
+import type { FeesPending } from '../types';
+import { useNavigate } from 'react-router-dom';
+import { PATH } from '../routes';
 
 type FeesPendingListProps = {
-  data: FeeData[];
+  data: FeesPending[];
 };
 
 const FeesPendingList = ({ data }: FeesPendingListProps) => {
+  const navigate = useNavigate();
+
   return (
     <Box>
       <List disablePadding sx={{ p: 0 }}>
         {data.map((row, index) => (
           <ListItem
-            key={row.id}
+            key={row.studentId}
             divider={index < data.length - 1}
             sx={{
               py: 2,
@@ -35,6 +33,9 @@ const FeesPendingList = ({ data }: FeesPendingListProps) => {
                 backgroundColor: 'action.hover',
               },
             }}
+            onClick={() =>
+              navigate(PATH.STUDENT_DETAILS.replace(':studentId', row.studentId.toString()))
+            }
           >
             <ListItemAvatar>
               <Avatar {...getAvatarProps(row.name)} />
@@ -45,14 +46,14 @@ const FeesPendingList = ({ data }: FeesPendingListProps) => {
                   {row.name}
                 </Typography>
               }
-              secondary={`ID: ${row.id} | Total: ₹${row.totalAmount.toLocaleString()}`}
+              secondary={`ID: ${row.studentId} | Total: ₹${row.totalAmount.toLocaleString()}`}
             />
             <Box textAlign="right">
               <Typography variant="body2" color="text.secondary">
                 Outstanding
               </Typography>
               <Typography variant="h6" color="error.main" fontWeight="bold">
-                ₹{row.outstanding.toLocaleString()}
+                ₹{row.outstandingAmount.toLocaleString()}
               </Typography>
             </Box>
           </ListItem>
