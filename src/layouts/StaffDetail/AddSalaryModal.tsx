@@ -59,8 +59,8 @@ const AddSalaryModal = ({ open, onClose, editData, onSave }: AddSalaryModalProps
     onSubmit: (values) => {
       onSave({
         mode: values.paymentMethod as Payment,
-        salaryMonth: String(values.salaryFor?.format('YYYY-MM')),
-        paymentDate: values.paymentDate ? values.paymentDate.toDate() : null,
+        salaryMonth: dayjs(values.salaryFor)?.format('YYYY-MM'),
+        paymentDate: values.paymentDate ? dayjs(values.paymentDate).format('YYYY-MM-DD') : null,
         amount: Number(values.netSalary),
         ...(editData && { feesId: editData.feesId }),
       });

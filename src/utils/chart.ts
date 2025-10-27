@@ -1,4 +1,4 @@
-import type { RevenueGraph } from '../types';
+import type { RevenueGraphType } from '../types';
 
 type TransformedChartData = {
   name: string;
@@ -21,7 +21,7 @@ const monthNames: { [key: string]: string } = {
 };
 
 export const formatRevenueData = (
-  data: RevenueGraph[],
+  data: RevenueGraphType[],
   timeframe: 'monthly' | 'yearly',
 ): TransformedChartData[] => {
   if (!data) {

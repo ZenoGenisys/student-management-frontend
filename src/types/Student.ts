@@ -1,6 +1,7 @@
 import type { Dayjs } from 'dayjs';
 import type { LevelDetails, Payment } from './Staff';
 import type { PaginationType } from './ListViewType';
+import type dayjs from 'dayjs';
 
 export type GetStudentRequest = {
   page: number;
@@ -149,7 +150,7 @@ export type StudentFeesRequest = {
   studentId?: number;
   mode: Payment;
   amount: number;
-  paymentDate: Date | null;
+  paymentDate: string | dayjs.Dayjs | null;
   paymentMonth: string;
 };
 

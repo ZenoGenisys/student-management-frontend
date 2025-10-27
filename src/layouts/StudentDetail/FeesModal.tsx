@@ -68,8 +68,8 @@ const FeesModal = ({ id, open, onClose, editData, onSave }: FeesModalProps) => {
 
       onSave({
         mode: formValues.paymentMethod as Payment,
-        paymentMonth: String(formValues.paymentMonth?.format('YYYY-MM')),
-        paymentDate: formValues.paymentDate ? formValues.paymentDate.toDate() : null,
+        paymentMonth: dayjs(formValues.paymentMonth)?.format('YYYY-MM'),
+        paymentDate: formValues.paymentDate ? dayjs(values.paymentDate).format('YYYY-MM-DD') : null,
         amount: Number(formValues.amount),
         ...(editData && { feesId: editData.feesId }),
       });

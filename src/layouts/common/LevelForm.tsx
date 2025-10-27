@@ -51,7 +51,11 @@ const LevelForm = ({
   const handleDateChange = useCallback(
     (value: dayjs.Dayjs | null) => {
       const updated = [...levelDetails];
-      updated[index] = { ...updated[index], date: value, level: index + 1 };
+      updated[index] = {
+        ...updated[index],
+        date: dayjs(value).format('YYYY-MM-DD'),
+        level: index + 1,
+      };
       setFieldValue('levelDetails', updated);
     },
     [index, levelDetails, setFieldValue],
