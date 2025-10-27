@@ -9,12 +9,7 @@ type AttendanceLayoutProps = {
   handleSearch: (value: string) => void;
 };
 
-const AttendanceLayout = ({
-  entity,
-  search,
-  children,
-  handleSearch,
-}: AttendanceLayoutProps) => {
+const AttendanceLayout = ({ entity, search, children, handleSearch }: AttendanceLayoutProps) => {
   return (
     <Box mb={2}>
       <Box

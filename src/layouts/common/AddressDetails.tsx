@@ -80,7 +80,9 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                 size={{ xs: 12, sm: 12, md: 3 }}
               >
                 <Avatar variant="square" sx={{ borderRadius: 1 }}>
-                  {parentDetails['Father Name'] ? String(parentDetails['Father Name']).charAt(0) : ''}
+                  {parentDetails['Father Name']
+                    ? String(parentDetails['Father Name']).charAt(0)
+                    : ''}
                 </Avatar>
                 <Box>
                   <Typography variant="h6">{parentDetails['Father Name']}</Typography>
@@ -196,7 +198,9 @@ const AddressDetails = ({ address, additionalDetails, parentDetails }: AddressDe
                 size={{ xs: 12, sm: 12, md: 3 }}
               >
                 <Avatar variant="square" sx={{ borderRadius: 1 }}>
-                  {parentDetails['Mother Name'] ? String(parentDetails['Mother Name']).charAt(0) : ''}
+                  {parentDetails['Mother Name']
+                    ? String(parentDetails['Mother Name']).charAt(0)
+                    : ''}
                 </Avatar>
                 <Box>
                   <Typography variant="h6">{parentDetails['Mother Name']}</Typography>

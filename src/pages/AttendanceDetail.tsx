@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Box, Typography, Paper, ToggleButtonGroup, ToggleButton, styled, Chip } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Paper,
+  ToggleButtonGroup,
+  ToggleButton,
+  styled,
+  Chip,
+} from '@mui/material';
 import moment from 'moment';
 import ListView from '../components/ListView';
 import { useAttendanceDetails } from '../hooks';
@@ -62,11 +70,7 @@ const AttendanceDetail: React.FC = () => {
     if (newEntityType !== null) setEntityType(newEntityType);
   };
 
-  const renderAttendanceCell = ({
-    row,
-  }: {
-    row: StudentAttendanceDay | StaffAttendanceDay;
-  }) => {
+  const renderAttendanceCell = ({ row }: { row: StudentAttendanceDay | StaffAttendanceDay }) => {
     const rawStatus = row.attendance;
     const status = typeof rawStatus === 'string' ? rawStatus.toUpperCase() : undefined;
 
@@ -88,7 +92,13 @@ const AttendanceDetail: React.FC = () => {
         break;
     }
 
-    return <Chip {...chipProps} size="small" sx={{ color: chipProps.variant === 'filled' ? 'white' : chipProps.color + '.main' }} />;
+    return (
+      <Chip
+        {...chipProps}
+        size="small"
+        sx={{ color: chipProps.variant === 'filled' ? 'white' : chipProps.color + '.main' }}
+      />
+    );
   };
 
   const studentColumns = [
@@ -145,11 +155,7 @@ const AttendanceDetail: React.FC = () => {
       </Box>
 
       {isDateValid ? (
-        <AttendanceLayout
-          entity={entityType}
-          search={search}
-          handleSearch={handleSearch}
-        >
+        <AttendanceLayout entity={entityType} search={search} handleSearch={handleSearch}>
           <AttendanceActions
             onClickAdd={onClickAdd}
             onClickEdit={onClickEdit}

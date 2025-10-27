@@ -12,6 +12,7 @@ type PaginationProps = {
   page: number;
   rowsPerPage: number;
   search?: string;
+  showSearch?: boolean;
   pagination?: PaginationType;
   handlePageChange?: (page: number) => void;
   handleRowPerPageChange?: (rowsPerPage: number) => void;
@@ -22,6 +23,7 @@ const Pagination = ({
   children,
   page = 1,
   rowsPerPage = 50,
+  showSearch = true,
   pagination = {
     currentPage: 1,
     totalPages: 1,
@@ -60,7 +62,7 @@ const Pagination = ({
             Row Per Page
           </Typography>
           <Select size="small" value={rowsPerPage} onChange={handleChangeRowsPerPage}>
-            {[25, 50, 75, 100].map((n) => (
+            {[5, 10, 25, 50, 75, 100].map((n) => (
               <MenuItem key={n} value={n}>
                 {n}
               </MenuItem>
@@ -70,7 +72,7 @@ const Pagination = ({
             Entries
           </Typography>
         </Box>
-        <Search search={search} onChange={handleSearch} />
+        {showSearch && <Search search={search} onChange={handleSearch} />}
       </Box>
       {children}
       <Box display="flex" justifyContent="flex-end" alignItems="center" mt={2}>

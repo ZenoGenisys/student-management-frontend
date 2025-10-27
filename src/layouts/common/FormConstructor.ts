@@ -53,6 +53,11 @@ export const StudentBasicInfo = [
     option: ['Regular', 'Crash Course'],
   },
   {
+    label: 'Amount',
+    type: 'number',
+    value: 'amount',
+  },
+  {
     label: 'Status',
     type: 'select',
     value: 'status',

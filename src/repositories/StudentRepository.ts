@@ -3,10 +3,16 @@ import type {
   AttendanceSummaryRequest,
   AttendanceSummaryResponse,
   CreateStudent,
+  getOutstandingStudentFeesRequest,
   GetStudentAttendanceRequest,
+  getStudentFeesRequest,
   GetStudentRequest,
   MarkStudentAttendanceRequest,
+  OutstandingStudentFeesResponse,
   StudentAttendanceResponse,
+  StudentFeesRequest,
+  StudentFeesResponse,
+  StudentFeesType,
   StudentResponse,
   StudentType,
 } from '../types';
@@ -30,6 +36,29 @@ export const updateStudent = (staffData: CreateStudent): Promise<StudentType> =>
 
 export const deleteStudent = (id: number): Promise<string> => {
   return getHttpClient(`${API_PATH.STUDENT}/${id}`, 'DELETE');
+};
+
+// Student Fees APIs
+export const getStudentFees = (params: getStudentFeesRequest): Promise<StudentFeesResponse> => {
+  return getHttpClient(`${API_PATH.STUDENT_FEES}`, 'GET', null, params);
+};
+
+export const getOutstandingStudentFees = (
+  params: getOutstandingStudentFeesRequest,
+): Promise<OutstandingStudentFeesResponse> => {
+  return getHttpClient(`${API_PATH.STUDENT_FEES}/outstanding`, 'GET', null, params);
+};
+
+export const addStudentSalary = (salaryData: StudentFeesRequest): Promise<StudentFeesType> => {
+  return getHttpClient(API_PATH.STUDENT_FEES, 'POST', salaryData);
+};
+
+export const updateStudentFees = (salaryData: StudentFeesRequest): Promise<StudentFeesType> => {
+  return getHttpClient(API_PATH.STUDENT_FEES, 'PUT', salaryData);
+};
+
+export const deleteStudentFees = (id: number): Promise<string> => {
+  return getHttpClient(API_PATH.STUDENT_FEES, 'DELETE', null, { id });
 };
 
 // Student Attendance APIs

@@ -75,6 +75,8 @@ const StudentForm = () => {
         fatherOccupation: data?.parentDetails?.fatherOccupation ?? '',
         motherOccupation: data?.parentDetails?.motherOccupation ?? '',
       },
+      studentType: data?.studentType === 'regular' ? 'Regular' : 'Crash  Course',
+      amount: data?.amount ?? 0,
     }),
     [data],
   );
@@ -84,6 +86,7 @@ const StudentForm = () => {
       try {
         const formValue: CreateStudent = {
           ...values,
+          studentType: values?.studentType === 'Regular' ? 'regular' : 'crash_course',
           primaryContactNumber:
             values?.primaryContactNumber === 'Father'
               ? (values?.parentDetails?.fatherPhoneNumber ?? '')

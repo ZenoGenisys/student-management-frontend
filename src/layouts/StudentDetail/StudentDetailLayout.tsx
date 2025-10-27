@@ -9,6 +9,7 @@ import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import EventNoteOutlinedIcon from '@mui/icons-material/EventNoteOutlined';
 import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
+import StudentFees from './StudentFees';
 
 type StudentDetailsLayoutProps = {
   data: StudentType;
@@ -42,6 +43,7 @@ const StudentDetailsLayout = ({ data, tabValue, handleTabChange }: StudentDetail
               .join(', '),
             Center: data?.center,
             Type: data?.studentType ?? '',
+            Amount: data.amount,
           }}
         />
       </Grid>
@@ -98,9 +100,9 @@ const StudentDetailsLayout = ({ data, tabValue, handleTabChange }: StudentDetail
           {tabValue === 1 && <AttendanceSection type={'student'} />}
 
           {/* Tab 3 Fees */}
-          {/* {tabValue === 2 && <StaffSalaryTab />} */}
+          {tabValue === 2 && <StudentFees />}
 
-          {/* Tab 4 Fees */}
+          {/* Tab 4 Academic */}
           {tabValue === 3 && <AcademicDetails data={data?.levelDetails} />}
         </Box>
       </Grid>

@@ -1,3 +1,4 @@
 import StudentDetailsLayout from './StudentDetailLayout';
+import StudentFees from './StudentFees';
 
-export { StudentDetailsLayout };
+export { StudentDetailsLayout, StudentFees };
