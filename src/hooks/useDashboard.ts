@@ -1,8 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
-import { getDashboardSummary, getFeesPendingList, getRevenueGraph } from '../repositories';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  getDashboardSummary,
+  getExport,
+  getFeesPendingList,
+  getRevenueGraph,
+} from '../repositories';
+import { useSnackbar } from '../state';
 
 const useDashboard = () => {
+  const { showSnackbar } = useSnackbar();
   const [showBackground, setShowBackground] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
@@ -33,6 +40,28 @@ const useDashboard = () => {
     queryFn: () => getRevenueGraph(),
   });
 
+  const onExport = useCallback(async () => {
+    try {
+      const response = await getExport();
+      const url = window.URL.createObjectURL(response);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'export.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      showSnackbar({
+        message: 'Data exported successfully!',
+        severity: 'success',
+      });
+    } catch (error) {
+      showSnackbar({
+        message: (error as Error).message || 'Failed to export data.',
+        severity: 'error',
+      });
+    }
+  }, [showSnackbar]);
+
   return useMemo(
     () => ({
       dashboardSummary,
@@ -40,8 +69,9 @@ const useDashboard = () => {
       showBackground,
       showContent,
       revenueData,
+      onExport,
     }),
-    [dashboardSummary, feesPendingList, showBackground, showContent, revenueData],
+    [dashboardSummary, feesPendingList, showBackground, showContent, revenueData, onExport],
   );
 };
 

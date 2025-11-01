@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AxiosProgressEvent, Method } from 'axios';
+import type { AxiosProgressEvent, Method, ResponseType } from 'axios';
 import qs from 'qs';
 import SessionService from '../services/SessionService';
 import { isNil, isEqual, get } from 'lodash-es';
@@ -26,6 +26,7 @@ export const getHttpClient = <T>(
   method: Method,
   data: Data | Data[] | null = null,
   params: Param | null = null,
+  responseType: ResponseType = 'json',
 ): Promise<T> => {
   const query = !isNil(params)
     ? '?' + qs.stringify(params, { arrayFormat: 'repeat', skipNulls: true })
@@ -37,6 +38,7 @@ export const getHttpClient = <T>(
       method: method,
       url: urlPath,
       data: data,
+      responseType,
     }),
   );
 };
