@@ -9,11 +9,12 @@ import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParams } from 'react-router-dom';
 import type { StaffSalaryRequest } from '../types';
-import { useSnackbar } from '../state';
+import { useLoading, useSnackbar } from '../state';
 
 const useStaffSalary = () => {
   const { staffId } = useParams<{ staffId: string }>();
   const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const [search, setSearch] = useState<string | null | undefined>(null);
@@ -35,21 +36,28 @@ const useStaffSalary = () => {
     };
   }, [search]);
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, error, refetch } = useQuery({
     queryKey: ['staffSalary', staffId, debouncedSearch, page, rowsPerPage, sort],
-    queryFn: () =>
-      getStaffSalary({
-        page: page,
-        size: rowsPerPage,
-        search: debouncedSearch as string | undefined,
-        staffId: Number(staffId),
-        ...(sort
-          ? {
-              sortBy: sort.orderBy,
-              order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
-            }
-          : {}),
-      }),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getStaffSalary({
+          page: page,
+          size: rowsPerPage,
+          search: debouncedSearch as string | undefined,
+          staffId: Number(staffId),
+          ...(sort
+            ? {
+                sortBy: sort.orderBy,
+                order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
+              }
+            : {}),
+        });
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
   const handleViewToggle = useCallback((view: 'grid' | 'list') => {
@@ -79,6 +87,7 @@ const useStaffSalary = () => {
 
   const handleAdd = useCallback(
     async (salary: StaffSalaryRequest) => {
+      setLoading(true);
       try {
         await addStaffSalary({ ...salary, staffId: Number(staffId) });
         showSnackbar({ message: 'Salary added successfully', severity: 'success' });
@@ -88,13 +97,16 @@ const useStaffSalary = () => {
           message: error instanceof Error ? error.message : 'Failed to add salary',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [showSnackbar, refetch, staffId],
+    [showSnackbar, refetch, staffId, setLoading],
   );
 
   const handleUpdate = useCallback(
     async (salary: StaffSalaryRequest) => {
+      setLoading(true);
       try {
         await updateStaffSalary({ ...salary, staffId: Number(staffId) });
         showSnackbar({ message: 'Salary updated successfully', severity: 'success' });
@@ -104,13 +116,16 @@ const useStaffSalary = () => {
           message: error instanceof Error ? error.message : 'Failed to update salary',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [staffId, showSnackbar, refetch],
+    [staffId, showSnackbar, refetch, setLoading],
   );
 
   const handleDelete = useCallback(
     async (id: number) => {
+      setLoading(true);
       try {
         await deleteStaffSalary(id);
         showSnackbar({ message: 'Salary deleted successfully', severity: 'success' });
@@ -120,14 +135,15 @@ const useStaffSalary = () => {
           message: error instanceof Error ? error.message : 'Failed to delete salary',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [showSnackbar, refetch],
+    [showSnackbar, refetch, setLoading],
   );
 
   return {
     data,
-    isLoading,
     error,
     activeView,
     sort,

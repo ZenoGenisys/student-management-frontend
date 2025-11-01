@@ -3,20 +3,29 @@ import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getStudentById } from '../repositories';
 import { PATH } from '../routes';
+import { useLoading } from '../state';
 
 const useStudentDetails = () => {
   const navigate = useNavigate();
+  const { setLoading } = useLoading();
   const { studentId } = useParams<{ studentId: string }>();
   const [tabValue, setTabValue] = useState(0);
 
   const { data } = useQuery({
     queryKey: ['student-details', studentId],
-    queryFn: () => {
+    queryFn: async () => {
       if (!studentId) {
         return null;
       }
-      return getStudentById(studentId as string);
+      setLoading(true);
+      try {
+        const response = await getStudentById(studentId as string);
+        return response;
+      } finally {
+        setLoading(false);
+      }
     },
+    enabled: !!studentId,
   });
 
   const handleTabChange = useCallback((_: React.SyntheticEvent, newValue: number) => {

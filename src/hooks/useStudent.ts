@@ -3,11 +3,12 @@ import { deleteStudent, getStudent } from '../repositories';
 import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
-import { useSnackbar } from '../state';
+import { useLoading, useSnackbar } from '../state';
 import { PATH } from '../routes';
 
 const useStudent = () => {
   const navigate = useNavigate();
+  const { setLoading } = useLoading();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const [search, setSearch] = useState<string | undefined>();
@@ -30,20 +31,27 @@ const useStudent = () => {
     };
   }, [search]);
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, error, refetch } = useQuery({
     queryKey: ['student', debouncedSearch, page, rowsPerPage, sort],
-    queryFn: () =>
-      getStudent({
-        page: page,
-        size: rowsPerPage,
-        search: debouncedSearch,
-        ...(sort
-          ? {
-              sortBy: sort.orderBy,
-              order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
-            }
-          : {}),
-      }),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getStudent({
+          page: page,
+          size: rowsPerPage,
+          search: debouncedSearch,
+          ...(sort
+            ? {
+                sortBy: sort.orderBy,
+                order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
+              }
+            : {}),
+        });
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
   const handleViewToggle = useCallback((view: 'grid' | 'list') => {
@@ -91,6 +99,7 @@ const useStudent = () => {
 
   const handleDelete = useCallback(
     async (id: number) => {
+      setLoading(true);
       try {
         await deleteStudent(id);
         refetch();
@@ -103,14 +112,15 @@ const useStudent = () => {
           message: (error as Error).message || 'Failed to delete student.',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [showSnackbar, refetch],
+    [showSnackbar, refetch, setLoading],
   );
 
   return {
     data,
-    isLoading,
     error,
     activeView,
     sort,

@@ -6,10 +6,11 @@ import {
   getFeesPendingList,
   getRevenueGraph,
 } from '../repositories';
-import { useSnackbar } from '../state';
+import { useLoading, useSnackbar } from '../state';
 
 const useDashboard = () => {
   const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
   const [showBackground, setShowBackground] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
@@ -27,20 +28,45 @@ const useDashboard = () => {
 
   const { data: dashboardSummary } = useQuery({
     queryKey: ['dashboard-summary'],
-    queryFn: () => getDashboardSummary(),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getDashboardSummary();
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
   const { data: feesPendingList } = useQuery({
     queryKey: ['fees-pending'],
-    queryFn: () => getFeesPendingList(),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getFeesPendingList();
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
   const { data: revenueData } = useQuery({
     queryKey: ['revenue-graph'],
-    queryFn: () => getRevenueGraph(),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getRevenueGraph();
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
   const onExport = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await getExport();
       const url = window.URL.createObjectURL(response);
@@ -59,8 +85,10 @@ const useDashboard = () => {
         message: (error as Error).message || 'Failed to export data.',
         severity: 'error',
       });
+    } finally {
+      setLoading(false);
     }
-  }, [showSnackbar]);
+  }, [showSnackbar, setLoading]);
 
   return useMemo(
     () => ({

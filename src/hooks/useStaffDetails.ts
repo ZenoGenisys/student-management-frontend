@@ -3,11 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { PATH } from '../routes';
 import { getStaffById, revokeStaffPromotion } from '../repositories';
 import { useQuery } from '@tanstack/react-query';
-import { useSnackbar } from '../state';
+import { useLoading, useSnackbar } from '../state';
 
 const useStaffDetails = () => {
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
   const { staffId } = useParams<{ staffId: string }>();
   const [tabValue, setTabValue] = useState(0);
   const [showPromote, setShowPromote] = useState(false);
@@ -17,14 +18,21 @@ const useStaffDetails = () => {
     setTabValue(newValue);
   }, []);
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, error, refetch } = useQuery({
     queryKey: ['staff', staffId],
-    queryFn: () => {
+    queryFn: async () => {
       if (!staffId) {
         return null;
       }
-      return getStaffById(staffId as string);
+      setLoading(true);
+      try {
+        const response = await getStaffById(staffId as string);
+        return response;
+      } finally {
+        setLoading(false);
+      }
     },
+    enabled: !!staffId,
   });
 
   const handleEdit = useCallback(() => {
@@ -47,6 +55,7 @@ const useStaffDetails = () => {
   }, []);
 
   const handleRevoke = useCallback(async () => {
+    setLoading(true);
     try {
       await revokeStaffPromotion(Number(staffId));
       showSnackbar({
@@ -60,13 +69,14 @@ const useStaffDetails = () => {
         message: error instanceof Error ? error.message : 'Failed to revoke staff promotion',
         severity: 'error',
       });
+    } finally {
+      setLoading(false);
     }
-  }, [refetch, showSnackbar, staffId]);
+  }, [refetch, showSnackbar, staffId, setLoading]);
 
   return useMemo(
     () => ({
       data,
-      isLoading,
       error,
       tabValue,
       showPromote,
@@ -80,7 +90,6 @@ const useStaffDetails = () => {
     }),
     [
       data,
-      isLoading,
       error,
       tabValue,
       showPromote,

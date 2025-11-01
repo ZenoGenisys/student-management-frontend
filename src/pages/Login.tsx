@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { useAuth, useSnackbar } from '../state';
+import { useAuth, useLoading, useSnackbar } from '../state';
 import {
   Box,
   Typography,
@@ -49,9 +49,9 @@ const AnimatedButton = styled(Button)`
 const Login: React.FC = () => {
   const { login } = useAuth();
   const { showSnackbar } = useSnackbar();
+  const { loading, setLoading } = useLoading();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [showElements, setShowElements] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showShaderAnimation, setShowShaderAnimation] = useState(false);
@@ -81,7 +81,7 @@ const Login: React.FC = () => {
   const handleLogin = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
-      setIsLoading(true);
+      setLoading(true);
 
       try {
         // First validate credentials
@@ -93,7 +93,7 @@ const Login: React.FC = () => {
           severity: 'success',
         });
 
-        setIsLoading(false);
+        setLoading(false);
 
         // 1. Start fade out of login page (0.6s)
         setShowElements(false);
@@ -110,7 +110,7 @@ const Login: React.FC = () => {
         // 4. Complete the login process
         login(response);
       } catch (e: unknown) {
-        setIsLoading(false);
+        setLoading(false);
         setShowShaderAnimation(false);
         showSnackbar({
           message: (e as Error).message || 'Login failed. Please check your credentials.',
@@ -118,7 +118,7 @@ const Login: React.FC = () => {
         });
       }
     },
-    [login, showSnackbar, email, password, isMobile],
+    [login, showSnackbar, email, password, isMobile, setLoading],
   );
 
   return (
@@ -307,7 +307,7 @@ const Login: React.FC = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
-                  disabled={isLoading}
+                  disabled={loading}
                   sx={{
                     py: 1.5,
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -319,7 +319,7 @@ const Login: React.FC = () => {
                     },
                   }}
                 >
-                  {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
+                  {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
                 </AnimatedButton>
               </Box>
             </AnimatedFormElement>

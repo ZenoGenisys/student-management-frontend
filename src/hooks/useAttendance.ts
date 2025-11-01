@@ -20,7 +20,7 @@ import type {
   StudentAttendanceResponse,
 } from '../types';
 import type { CalendarProps } from 'react-calendar';
-import { useSnackbar } from '../state';
+import { useLoading, useSnackbar } from '../state';
 import dayjs from 'dayjs';
 import type { SelectChangeEvent } from '@mui/material';
 
@@ -41,6 +41,7 @@ type AttendanceResponse = StaffAttendanceResponse | StudentAttendanceResponse;
 
 const useAttendance = (entityType: EntityType) => {
   const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
   const { staffId, studentId } = useParams<{ staffId: string; studentId: string }>();
   const id = Number(staffId ?? studentId);
   const entityId = Number(staffId ?? studentId);
@@ -76,7 +77,7 @@ const useAttendance = (entityType: EntityType) => {
 
   const { data: attendanceSummary, refetch: summaryRefetch } = useQuery({
     queryKey: [`${entityType}-attendance-summary`, id, attendanceFilter],
-    queryFn: () => {
+    queryFn: async () => {
       let startDate: dayjs.Dayjs;
       let endDate: dayjs.Dayjs;
       if (attendanceFilter === 'year') {
@@ -88,22 +89,34 @@ const useAttendance = (entityType: EntityType) => {
         startDate = now.startOf('month'); // 1st day of current month
         endDate = now.endOf('month'); // last day of current month
       }
-      return getAttendanceSummary({
-        id: entityId,
-        startDate: startDate.format('YYYY-MM-DD'),
-        endDate: endDate.format('YYYY-MM-DD'),
-      });
+      setLoading(true);
+      try {
+        const response = await getAttendanceSummary({
+          id: entityId,
+          startDate: startDate.format('YYYY-MM-DD'),
+          endDate: endDate.format('YYYY-MM-DD'),
+        });
+        return response;
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
-  const { data, isLoading, error, refetch } = useQuery<AttendanceResponse, Error>({
+  const { data, error, refetch } = useQuery<AttendanceResponse, Error>({
     queryKey: [`${entityType}-attendance`, id, currentYear],
-    queryFn: () => {
-      return getAttendance({
-        [entityType === 'staff' ? 'staffId' : 'studentId']: entityId,
-        dateFrom: `${currentYear}-01-01`,
-        dateTo: `${currentYear}-12-31`,
-      });
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getAttendance({
+          [entityType === 'staff' ? 'staffId' : 'studentId']: entityId,
+          dateFrom: `${currentYear}-01-01`,
+          dateTo: `${currentYear}-12-31`,
+        });
+        return response;
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
@@ -189,6 +202,7 @@ const useAttendance = (entityType: EntityType) => {
   );
 
   const handleDeleteAttendance = useCallback(async () => {
+    setLoading(true);
     try {
       if (selected) {
         const attendanceIds = selected
@@ -208,8 +222,10 @@ const useAttendance = (entityType: EntityType) => {
         message: error instanceof Error ? error.message : 'Failed to delete attendance',
         severity: 'error',
       });
+    } finally {
+      setLoading(false);
     }
-  }, [selected, showSnackbar, refetch, summaryRefetch, deleteAttendance]);
+  }, [selected, showSnackbar, refetch, summaryRefetch, deleteAttendance, setLoading]);
 
   const handleDialog = useCallback(() => {
     setShowDialog((prev) => !prev);
@@ -217,6 +233,7 @@ const useAttendance = (entityType: EntityType) => {
 
   const handleSaveAttendance = useCallback(
     async (status: boolean) => {
+      setLoading(true);
       try {
         const params = (selected ?? [])?.map((item) => {
           return {
@@ -238,9 +255,11 @@ const useAttendance = (entityType: EntityType) => {
           message: error instanceof Error ? error.message : 'Failed to Mark attendance',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [selected, refetch, summaryRefetch, handleDialog, showSnackbar, markAttendance],
+    [selected, refetch, summaryRefetch, handleDialog, showSnackbar, markAttendance, setLoading],
   );
 
   const handleClearSelection = useCallback(() => {
@@ -249,7 +268,6 @@ const useAttendance = (entityType: EntityType) => {
 
   return useMemo(
     () => ({
-      isLoading,
       error,
       enableClearAttendance,
       selected,
@@ -266,7 +284,6 @@ const useAttendance = (entityType: EntityType) => {
       handleChange,
     }),
     [
-      isLoading,
       error,
       enableClearAttendance,
       selected,
