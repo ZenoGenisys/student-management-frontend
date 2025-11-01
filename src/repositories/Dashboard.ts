@@ -16,3 +16,7 @@ export const getRevenueGraph = (
 ): Promise<RevenueGraphResponse> => {
   return getHttpClient(`${API_PATH.REVENUE_GRAPH}`, 'GET', null, { startDate, endDate });
 };
+
+export const getExport = (): Promise<Blob> => {
+  return getHttpClient(`${API_PATH.EXPORT}`, 'GET', null, null, 'blob');
+};

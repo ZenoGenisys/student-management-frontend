@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import { useAuth, useSnackbar } from '../state';
+import { useAuth, useLoading, useSnackbar } from '../state';
 import {
   Box,
   Typography,
@@ -49,12 +49,22 @@ const AnimatedButton = styled(Button)`
 const Login: React.FC = () => {
   const { login } = useAuth();
   const { showSnackbar } = useSnackbar();
+  const { loading, setLoading } = useLoading();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [showElements, setShowElements] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showShaderAnimation, setShowShaderAnimation] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // Common breakpoint for tablets
+    };
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   // Trigger animations on component mount
   useEffect(() => {
@@ -71,7 +81,7 @@ const Login: React.FC = () => {
   const handleLogin = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
-      setIsLoading(true);
+      setLoading(true);
 
       try {
         // First validate credentials
@@ -83,22 +93,24 @@ const Login: React.FC = () => {
           severity: 'success',
         });
 
-        setIsLoading(false);
+        setLoading(false);
 
         // 1. Start fade out of login page (0.6s)
         setShowElements(false);
         await new Promise((resolve) => setTimeout(resolve, 600));
 
-        // 2. Start shader animation after login form has faded out
-        setShowShaderAnimation(true);
+        if (!isMobile) {
+          // 2. Start shader animation after login form has faded out
+          setShowShaderAnimation(true);
 
-        // 3. Wait for shader animation to complete (3s)
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+          // 3. Wait for shader animation to complete (3s)
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+        }
 
         // 4. Complete the login process
         login(response);
       } catch (e: unknown) {
-        setIsLoading(false);
+        setLoading(false);
         setShowShaderAnimation(false);
         showSnackbar({
           message: (e as Error).message || 'Login failed. Please check your credentials.',
@@ -106,25 +118,27 @@ const Login: React.FC = () => {
         });
       }
     },
-    [login, showSnackbar, email, password],
+    [login, showSnackbar, email, password, isMobile, setLoading],
   );
 
   return (
     <>
       {/* Shader Animation Container */}
-      <div className={`shader-container ${showShaderAnimation ? 'visible' : ''}`}>
-        <ShaderAnimation isVisible={showShaderAnimation} />
-        <div
-          className="transition-message"
-          style={{
-            opacity: showShaderAnimation ? 1 : 0,
-            transition: 'opacity 0.5s ease-in-out',
-            transitionDelay: '0.3s',
-          }}
-        >
-          Welcome to Dashboard
+      {!isMobile && (
+        <div className={`shader-container ${showShaderAnimation ? 'visible' : ''}`}>
+          <ShaderAnimation isVisible={showShaderAnimation} />
+          <div
+            className="transition-message"
+            style={{
+              opacity: showShaderAnimation ? 1 : 0,
+              transition: 'opacity 0.5s ease-in-out',
+              transitionDelay: '0.3s',
+            }}
+          >
+            Welcome to Dashboard
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content */}
       <AnimatedContainer
@@ -293,7 +307,7 @@ const Login: React.FC = () => {
                   variant="contained"
                   color="primary"
                   fullWidth
-                  disabled={isLoading}
+                  disabled={loading}
                   sx={{
                     py: 1.5,
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -305,7 +319,7 @@ const Login: React.FC = () => {
                     },
                   }}
                 >
-                  {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
+                  {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign In'}
                 </AnimatedButton>
               </Box>
             </AnimatedFormElement>

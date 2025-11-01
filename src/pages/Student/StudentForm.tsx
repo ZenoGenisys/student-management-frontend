@@ -36,7 +36,7 @@ import {
 } from '../../layouts';
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../routes';
-import { useSnackbar } from '../../state';
+import { useLoading, useSnackbar } from '../../state';
 import { createStudent, updateStudent } from '../../repositories';
 import { TitleCard } from '../../components';
 
@@ -46,6 +46,7 @@ const StudentForm = () => {
   const { data } = useStudentDetails();
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
 
   const initialValues = useMemo(
     () => ({
@@ -83,6 +84,7 @@ const StudentForm = () => {
 
   const handleSubmit = useCallback(
     async (values: CreateStudent) => {
+      setLoading(true);
       try {
         const formValue: CreateStudent = {
           ...values,
@@ -110,9 +112,11 @@ const StudentForm = () => {
           message: (error as Error).message || `Failed to ${data ? 'update' : 'add'} staff.`,
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [data, navigate, showSnackbar],
+    [data, navigate, showSnackbar, setLoading],
   );
 
   const addLevel = useCallback(

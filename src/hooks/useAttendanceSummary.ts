@@ -4,15 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import { getAttendanceSummary } from '../repositories';
 import type { AttendanceEvent } from '../types/events';
 import moment from 'moment';
+import { useLoading } from '../state';
 
 const useAttendanceSummary = () => {
   const navigate = useNavigate();
+  const { setLoading } = useLoading();
   const [date, setDate] = useState(new Date());
 
   const { data } = useQuery({
     queryKey: [`attendance-summary`, date.getFullYear()],
-    queryFn: () => {
-      return getAttendanceSummary(date.getFullYear());
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getAttendanceSummary(date.getFullYear());
+        return response;
+      } finally {
+        setLoading(false);
+      }
     },
   });
 

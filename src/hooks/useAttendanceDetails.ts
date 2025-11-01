@@ -10,13 +10,14 @@ import {
   markStudentAttendance,
 } from '../repositories';
 import { useQuery } from '@tanstack/react-query';
-import { useSnackbar } from '../state';
+import { useLoading, useSnackbar } from '../state';
 import type { StaffAttendanceDay, StudentAttendanceDay } from '../types';
 
 type AttendanceDay = StudentAttendanceDay | StaffAttendanceDay;
 
 const useAttendanceDetails = (entity: 'STUDENT' | 'STAFF', date?: string) => {
   const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
   const [search, setSearch] = useState<string>();
   const [debouncedSearch, setDebouncedSearch] = useState<string>();
   const [sort, setSort] = useState<{
@@ -55,37 +56,58 @@ const useAttendanceDetails = (entity: 'STUDENT' | 'STAFF', date?: string) => {
 
   const { data, refetch } = useQuery<AttendanceDay[]>({
     queryKey: [entity.toLowerCase(), 'attendance', date, debouncedSearch, sort],
-    queryFn: () =>
-      getAttendanceForDay({
-        date: date ?? '',
-        search: debouncedSearch,
-        ...(sort
-          ? {
-              sortBy: sort.orderBy,
-              order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
-            }
-          : {}),
-      }),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getAttendanceForDay({
+          date: date ?? '',
+          search: debouncedSearch,
+          ...(sort
+            ? {
+                sortBy: sort.orderBy,
+                order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
+              }
+            : {}),
+        });
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
     enabled: !!date,
   });
 
   const { data: studentData } = useQuery({
     queryKey: ['student-data'],
-    queryFn: () =>
-      getStudent({
-        page: 1,
-        size: 10000,
-      }),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getStudent({
+          page: 1,
+          size: 10000,
+        });
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
     enabled: entity === 'STUDENT',
   });
 
   const { data: staffData } = useQuery({
     queryKey: ['staff-data'],
-    queryFn: () =>
-      getStaff({
-        page: 1,
-        size: 10000,
-      }),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getStaff({
+          page: 1,
+          size: 10000,
+        });
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
     enabled: entity === 'STAFF',
   });
 
@@ -143,6 +165,7 @@ const useAttendanceDetails = (entity: 'STUDENT' | 'STAFF', date?: string) => {
   }, []);
 
   const onDelete = useCallback(async () => {
+    setLoading(true);
     try {
       const attendanceIds = selectedRows.map((item) => item.id);
       await deleteAttendance(attendanceIds);
@@ -158,11 +181,14 @@ const useAttendanceDetails = (entity: 'STUDENT' | 'STAFF', date?: string) => {
         message: error instanceof Error ? error.message : 'Failed to Delete attendance',
         severity: 'error',
       });
+    } finally {
+      setLoading(false);
     }
-  }, [showSnackbar, refetch, selectedRows, deleteAttendance]);
+  }, [showSnackbar, refetch, selectedRows, deleteAttendance, setLoading]);
 
   const onConfirm = useCallback(
     async (status: boolean, ids?: string[]) => {
+      setLoading(true);
       try {
         if (showModal === 'EDIT' || showModal === 'ADD') {
           const payload = (ids ?? []).map((id) => {
@@ -188,9 +214,11 @@ const useAttendanceDetails = (entity: 'STUDENT' | 'STAFF', date?: string) => {
           message: error instanceof Error ? error.message : 'Failed to Mark attendance',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [date, refetch, showSnackbar, showModal, entity, markAttendance],
+    [date, refetch, showSnackbar, showModal, entity, markAttendance, setLoading],
   );
 
   return useMemo(

@@ -1,8 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
-import { getDashboardSummary, getFeesPendingList, getRevenueGraph } from '../repositories';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  getDashboardSummary,
+  getExport,
+  getFeesPendingList,
+  getRevenueGraph,
+} from '../repositories';
+import { useLoading, useSnackbar } from '../state';
 
 const useDashboard = () => {
+  const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
   const [showBackground, setShowBackground] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
@@ -20,18 +28,67 @@ const useDashboard = () => {
 
   const { data: dashboardSummary } = useQuery({
     queryKey: ['dashboard-summary'],
-    queryFn: () => getDashboardSummary(),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getDashboardSummary();
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
   const { data: feesPendingList } = useQuery({
     queryKey: ['fees-pending'],
-    queryFn: () => getFeesPendingList(),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getFeesPendingList();
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
   const { data: revenueData } = useQuery({
     queryKey: ['revenue-graph'],
-    queryFn: () => getRevenueGraph(),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getRevenueGraph();
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
+
+  const onExport = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await getExport();
+      const url = window.URL.createObjectURL(response);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'export.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      showSnackbar({
+        message: 'Data exported successfully!',
+        severity: 'success',
+      });
+    } catch (error) {
+      showSnackbar({
+        message: (error as Error).message || 'Failed to export data.',
+        severity: 'error',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [showSnackbar, setLoading]);
 
   return useMemo(
     () => ({
@@ -40,8 +97,9 @@ const useDashboard = () => {
       showBackground,
       showContent,
       revenueData,
+      onExport,
     }),
-    [dashboardSummary, feesPendingList, showBackground, showContent, revenueData],
+    [dashboardSummary, feesPendingList, showBackground, showContent, revenueData, onExport],
   );
 };
 

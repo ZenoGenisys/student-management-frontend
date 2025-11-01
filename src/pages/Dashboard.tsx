@@ -15,7 +15,7 @@ import { RevenueChart } from '../components';
 
 const Dashboard: React.FC = () => {
   const { name } = useAuth();
-  const { dashboardSummary, feesPendingList, revenueData, showBackground, showContent } =
+  const { dashboardSummary, feesPendingList, onExport, revenueData, showBackground, showContent } =
     useDashboard();
 
   return (
@@ -57,6 +57,7 @@ const Dashboard: React.FC = () => {
             color="primary"
             size="large"
             startIcon={<CloudDownloadOutlinedIcon />}
+            onClick={onExport}
           >
             Export
           </Button>

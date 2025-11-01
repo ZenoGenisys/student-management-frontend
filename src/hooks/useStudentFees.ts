@@ -9,11 +9,12 @@ import { useCallback, useState, useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useParams } from 'react-router-dom';
 import type { StudentFeesRequest } from '../types';
-import { useSnackbar } from '../state';
+import { useLoading, useSnackbar } from '../state';
 
 const useStudentFees = () => {
   const { studentId } = useParams<{ studentId: string }>();
   const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
   const isMobile = useMediaQuery('(max-width:600px)');
   const [activeView, setActiveView] = useState<'grid' | 'list'>(isMobile ? 'grid' : 'list');
   const [search, setSearch] = useState<string | null | undefined>(null);
@@ -35,21 +36,28 @@ const useStudentFees = () => {
     };
   }, [search]);
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, error, refetch } = useQuery({
     queryKey: ['studentFees', studentId, debouncedSearch, page, rowsPerPage, sort],
-    queryFn: () =>
-      getStudentFees({
-        page: page,
-        size: rowsPerPage,
-        search: debouncedSearch as string | undefined,
-        studentId: Number(studentId),
-        ...(sort
-          ? {
-              sortBy: sort.orderBy,
-              order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
-            }
-          : {}),
-      }),
+    queryFn: async () => {
+      setLoading(true);
+      try {
+        const response = await getStudentFees({
+          page: page,
+          size: rowsPerPage,
+          search: debouncedSearch as string | undefined,
+          studentId: Number(studentId),
+          ...(sort
+            ? {
+                sortBy: sort.orderBy,
+                order: (sort.order ?? 'asc').toUpperCase() === 'DESC' ? 'DESC' : 'ASC',
+              }
+            : {}),
+        });
+        return response;
+      } finally {
+        setLoading(false);
+      }
+    },
   });
 
   const handleViewToggle = useCallback((view: 'grid' | 'list') => {
@@ -79,6 +87,7 @@ const useStudentFees = () => {
 
   const handleAdd = useCallback(
     async (salary: StudentFeesRequest) => {
+      setLoading(true);
       try {
         await addStudentSalary({ ...salary, studentId: Number(studentId) });
         showSnackbar({ message: 'Student fees added successfully', severity: 'success' });
@@ -88,13 +97,16 @@ const useStudentFees = () => {
           message: error instanceof Error ? error.message : 'Failed to add salary',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [showSnackbar, refetch, studentId],
+    [showSnackbar, refetch, studentId, setLoading],
   );
 
   const handleUpdate = useCallback(
     async (salary: StudentFeesRequest) => {
+      setLoading(true);
       try {
         await updateStudentFees({ ...salary, studentId: Number(studentId) });
         showSnackbar({ message: 'Student fees updated successfully', severity: 'success' });
@@ -104,13 +116,16 @@ const useStudentFees = () => {
           message: error instanceof Error ? error.message : 'Failed to update salary',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [studentId, showSnackbar, refetch],
+    [studentId, showSnackbar, refetch, setLoading],
   );
 
   const handleDelete = useCallback(
     async (id: number) => {
+      setLoading(true);
       try {
         await deleteStudentFees(id);
         showSnackbar({ message: 'Student fees deleted successfully', severity: 'success' });
@@ -120,14 +135,15 @@ const useStudentFees = () => {
           message: error instanceof Error ? error.message : 'Failed to delete salary',
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [showSnackbar, refetch],
+    [showSnackbar, refetch, setLoading],
   );
 
   return {
     data,
-    isLoading,
     error,
     activeView,
     sort,

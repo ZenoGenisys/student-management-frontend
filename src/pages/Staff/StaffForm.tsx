@@ -21,7 +21,7 @@ import { createStaff, updateStaff } from '../../repositories/StaffRepository';
 import { useStaffDetails } from '../../hooks';
 import type { CreateStaff } from '../../types';
 import { Formik, Form, FastField, type FieldProps, type FormikHelpers } from 'formik';
-import { useSnackbar } from '../../state';
+import { useLoading, useSnackbar } from '../../state';
 import { PATH } from '../../routes';
 import LevelForm from '../../layouts/common/LevelForm';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
@@ -41,6 +41,7 @@ const StaffForm: React.FC = () => {
   const { data } = useStaffDetails();
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
+  const { setLoading } = useLoading();
 
   const initialValues: CreateStaff = useMemo(
     () => ({
@@ -65,6 +66,7 @@ const StaffForm: React.FC = () => {
 
   const handleSubmit = useCallback(
     async (values: CreateStaff) => {
+      setLoading(true);
       try {
         const formValue: CreateStaff = {
           ...values,
@@ -87,9 +89,11 @@ const StaffForm: React.FC = () => {
           message: (error as Error).message || `Failed to ${data ? 'update' : 'add'} staff.`,
           severity: 'error',
         });
+      } finally {
+        setLoading(false);
       }
     },
-    [data, showSnackbar, navigate],
+    [data, showSnackbar, navigate, setLoading],
   );
 
   const addLevel = useCallback(
