@@ -46,7 +46,7 @@ export const getHttpClient = <T>(
 export const postMultiPart = <T>(
   path: string,
   method: string,
-  data: Data | Data[] | null,
+  data: Data | Data[] | FormData | null,
   params: Param | null = null,
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
 ): Promise<T> => {

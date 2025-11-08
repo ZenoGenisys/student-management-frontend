@@ -5,7 +5,6 @@ import StaffIcon from '../assets/images/staff.svg';
 import FeesIcon from '../assets/images/fees.png';
 import SalaryIcon from '../assets/images/salary.png';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
-import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import { SummaryCard } from '../layouts';
 import { useAuth } from '../state';
 import useDashboard from '../hooks/useDashboard';
@@ -13,44 +12,11 @@ import { formatNumberWithCommas } from '../utils';
 import FeesPendingList from '../components/FeesPendingList';
 import FeesPieChart from '../components/FeesPieChart';
 import { RevenueChart } from '../components';
-import { uploadFiles, type FileUploadItem } from '../repositories/FileUpload';
 
 const Dashboard: React.FC = () => {
   const { name } = useAuth();
   const { dashboardSummary, feesPendingList, onExport, revenueData, showBackground, showContent } =
     useDashboard();
-  const [uploading, setUploading] = React.useState(false);
-
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (!files || files.length === 0) return;
-
-    setUploading(true);
-
-    try {
-      // Prepare files for upload with custom names
-      const fileItems: FileUploadItem[] = Array.from(files).map((file, index) => ({
-        name: `test-file-${index + 1}`,
-        file: file,
-      }));
-
-      // Upload files
-      const response = await uploadFiles(fileItems, (progressEvent) => {
-        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-        console.log(`Upload progress: ${percentCompleted}%`);
-      });
-
-      console.log('Upload response:', response);
-      alert(`Successfully uploaded ${response.successfulUploads} of ${response.totalFiles} files!`);
-    } catch (error) {
-      console.error('Error uploading files:', error);
-      alert('Error uploading files. Check console for details.');
-    } finally {
-      setUploading(false);
-      // Reset input
-      event.target.value = '';
-    }
-  };
 
   return (
     <>
@@ -86,23 +52,6 @@ const Dashboard: React.FC = () => {
           Admin Dashboard
         </Typography>
         <Box display={'flex'} flexWrap={'wrap'} justifyContent={'flex-end'} gap={2}>
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            startIcon={<CloudUploadOutlinedIcon />}
-            component="label"
-            disabled={uploading}
-          >
-            {uploading ? 'Uploading...' : 'Test File Upload'}
-            <input
-              type="file"
-              multiple
-              hidden
-              onChange={handleFileUpload}
-              accept="image/*,.pdf,.doc,.docx"
-            />
-          </Button>
           <Button
             variant="outlined"
             color="primary"

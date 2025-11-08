@@ -18,7 +18,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { createStaff, updateStaff } from '../../repositories/StaffRepository';
-import { useStaffDetails } from '../../hooks';
+import { useFileUpload, useStaffDetails } from '../../hooks';
 import type { CreateStaff } from '../../types';
 import { Formik, Form, FastField, type FieldProps, type FormikHelpers } from 'formik';
 import { useLoading, useSnackbar } from '../../state';
@@ -42,6 +42,7 @@ const StaffForm: React.FC = () => {
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
   const { setLoading } = useLoading();
+  const { handleFileUpload } = useFileUpload();
 
   const initialValues: CreateStaff = useMemo(
     () => ({
@@ -60,6 +61,7 @@ const StaffForm: React.FC = () => {
       address: data?.address ?? '',
       additionalDetails: data?.additionalDetails ?? '',
       levelDetails: data?.levelDetails ?? [],
+      profileUrl: data?.profileUrl ?? null,
     }),
     [data],
   );
@@ -68,8 +70,9 @@ const StaffForm: React.FC = () => {
     async (values: CreateStaff) => {
       setLoading(true);
       try {
+        const updatedValues = (await handleFileUpload({ ...values })) as CreateStaff;
         const formValue: CreateStaff = {
-          ...values,
+          ...updatedValues,
           dateOfBirth: values.dateOfBirth ? dayjs(values.dateOfBirth).format('YYYY-MM-DD') : null,
           joiningDate: values.joiningDate ? dayjs(values.joiningDate).format('YYYY-MM-DD') : null,
         };
@@ -93,7 +96,7 @@ const StaffForm: React.FC = () => {
         setLoading(false);
       }
     },
-    [data, showSnackbar, navigate, setLoading],
+    [data, handleFileUpload, showSnackbar, navigate, setLoading],
   );
 
   const addLevel = useCallback(
@@ -104,6 +107,20 @@ const StaffForm: React.FC = () => {
           { level: (values.levelDetails?.length ?? 0) + 1, date: null, document: '', remarks: '' },
         ]);
       }
+    },
+    [],
+  );
+
+  const onProfileChange = useCallback(
+    (file: File, setFieldValue: FormikHelpers<CreateStaff>['setFieldValue']) => {
+      setFieldValue('profileUrl', file);
+    },
+    [],
+  );
+
+  const onClearProfile = useCallback(
+    (setFieldValue: FormikHelpers<CreateStaff>['setFieldValue']) => {
+      setFieldValue('profileUrl', null);
     },
     [],
   );
@@ -139,7 +156,11 @@ const StaffForm: React.FC = () => {
               >
                 <>
                   {/* Avatar Upload */}
-                  <AvatarUpload />
+                  <AvatarUpload
+                    file={values?.profileUrl}
+                    onChange={(file: File) => onProfileChange(file, setFieldValue)}
+                    onClear={() => onClearProfile(setFieldValue)}
+                  />
 
                   <Grid container spacing={2}>
                     {/* Example Basic Details usage */}

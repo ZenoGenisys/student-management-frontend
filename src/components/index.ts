@@ -11,6 +11,7 @@ import Pagination from './Pagination';
 import TitleCard from './TitleCard';
 import FeesPendingList from './FeesPendingList';
 import RevenueChart from './RevenueChart';
+import ViewDocumentCell from './cellRender/ViewDocumentCell';
 
 export {
   Layout,
@@ -22,6 +23,7 @@ export {
   ActionCell,
   NameCell,
   MenuCell,
+  ViewDocumentCell,
   Pagination,
   TitleCard,
   FeesPendingList,

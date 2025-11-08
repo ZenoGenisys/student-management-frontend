@@ -12,7 +12,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import React, { useCallback, useMemo } from 'react';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
-import { useStudentDetails } from '../../hooks';
+import { useFileUpload, useStudentDetails } from '../../hooks';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import dayjs from 'dayjs';
@@ -47,6 +47,7 @@ const StudentForm = () => {
   const navigate = useNavigate();
   const { showSnackbar } = useSnackbar();
   const { setLoading } = useLoading();
+  const { handleFileUpload } = useFileUpload();
 
   const initialValues = useMemo(
     () => ({
@@ -78,6 +79,7 @@ const StudentForm = () => {
       },
       studentType: data?.studentType === 'regular' ? 'Regular' : 'Crash  Course',
       amount: data?.amount ?? 0,
+      profileUrl: data?.profileUrl ?? null,
     }),
     [data],
   );
@@ -86,8 +88,9 @@ const StudentForm = () => {
     async (values: CreateStudent) => {
       setLoading(true);
       try {
+        const updatedValues = (await handleFileUpload({ ...values })) as CreateStudent;
         const formValue: CreateStudent = {
-          ...values,
+          ...updatedValues,
           studentType: values?.studentType === 'Regular' ? 'regular' : 'crash_course',
           primaryContactNumber:
             values?.primaryContactNumber === 'Father'
@@ -116,7 +119,7 @@ const StudentForm = () => {
         setLoading(false);
       }
     },
-    [data, navigate, showSnackbar, setLoading],
+    [data, handleFileUpload, navigate, showSnackbar, setLoading],
   );
 
   const addLevel = useCallback(
@@ -127,6 +130,20 @@ const StudentForm = () => {
           { level: (values.levelDetails?.length ?? 0) + 1, date: null, document: '', remarks: '' },
         ]);
       }
+    },
+    [],
+  );
+
+  const onProfileChange = useCallback(
+    (file: File, setFieldValue: FormikHelpers<CreateStudent>['setFieldValue']) => {
+      setFieldValue('profileUrl', file);
+    },
+    [],
+  );
+
+  const onClearProfile = useCallback(
+    (setFieldValue: FormikHelpers<CreateStudent>['setFieldValue']) => {
+      setFieldValue('profileUrl', null);
     },
     [],
   );
@@ -161,8 +178,12 @@ const StudentForm = () => {
                 }
               >
                 <>
-                  {/* Avatar Upload (memoized subcomponent) */}
-                  <AvatarUpload />
+                  {/* Avatar Upload (memoized subComponent) */}
+                  <AvatarUpload
+                    file={values?.profileUrl}
+                    onChange={(file: File) => onProfileChange(file, setFieldValue)}
+                    onClear={() => onClearProfile(setFieldValue)}
+                  />
 
                   <Grid container spacing={2}>
                     {/* Example Basic Details usage */}

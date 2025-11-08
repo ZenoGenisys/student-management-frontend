@@ -23,6 +23,7 @@ const StaffDetailLayout = ({ data, tabValue, handleTabChange }: StaffDetailLayou
         {/* Basic details */}
         <BasicDetails
           name={data?.name}
+          profileUrl={data?.profileUrl}
           status={data?.status}
           contactNumber={data?.contactNumber}
           email={data?.email}

@@ -38,6 +38,7 @@ const Student: React.FC = () => {
         cellRenderer: (cellProps: CellRender<StudentType>) => (
           <NameCell
             name={cellProps.row.name}
+            profileUrl={cellProps.row.profileUrl}
             redirectionUrl={PATH.STUDENT_DETAILS.replace(
               ':studentId',
               String(cellProps.row.studentId),

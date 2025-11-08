@@ -22,6 +22,7 @@ export type DashboardSummary = {
 export type FeesPending = {
   studentId: number;
   name: string;
+  profileUrl: string;
   totalAmount: number;
   outstandingAmount: number;
 };

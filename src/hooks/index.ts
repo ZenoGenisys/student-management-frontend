@@ -7,6 +7,7 @@ import useStudentDetails from './useStudentDetails';
 import useAttendanceSummary from './useAttendanceSummary';
 import useAttendanceDetails from './useAttendanceDetails';
 import useStudentFees from './useStudentFees';
+import useFileUpload from './useFileUpload';
 
 export {
   useStaff,
@@ -18,4 +19,5 @@ export {
   useAttendanceSummary,
   useAttendanceDetails,
   useStudentFees,
+  useFileUpload,
 };
