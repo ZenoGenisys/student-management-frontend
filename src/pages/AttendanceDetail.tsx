@@ -20,6 +20,7 @@ import type { CellRender, StaffAttendanceDay, StudentAttendanceDay } from '../ty
 import type { ColumnDefsProps } from '../types/ListViewType';
 import { NameCell } from '../components';
 import { PATH } from '../routes';
+import { useAuth } from '../state';
 
 type AttendanceDay = StudentAttendanceDay | StaffAttendanceDay;
 
@@ -67,6 +68,7 @@ const AttendanceDetail: React.FC = () => {
     handleSearch,
     onSelectedRowsChange,
   } = useAttendanceDetails(entityType, paramDate);
+  const { role } = useAuth();
 
   const handleEntityTypeChange = (
     _event: React.MouseEvent<HTMLElement>,
@@ -182,27 +184,29 @@ const AttendanceDetail: React.FC = () => {
             ? `Attendance for ${selectedDate.format('MMMM D, YYYY')}`
             : 'Attendance for Invalid Date'}
         </Typography>
-        <StyledToggleButtonGroup
-          value={entityType}
-          exclusive
-          onChange={handleEntityTypeChange}
-          aria-label="attendance type"
-        >
-          <ToggleButton
-            value="STUDENT"
-            aria-label="student attendance"
-            sx={{ fontWeight: 'bold', fontSize: 14 }}
+        {role === 'ADMIN' && (
+          <StyledToggleButtonGroup
+            value={entityType}
+            exclusive
+            onChange={handleEntityTypeChange}
+            aria-label="attendance type"
           >
-            Student
-          </ToggleButton>
-          <ToggleButton
-            value="STAFF"
-            aria-label="staff attendance"
-            sx={{ fontWeight: 'bold', fontSize: 14 }}
-          >
-            Staff
-          </ToggleButton>
-        </StyledToggleButtonGroup>
+            <ToggleButton
+              value="STUDENT"
+              aria-label="student attendance"
+              sx={{ fontWeight: 'bold', fontSize: 14 }}
+            >
+              Student
+            </ToggleButton>
+            <ToggleButton
+              value="STAFF"
+              aria-label="staff attendance"
+              sx={{ fontWeight: 'bold', fontSize: 14 }}
+            >
+              Staff
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+        )}
       </Box>
 
       {isDateValid ? (

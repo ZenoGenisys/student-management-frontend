@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import storageService from '../services/storageService';
 import { AuthContext } from './authContext.type';
 import SessionService from '../services/SessionService';
-import { register, setUserSessionToken } from '../repositories';
+import { register, setUserSessionToken, statusService } from '../repositories';
 import type { LoginResponse } from '../types';
 import type { Role } from './authContext.type';
 
@@ -11,7 +11,8 @@ type AuthState = {
   token: string | null;
   role: Role | null;
   name: string | null;
-  staffId: string | null;
+  staffId?: string | null;
+  profileUrl?: string | null;
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -23,24 +24,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     storageService.removeItem('auth');
   }, []);
 
-  const login = useCallback((data: LoginResponse) => {
-    setAuth(data);
-    setUserSessionToken(data.token);
-    storageService.setItem('auth', data);
+  const handleStatusAPI = useCallback(async (token: string) => {
+    const response = await statusService();
+    setAuth({ token, ...response });
+    storageService.setItem('auth', { token, ...response });
   }, []);
+
+  const login = useCallback(
+    async (data: LoginResponse) => {
+      setUserSessionToken(data.token);
+      handleStatusAPI(data.token);
+    },
+    [handleStatusAPI],
+  );
 
   useEffect(() => {
     register();
     const savedAuth = storageService.getItem<AuthState>('auth');
     if (savedAuth) {
-      setAuth(savedAuth);
       setUserSessionToken(savedAuth.token);
+      handleStatusAPI(savedAuth.token ?? '');
     }
     setIsAuthLoading(false);
     SessionService.observe(() => {
       logout();
     });
-  }, [logout]);
+  }, [logout, handleStatusAPI]);
 
   const value = useMemo(
     () => ({

@@ -56,7 +56,7 @@ export default function Appbar({
 }: AppbarProps) {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { logout, name, role, staffId } = useAuth();
+  const { logout, name, role, staffId, profileUrl } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -92,7 +92,7 @@ export default function Appbar({
             width: '100%',
           }}
         >
-          <Avatar alt="profile" src="" {...getAvatarProps(`${name}`)} />
+          <Avatar alt="profile" src={profileUrl ?? ''} {...getAvatarProps(`${name}`)} />
           <Box ml={1}>
             <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
               {name}
@@ -155,7 +155,7 @@ export default function Appbar({
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: 'flex' }}>
             <MenuItem onClick={handleProfileMenuOpen}>
-              <Avatar alt="profile" src="" {...getAvatarProps(`${name}`)} />
+              <Avatar alt="profile" src={profileUrl ?? ''} {...getAvatarProps(`${name}`)} />
             </MenuItem>
           </Box>
         </Toolbar>
