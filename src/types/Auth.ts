@@ -5,4 +5,5 @@ export type LoginResponse = {
   token: string;
   role: Role;
   name: string;
+  staffId: string;
 };

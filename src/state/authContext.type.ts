@@ -8,6 +8,7 @@ export type AuthContextType = {
   token?: string | null;
   role?: Role | null;
   name?: string | null;
+  staffId?: string | null;
   isAuthLoading: boolean;
   login: (data: LoginResponse) => void;
   logout: () => void;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Drawer,
   List,
@@ -19,6 +19,7 @@ import { PATH } from '../routes/path';
 import { DRAWER_WIDTH } from '../constants/layout';
 import logo from '../assets/images/logo.png';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
+import { useAuth } from '../state';
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -40,14 +41,21 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ open, isMobile, onClose }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { role } = useAuth();
   const { pathname } = window.location; // Get current path
 
-  const menuItems = [
-    { text: 'Dashboard', icon: <DashboardOutlined />, path: PATH.DASHBOARD },
-    { text: 'Students', icon: <SchoolOutlined />, path: PATH.STUDENT },
-    { text: 'Staff', icon: <PeopleAltOutlined />, path: PATH.STAFF },
-    { text: 'Attendance', icon: <CalendarMonthOutlinedIcon />, path: PATH.ATTENDANCE },
-  ];
+  const menuItems = useMemo(() => {
+    if (role === 'ADMIN') {
+      return [
+        { text: 'Dashboard', icon: <DashboardOutlined />, path: PATH.DASHBOARD },
+        { text: 'Students', icon: <SchoolOutlined />, path: PATH.STUDENT },
+        { text: 'Staff', icon: <PeopleAltOutlined />, path: PATH.STAFF },
+        { text: 'Attendance', icon: <CalendarMonthOutlinedIcon />, path: PATH.ATTENDANCE },
+      ];
+    } else {
+      return [{ text: 'Attendance', icon: <CalendarMonthOutlinedIcon />, path: PATH.ATTENDANCE }];
+    }
+  }, [role]);
 
   const handleNavigation = (path: string) => {
     navigate(path);

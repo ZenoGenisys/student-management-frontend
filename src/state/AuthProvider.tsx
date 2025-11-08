@@ -11,6 +11,7 @@ type AuthState = {
   token: string | null;
   role: Role | null;
   name: string | null;
+  staffId: string | null;
 };
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

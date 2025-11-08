@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { useSnackbar } from '../../state';
+import { useAuth, useSnackbar } from '../../state';
 import { promoteStaff } from '../../repositories';
 import React, { useCallback } from 'react';
 import { type TransitionProps } from '@mui/material/transitions';
@@ -41,14 +41,22 @@ const validationSchema = Yup.object({
 
 const PromoteModal = ({ open, onClose, role, staffId, onPromoteSuccess }: PromoteModalProps) => {
   const { showSnackbar } = useSnackbar();
+  const { role: authRole, logout } = useAuth();
+
   const handleSubmit = useCallback(
     async (values: { role: 'ADMIN' | 'STAFF'; password: string }) => {
       try {
         await promoteStaff(staffId, values.role, values.password);
         showSnackbar({
-          message: 'Staff promoted successfully!',
+          message:
+            authRole === 'STAFF'
+              ? 'Password changed successfully!'
+              : 'Staff promoted successfully!',
           severity: 'success',
         });
+        if (authRole === 'STAFF') {
+          logout();
+        }
         onPromoteSuccess?.();
       } catch (error) {
         showSnackbar({
@@ -57,7 +65,7 @@ const PromoteModal = ({ open, onClose, role, staffId, onPromoteSuccess }: Promot
         });
       }
     },
-    [staffId, onPromoteSuccess, showSnackbar],
+    [staffId, authRole, logout, onPromoteSuccess, showSnackbar],
   );
 
   return (
@@ -69,7 +77,7 @@ const PromoteModal = ({ open, onClose, role, staffId, onPromoteSuccess }: Promot
       aria-describedby="promote-dialog-description"
     >
       <DialogTitle id="promote-dialog-title" variant="h5">
-        Promote Staff
+        {authRole === 'ADMIN' ? 'Promote Staff' : 'Change Password'}
       </DialogTitle>
 
       <Formik
@@ -83,27 +91,29 @@ const PromoteModal = ({ open, onClose, role, staffId, onPromoteSuccess }: Promot
         {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
           <Form>
             <DialogContent>
-              <FormControl fullWidth margin="normal">
-                <InputLabel id="role-select-label">Role</InputLabel>
-                <Select
-                  labelId="role-select-label"
-                  id="role"
-                  name="role"
-                  value={values.role}
-                  label="Role"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={touched.role && Boolean(errors.role)}
-                >
-                  <MenuItem value="ADMIN">ADMIN</MenuItem>
-                  <MenuItem value="STAFF">STAFF</MenuItem>
-                </Select>
-                {touched.role && errors.role && (
-                  <Typography color="error" variant="caption">
-                    {errors.role}
-                  </Typography>
-                )}
-              </FormControl>
+              {authRole === 'ADMIN' && (
+                <FormControl fullWidth margin="normal">
+                  <InputLabel id="role-select-label">Role</InputLabel>
+                  <Select
+                    labelId="role-select-label"
+                    id="role"
+                    name="role"
+                    value={values.role}
+                    label="Role"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={touched.role && Boolean(errors.role)}
+                  >
+                    <MenuItem value="ADMIN">ADMIN</MenuItem>
+                    <MenuItem value="STAFF">STAFF</MenuItem>
+                  </Select>
+                  {touched.role && errors.role && (
+                    <Typography color="error" variant="caption">
+                      {errors.role}
+                    </Typography>
+                  )}
+                </FormControl>
+              )}
               <FormControl fullWidth margin="normal">
                 <TextField
                   id="password"
