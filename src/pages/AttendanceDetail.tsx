@@ -16,7 +16,13 @@ import DeleteConfirmation from '../components/DeleteConfirmation';
 import AttendanceModal from '../layouts/AttendanceDetails/AttendanceModal';
 import AttendanceActions from '../layouts/AttendanceDetails/AttendanceActions';
 import { AttendanceLayout } from '../layouts';
-import type { StaffAttendanceDay, StudentAttendanceDay } from '../types';
+import type { CellRender, StaffAttendanceDay, StudentAttendanceDay } from '../types';
+import type { ColumnDefsProps } from '../types/ListViewType';
+import { NameCell } from '../components';
+import { PATH } from '../routes';
+import { useAuth } from '../state';
+
+type AttendanceDay = StudentAttendanceDay | StaffAttendanceDay;
 
 const isStudentAttendance = (
   item: StudentAttendanceDay | StaffAttendanceDay,
@@ -62,6 +68,7 @@ const AttendanceDetail: React.FC = () => {
     handleSearch,
     onSelectedRowsChange,
   } = useAttendanceDetails(entityType, paramDate);
+  const { role } = useAuth();
 
   const handleEntityTypeChange = (
     _event: React.MouseEvent<HTMLElement>,
@@ -101,16 +108,62 @@ const AttendanceDetail: React.FC = () => {
     );
   };
 
-  const studentColumns = [
-    { id: 'studentId', label: 'Student ID', sortable: true },
-    { id: 'name', label: 'Name', sortable: true },
+  const studentColumns: ColumnDefsProps<AttendanceDay>[] = [
+    {
+      id: 'name',
+      label: 'Name',
+      sortable: true,
+      cellRenderer: (cellProps: CellRender<AttendanceDay>) => {
+        const student = cellProps.row as StudentAttendanceDay;
+        return (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <NameCell
+              name={student.name}
+              profileUrl={student?.profileUrl}
+              redirectionUrl={PATH.STUDENT_DETAILS.replace(':studentId', String(student.studentId))}
+            />
+          </Box>
+        );
+      },
+      align: 'center',
+    },
     { id: 'attendance', label: 'Attendance', sortable: true, cellRenderer: renderAttendanceCell },
     { id: 'center', label: 'Center', sortable: true },
   ];
 
-  const staffColumns = [
-    { id: 'staffId', label: 'Staff ID', sortable: true },
-    { id: 'name', label: 'Name', sortable: true },
+  const staffColumns: ColumnDefsProps<AttendanceDay>[] = [
+    {
+      id: 'name',
+      label: 'Name',
+      sortable: true,
+      cellRenderer: (cellProps: CellRender<AttendanceDay>) => {
+        const staff = cellProps.row as StaffAttendanceDay;
+        return (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <NameCell
+              name={staff.name}
+              profileUrl={staff?.profileUrl}
+              redirectionUrl={PATH.STAFF_DETAILS.replace(':staffId', String(staff.staffId))}
+            />
+          </Box>
+        );
+      },
+      align: 'center',
+    },
     { id: 'attendance', label: 'Attendance', sortable: true, cellRenderer: renderAttendanceCell },
     { id: 'center', label: 'Center', sortable: true },
   ];
@@ -131,27 +184,29 @@ const AttendanceDetail: React.FC = () => {
             ? `Attendance for ${selectedDate.format('MMMM D, YYYY')}`
             : 'Attendance for Invalid Date'}
         </Typography>
-        <StyledToggleButtonGroup
-          value={entityType}
-          exclusive
-          onChange={handleEntityTypeChange}
-          aria-label="attendance type"
-        >
-          <ToggleButton
-            value="STUDENT"
-            aria-label="student attendance"
-            sx={{ fontWeight: 'bold', fontSize: 14 }}
+        {role === 'ADMIN' && (
+          <StyledToggleButtonGroup
+            value={entityType}
+            exclusive
+            onChange={handleEntityTypeChange}
+            aria-label="attendance type"
           >
-            Student
-          </ToggleButton>
-          <ToggleButton
-            value="STAFF"
-            aria-label="staff attendance"
-            sx={{ fontWeight: 'bold', fontSize: 14 }}
-          >
-            Staff
-          </ToggleButton>
-        </StyledToggleButtonGroup>
+            <ToggleButton
+              value="STUDENT"
+              aria-label="student attendance"
+              sx={{ fontWeight: 'bold', fontSize: 14 }}
+            >
+              Student
+            </ToggleButton>
+            <ToggleButton
+              value="STAFF"
+              aria-label="staff attendance"
+              sx={{ fontWeight: 'bold', fontSize: 14 }}
+            >
+              Staff
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+        )}
       </Box>
 
       {isDateValid ? (

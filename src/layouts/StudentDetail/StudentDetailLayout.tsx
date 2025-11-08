@@ -26,6 +26,7 @@ const StudentDetailsLayout = ({ data, tabValue, handleTabChange }: StudentDetail
         {/* Basic details */}
         <BasicDetails
           name={data?.name}
+          profileUrl={data?.profileUrl}
           status={data?.status}
           contactNumber={data?.primaryContactNumber ?? ''}
           email={data?.email}

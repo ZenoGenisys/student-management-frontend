@@ -10,6 +10,7 @@ import { FaUserCheck } from 'react-icons/fa';
 import { FaUserXmark } from 'react-icons/fa6';
 import AttendanceDialog from '../../components/AttendanceDialog';
 import { useAttendance } from '../../hooks';
+import { useAuth } from '../../state';
 
 type AttendanceSectionProps = {
   type: 'staff' | 'student';
@@ -32,6 +33,7 @@ const AttendanceSection = ({ type }: AttendanceSectionProps) => {
     handleClearSelection,
     handleChange,
   } = useAttendance(type);
+  const { role } = useAuth();
 
   const selectedDates = React.useMemo(() => {
     if (!selected) {
@@ -165,27 +167,30 @@ const AttendanceSection = ({ type }: AttendanceSectionProps) => {
         onActiveStartDateChange={handleActiveStartDateChange}
         tileDisabled={({ date }) => date > new Date()}
       />
-      <Box display="flex" justifyContent="flex-start" gap={2} mt={2}>
-        <Button variant="contained" onClick={handleDialog} disabled={!selectedDates}>
-          Attendance
-        </Button>
-        <Button
-          variant="outlined"
-          color="error"
-          onClick={handleDeleteAttendance}
-          disabled={!enableClearAttendance || !selected || selected.length === 0}
-        >
-          Delete Attendance
-        </Button>
-        <Button
-          variant="outlined"
-          color="warning"
-          onClick={handleClearSelection}
-          disabled={!selected || selected.length === 0}
-        >
-          Clear Selection
-        </Button>
-      </Box>
+      {role === 'ADMIN' && (
+        <Box display="flex" justifyContent="flex-start" gap={2} mt={2}>
+          <Button variant="contained" onClick={handleDialog} disabled={!selectedDates}>
+            Attendance
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={handleDeleteAttendance}
+            disabled={!enableClearAttendance || !selected || selected.length === 0}
+          >
+            Delete Attendance
+          </Button>
+          <Button
+            variant="outlined"
+            color="warning"
+            onClick={handleClearSelection}
+            disabled={!selected || selected.length === 0}
+          >
+            Clear Selection
+          </Button>
+        </Box>
+      )}
+
       <AttendanceDialog
         open={showDialog}
         onClose={handleDialog}

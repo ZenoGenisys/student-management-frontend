@@ -54,32 +54,36 @@ export default function Appbar({
   handleDrawerOpen,
   handleDrawerClose,
 }: AppbarProps) {
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const { logout, name, role, staffId, profileUrl } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const isMenuOpen = Boolean(anchorEl);
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  const handleProfileMenuOpen = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
-  };
+  }, []);
 
-  const handleMenuClose = () => {
+  const handleMenuClose = React.useCallback(() => {
     setAnchorEl(null);
-  };
+  }, []);
 
-  const navigate = useNavigate();
-  const { logout, name, role } = useAuth();
-
-  const handleLogout = () => {
+  const handleLogout = React.useCallback(() => {
     logout();
     navigate(PATH.LOGIN);
-  };
+  }, [logout, navigate]);
 
-  const theme = useTheme();
+  const onProfile = React.useCallback(() => {
+    handleMenuClose();
+    if (staffId) {
+      navigate(PATH.STAFF_DETAILS.replace(':staffId', staffId));
+    }
+  }, [staffId, handleMenuClose, navigate]);
 
   const menuId = 'account-menu';
   const renderMenu = (
     <Menu anchorEl={anchorEl} id={menuId} keepMounted open={isMenuOpen} onClose={handleMenuClose}>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem onClick={onProfile}>
         <Box
           sx={{
             display: 'flex',
@@ -88,7 +92,7 @@ export default function Appbar({
             width: '100%',
           }}
         >
-          <Avatar alt="profile" src="" {...getAvatarProps(`${name}`)} />
+          <Avatar alt="profile" src={profileUrl ?? ''} {...getAvatarProps(`${name}`)} />
           <Box ml={1}>
             <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
               {name}
@@ -151,7 +155,7 @@ export default function Appbar({
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: 'flex' }}>
             <MenuItem onClick={handleProfileMenuOpen}>
-              <Avatar alt="profile" src="" {...getAvatarProps(`${name}`)} />
+              <Avatar alt="profile" src={profileUrl ?? ''} {...getAvatarProps(`${name}`)} />
             </MenuItem>
           </Box>
         </Toolbar>

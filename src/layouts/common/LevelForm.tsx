@@ -16,6 +16,7 @@ import type { FormikErrors, FormikTouched } from 'formik/dist/types';
 import { useCallback } from 'react';
 import dayjs from 'dayjs';
 import NumbersOutlinedIcon from '@mui/icons-material/NumbersOutlined';
+import { AvatarUpload } from './FormComponents';
 
 type LevelFormProps = {
   index: number;
@@ -66,6 +67,21 @@ const LevelForm = ({
     updated.splice(index, 1);
     const reIndexed = updated.map((item, idx) => ({ ...item, level: idx + 1 }));
     setFieldValue('levelDetails', reIndexed);
+  }, [index, levelDetails, setFieldValue]);
+
+  const onDocumentChange = useCallback(
+    (file: File) => {
+      const updated = [...levelDetails];
+      updated[index] = { ...updated[index], document: file };
+      setFieldValue('levelDetails', updated);
+    },
+    [index, levelDetails, setFieldValue],
+  );
+
+  const onClearDocument = useCallback(() => {
+    const updated = [...levelDetails];
+    updated[index] = { ...updated[index], document: null };
+    setFieldValue('levelDetails', updated);
   }, [index, levelDetails, setFieldValue]);
 
   return (
@@ -130,20 +146,17 @@ const LevelForm = ({
                   />
                 </LocalizationProvider>
               </FormControl>
-              <FormControl fullWidth sx={{ mt: 2 }}>
-                <Typography mb={1} variant="h6">
-                  Document
+              <br />
+              <AvatarUpload
+                file={values.document}
+                onChange={onDocumentChange}
+                onClear={onClearDocument}
+              />
+              {touched?.document && Boolean(errors?.document) && (
+                <Typography color="error" variant="caption">
+                  {errors?.document}
                 </Typography>
-                <TextField
-                  id="document"
-                  name="document"
-                  size="small"
-                  value={values.document}
-                  onChange={handleInputChange}
-                  error={touched?.document && Boolean(errors?.document)}
-                  helperText={touched?.document && errors?.document}
-                />
-              </FormControl>
+              )}
               <FormControl fullWidth sx={{ mt: 2 }}>
                 <Typography mb={1} variant="h6">
                   Remarks

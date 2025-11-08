@@ -4,13 +4,21 @@ import ContactDetails from './ContactDetails';
 
 type BasicDetailsProps = {
   name: string;
+  profileUrl?: string | null;
   status: 'Active' | 'Inactive';
   data: { [key: string]: string | number };
   contactNumber: string;
   email: string;
 };
 
-const BasicDetails = ({ name, status, data, contactNumber, email }: BasicDetailsProps) => {
+const BasicDetails = ({
+  name,
+  profileUrl,
+  status,
+  data,
+  contactNumber,
+  email,
+}: BasicDetailsProps) => {
   const theme = useTheme();
   return (
     <>
@@ -24,7 +32,7 @@ const BasicDetails = ({ name, status, data, contactNumber, email }: BasicDetails
             gap={2}
           >
             <Avatar
-              src=""
+              src={profileUrl ?? ''}
               {...getAvatarProps(`${name}`, { width: 80, height: 80 })}
               variant="square"
             />

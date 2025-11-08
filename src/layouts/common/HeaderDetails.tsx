@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SensorOccupiedOutlinedIcon from '@mui/icons-material/SensorOccupiedOutlined';
 import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
+import { useAuth } from '../../state';
 
 type HeaderProps = {
   title: string;
@@ -23,6 +24,7 @@ const HeaderDetails = ({
   onClickPromote,
   onClickRevoke,
 }: HeaderProps) => {
+  const { role } = useAuth();
   return (
     <Box
       flexGrow={1}
@@ -58,7 +60,7 @@ const HeaderDetails = ({
             >
               Promote
             </Button>
-            {showRevoke && (
+            {showRevoke && role === 'ADMIN' && (
               <Button
                 variant="outlined"
                 color="error"

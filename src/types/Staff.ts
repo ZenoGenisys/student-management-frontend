@@ -13,7 +13,7 @@ export type GetStaffRequest = {
 export type LevelDetails = {
   level: number;
   date: string | Dayjs | null;
-  document: string;
+  document: string | File | null;
   remarks: string;
 };
 
@@ -36,6 +36,7 @@ export type StaffType = {
   additionalDetails: string;
   status: 'Active' | 'Inactive';
   role: 'ADMIN' | 'STAFF' | null;
+  profileUrl?: string | null;
   levelDetails?: LevelDetails[];
 };
 
@@ -55,6 +56,7 @@ export type CreateStaff = {
   status: 'Active' | 'Inactive';
   bloodGroup: string;
   additionalDetails: string;
+  profileUrl?: string | null;
   levelDetails?: LevelDetails[];
 };
 
