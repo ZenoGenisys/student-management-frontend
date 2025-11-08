@@ -114,13 +114,23 @@ const AttendanceDetail: React.FC = () => {
       cellRenderer: (cellProps: CellRender<AttendanceDay>) => {
         const student = cellProps.row as StudentAttendanceDay;
         return (
-          <NameCell
-            name={student.name}
-            profileUrl={student?.profileUrl}
-            redirectionUrl={PATH.STUDENT_DETAILS.replace(':studentId', String(student.studentId))}
-          />
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <NameCell
+              name={student.name}
+              profileUrl={student?.profileUrl}
+              redirectionUrl={PATH.STUDENT_DETAILS.replace(':studentId', String(student.studentId))}
+            />
+          </Box>
         );
       },
+      align: 'center',
     },
     { id: 'attendance', label: 'Attendance', sortable: true, cellRenderer: renderAttendanceCell },
     { id: 'center', label: 'Center', sortable: true },
@@ -134,13 +144,23 @@ const AttendanceDetail: React.FC = () => {
       cellRenderer: (cellProps: CellRender<AttendanceDay>) => {
         const staff = cellProps.row as StaffAttendanceDay;
         return (
-          <NameCell
-            name={staff.name}
-            profileUrl={staff?.profileUrl}
-            redirectionUrl={PATH.STAFF_DETAILS.replace(':staffId', String(staff.staffId))}
-          />
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <NameCell
+              name={staff.name}
+              profileUrl={staff?.profileUrl}
+              redirectionUrl={PATH.STAFF_DETAILS.replace(':staffId', String(staff.staffId))}
+            />
+          </Box>
         );
       },
+      align: 'center',
     },
     { id: 'attendance', label: 'Attendance', sortable: true, cellRenderer: renderAttendanceCell },
     { id: 'center', label: 'Center', sortable: true },
