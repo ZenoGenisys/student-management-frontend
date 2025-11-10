@@ -16,7 +16,7 @@ import type { FormikErrors, FormikTouched } from 'formik/dist/types';
 import { useCallback } from 'react';
 import dayjs from 'dayjs';
 import NumbersOutlinedIcon from '@mui/icons-material/NumbersOutlined';
-import { AvatarUpload } from './FormComponents';
+import { AcademyDocumentUpload } from './FormComponents';
 
 type LevelFormProps = {
   index: number;
@@ -125,7 +125,17 @@ const LevelForm = ({
         <Box>
           <Grid container spacing={2} mt={2}>
             <Grid size={12}>
-              <FormControl fullWidth>
+              <AcademyDocumentUpload
+                file={values.document}
+                onChange={onDocumentChange}
+                onClear={onClearDocument}
+              />
+              {touched?.document && Boolean(errors?.document) && (
+                <Typography color="error" variant="caption">
+                  {errors?.document}
+                </Typography>
+              )}
+              <FormControl fullWidth sx={{ mt: 1 }}>
                 <Typography mb={1} variant="h6">
                   Date
                 </Typography>
@@ -146,17 +156,6 @@ const LevelForm = ({
                   />
                 </LocalizationProvider>
               </FormControl>
-              <br />
-              <AvatarUpload
-                file={values.document}
-                onChange={onDocumentChange}
-                onClear={onClearDocument}
-              />
-              {touched?.document && Boolean(errors?.document) && (
-                <Typography color="error" variant="caption">
-                  {errors?.document}
-                </Typography>
-              )}
               <FormControl fullWidth sx={{ mt: 2 }}>
                 <Typography mb={1} variant="h6">
                   Remarks
