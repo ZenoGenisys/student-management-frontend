@@ -54,11 +54,10 @@ export const postMultiPart = <T>(
 ): Promise<T> => {
   const query = params !== null ? '?' + qs.stringify(params, { allowDots: true }) : '';
 
-  const url = axios.defaults.baseURL + path + query;
   return asyncOperation(
     axios({
       method: method,
-      url: url,
+      url: path + query,
       data: data,
       onUploadProgress,
       headers: {

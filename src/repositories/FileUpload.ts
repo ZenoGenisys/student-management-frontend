@@ -1,4 +1,5 @@
 import { postMultiPart } from './AxiosClient';
+import { API_PATH } from '../config';
 
 /**
  * Interface for file upload request item
@@ -42,5 +43,5 @@ export const uploadFiles = async (files: FileUploadItem[]): Promise<MultiFileUpl
     formData.append('names', item.name);
   }
 
-  return postMultiPart<MultiFileUploadResponse>('/api/files/upload', 'POST', formData, null);
+  return postMultiPart<MultiFileUploadResponse>(API_PATH.FILE_UPLOAD, 'POST', formData, null);
 };

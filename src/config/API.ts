@@ -18,4 +18,5 @@ export const API_PATH = {
   FEES_PENDING_LIST: '/dashboard/pending/fees',
   REVENUE_GRAPH: '/dashboard/revenue/graph',
   EXPORT: '/export',
+  FILE_UPLOAD: '/files/upload',
 };
