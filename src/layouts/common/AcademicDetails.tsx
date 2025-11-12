@@ -1,21 +1,27 @@
 import { useMemo } from 'react';
 import { Box, Paper, Typography } from '@mui/material';
-import type { ColumnDefsProps, LevelDetails } from '../../types';
+import type { CellRender, ColumnDefsProps, LevelDetails } from '../../types';
 import ListView from '../../components/ListView';
 import dayjs from 'dayjs';
+import { ViewDocumentCell } from '../../components';
 
 type AcademicDetailsProps = {
   data?: LevelDetails[];
 };
 
-const Column: ColumnDefsProps[] = [
-  { id: 'level', label: 'Level' },
-  { id: 'date', label: 'Completed Date', dateFormat: true },
-  { id: 'document', label: 'View Document' },
-  { id: 'remarks', label: 'Remarks' },
-];
-
 const AcademicDetails = ({ data = [] }: AcademicDetailsProps) => {
+  const Column: ColumnDefsProps[] = [
+    { id: 'level', label: 'Level' },
+    { id: 'date', label: 'Completed Date', dateFormat: true },
+    {
+      id: 'document',
+      label: 'View Document',
+      cellRenderer: (cellProps: CellRender<LevelDetails>) => (
+        <ViewDocumentCell url={String(cellProps.row.document)} />
+      ),
+    },
+    { id: 'remarks', label: 'Remarks' },
+  ];
   const row = useMemo(
     () =>
       data.map((lvl) => ({

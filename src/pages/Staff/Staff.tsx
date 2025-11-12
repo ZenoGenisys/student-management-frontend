@@ -38,6 +38,7 @@ const Staff: React.FC = () => {
         cellRenderer: (cellProps: CellRender<StaffType>) => (
           <NameCell
             name={cellProps.row.name}
+            profileUrl={cellProps?.row?.profileUrl}
             redirectionUrl={PATH.STAFF_DETAILS.replace(':staffId', String(cellProps.row.staffId))}
           />
         ),

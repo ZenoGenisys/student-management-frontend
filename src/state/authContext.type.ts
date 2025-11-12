@@ -8,6 +8,8 @@ export type AuthContextType = {
   token?: string | null;
   role?: Role | null;
   name?: string | null;
+  staffId?: string | null;
+  profileUrl?: string | null;
   isAuthLoading: boolean;
   login: (data: LoginResponse) => void;
   logout: () => void;
@@ -18,6 +20,7 @@ export const AuthContext = createContext<AuthContextType>({
   token: null,
   role: null,
   name: null,
+  profileUrl: null,
   isAuthLoading: true,
   login: () => {},
   logout: () => {},

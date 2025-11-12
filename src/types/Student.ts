@@ -46,6 +46,7 @@ export type StudentType = {
   studentType: 'regular' | 'crash_course';
   amount: number;
   primaryContactNumber?: string;
+  profileUrl?: string | null;
   levelDetails?: LevelDetails[];
   parentDetails?: ParentDetails;
   additionalDetails?: string;
@@ -78,6 +79,7 @@ export type CreateStudent = {
   bloodGroup: string;
   studentType: string;
   amount: number;
+  profileUrl?: string | null;
   levelDetails?: LevelDetails[];
   parentDetails?: ParentDetails;
 };

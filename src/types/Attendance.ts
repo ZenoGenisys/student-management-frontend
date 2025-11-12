@@ -16,6 +16,7 @@ export type StudentAttendanceDay = {
   studentId: number;
   id: number;
   name: string;
+  profileUrl: string;
   attendance: 'present' | 'absent' | 'not marked';
   batch: string[];
   center: string;
@@ -25,6 +26,7 @@ export type StaffAttendanceDay = {
   staffId: number;
   id: number;
   name: string;
+  profileUrl: string;
   attendance: 'present' | 'absent' | 'not marked';
   center: string;
 };

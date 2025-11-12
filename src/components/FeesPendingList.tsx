@@ -39,7 +39,7 @@ const FeesPendingList = ({ data }: FeesPendingListProps) => {
             }
           >
             <ListItemAvatar>
-              <Avatar {...getAvatarProps(row.name)} />
+              <Avatar src={row?.profileUrl ?? ''} {...getAvatarProps(row.name)} />
             </ListItemAvatar>
             <ListItemText
               primary={

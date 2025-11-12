@@ -6,6 +6,7 @@ import type { CellRender, ColumnDefsProps, StaffSalaryRequest, StaffSalaryType }
 import { useCallback, useMemo, useState } from 'react';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import AddSalaryModal from './AddSalaryModal';
+import { useAuth } from '../../state';
 
 const StaffSalaryTab = () => {
   const {
@@ -22,6 +23,7 @@ const StaffSalaryTab = () => {
     handleAdd,
     handleUpdate,
   } = useStaffSalary();
+  const { role } = useAuth();
   const [open, setOpen] = useState(false);
   const [editSalary, setEditSalary] = useState<StaffSalaryType | null>(null);
 
@@ -64,6 +66,7 @@ const StaffSalaryTab = () => {
         id: 'actions',
         label: 'Action',
         sortable: false,
+        hidden: role !== 'ADMIN',
         cellRenderer: (cellProps: CellRender<StaffSalaryType>) => (
           <MenuCell
             id={cellProps.row?.feesId}
@@ -73,7 +76,7 @@ const StaffSalaryTab = () => {
         ),
       },
     ],
-    [handleDelete, handleEdit],
+    [role, handleDelete, handleEdit],
   );
 
   return (
@@ -96,16 +99,18 @@ const StaffSalaryTab = () => {
         >
           Staff Salary
         </Typography>
-        <Box display={'flex'} alignItems={'center'} gap={2}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddCircleOutlineOutlinedIcon />}
-            onClick={handleToggleModal}
-          >
-            Add Salary
-          </Button>
-        </Box>
+        {role === 'ADMIN' && (
+          <Box display={'flex'} alignItems={'center'} gap={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              startIcon={<AddCircleOutlineOutlinedIcon />}
+              onClick={handleToggleModal}
+            >
+              Add Salary
+            </Button>
+          </Box>
+        )}
       </Box>
       <Pagination
         page={page}

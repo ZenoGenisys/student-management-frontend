@@ -111,23 +111,27 @@ const ListView = <T extends Row = Row>({
                 </TableCell>
               )}
               {columns?.map((column) => (
-                <TableCell
-                  key={`column-${column.id}`}
-                  align={column.align || 'center'}
-                  style={{ width: column.width || 'auto', fontWeight: 'bold' }}
-                >
-                  {column.sortable ? (
-                    <TableSortLabel
-                      active={sort?.orderBy === column.id}
-                      direction={sort?.order}
-                      onClick={() => handleRequestSort(column.id, sort?.order)}
+                <>
+                  {!column?.hidden ? (
+                    <TableCell
+                      key={`column-${column.id}`}
+                      align={column.align || 'center'}
+                      style={{ width: column.width || 'auto', fontWeight: 'bold' }}
                     >
-                      {column.label}
-                    </TableSortLabel>
-                  ) : (
-                    column.label
-                  )}
-                </TableCell>
+                      {column.sortable ? (
+                        <TableSortLabel
+                          active={sort?.orderBy === column.id}
+                          direction={sort?.order}
+                          onClick={() => handleRequestSort(column.id, sort?.order)}
+                        >
+                          {column.label}
+                        </TableSortLabel>
+                      ) : (
+                        column.label
+                      )}
+                    </TableCell>
+                  ) : null}
+                </>
               ))}
             </TableRow>
           </TableHead>
@@ -151,6 +155,9 @@ const ListView = <T extends Row = Row>({
                   </TableCell>
                 )}
                 {columns.map((column) => {
+                  if (column?.hidden) {
+                    return null;
+                  }
                   if (typeof column.cellRenderer === 'function') {
                     return (
                       <TableCell key={column.id} align={column.align || 'center'}>

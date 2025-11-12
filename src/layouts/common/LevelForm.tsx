@@ -16,6 +16,7 @@ import type { FormikErrors, FormikTouched } from 'formik/dist/types';
 import { useCallback } from 'react';
 import dayjs from 'dayjs';
 import NumbersOutlinedIcon from '@mui/icons-material/NumbersOutlined';
+import { AcademyDocumentUpload } from './FormComponents';
 
 type LevelFormProps = {
   index: number;
@@ -68,6 +69,21 @@ const LevelForm = ({
     setFieldValue('levelDetails', reIndexed);
   }, [index, levelDetails, setFieldValue]);
 
+  const onDocumentChange = useCallback(
+    (file: File) => {
+      const updated = [...levelDetails];
+      updated[index] = { ...updated[index], document: file };
+      setFieldValue('levelDetails', updated);
+    },
+    [index, levelDetails, setFieldValue],
+  );
+
+  const onClearDocument = useCallback(() => {
+    const updated = [...levelDetails];
+    updated[index] = { ...updated[index], document: null };
+    setFieldValue('levelDetails', updated);
+  }, [index, levelDetails, setFieldValue]);
+
   return (
     <Card>
       <CardHeader
@@ -109,7 +125,17 @@ const LevelForm = ({
         <Box>
           <Grid container spacing={2} mt={2}>
             <Grid size={12}>
-              <FormControl fullWidth>
+              <AcademyDocumentUpload
+                file={values.document}
+                onChange={onDocumentChange}
+                onClear={onClearDocument}
+              />
+              {touched?.document && Boolean(errors?.document) && (
+                <Typography color="error" variant="caption">
+                  {errors?.document}
+                </Typography>
+              )}
+              <FormControl fullWidth sx={{ mt: 1 }}>
                 <Typography mb={1} variant="h6">
                   Date
                 </Typography>
@@ -129,20 +155,6 @@ const LevelForm = ({
                     views={isMobile ? ['year', 'month', 'day'] : undefined}
                   />
                 </LocalizationProvider>
-              </FormControl>
-              <FormControl fullWidth sx={{ mt: 2 }}>
-                <Typography mb={1} variant="h6">
-                  Document
-                </Typography>
-                <TextField
-                  id="document"
-                  name="document"
-                  size="small"
-                  value={values.document}
-                  onChange={handleInputChange}
-                  error={touched?.document && Boolean(errors?.document)}
-                  helperText={touched?.document && errors?.document}
-                />
               </FormControl>
               <FormControl fullWidth sx={{ mt: 2 }}>
                 <Typography mb={1} variant="h6">

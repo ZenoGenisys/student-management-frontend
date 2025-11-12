@@ -19,7 +19,7 @@ const PageNotFound = lazy(() => import('../pages/PageNotFound'));
 const AttendanceDetail = lazy(() => import('../pages/AttendanceDetail'));
 
 const Router = () => {
-  const { token, isAuthLoading } = useAuth();
+  const { token, isAuthLoading, role } = useAuth();
 
   if (isAuthLoading) {
     return (
@@ -45,7 +45,13 @@ const Router = () => {
         />
         <Route
           path={PATH.LOGIN}
-          element={token ? <Navigate to={PATH.DASHBOARD} replace /> : <Login />}
+          element={
+            token ? (
+              <Navigate to={role === 'ADMIN' ? PATH.DASHBOARD : PATH.ATTENDANCE} replace />
+            ) : (
+              <Login />
+            )
+          }
         />
 
         <Route
@@ -55,15 +61,20 @@ const Router = () => {
             </ProtectedRoute>
           }
         >
-          <Route path={PATH.DASHBOARD} element={<Dashboard />} />
-          <Route path={PATH.STUDENT} element={<Student />} />
-          <Route path={PATH.STUDENT_DETAILS} element={<StudentDetails />} />
-          <Route path={PATH.ADD_STUDENT} element={<StudentForm />} />
-          <Route path={PATH.EDIT_STUDENT} element={<StudentForm />} />
-          <Route path={PATH.STAFF} element={<Staff />} />
+          {' '}
+          {role === 'ADMIN' && (
+            <>
+              <Route path={PATH.DASHBOARD} element={<Dashboard />} />
+              <Route path={PATH.STUDENT} element={<Student />} />
+              <Route path={PATH.STUDENT_DETAILS} element={<StudentDetails />} />
+              <Route path={PATH.ADD_STUDENT} element={<StudentForm />} />
+              <Route path={PATH.EDIT_STUDENT} element={<StudentForm />} />
+              <Route path={PATH.STAFF} element={<Staff />} />
+              <Route path={PATH.ADD_STAFF} element={<StaffForm />} />
+              <Route path={PATH.EDIT_STAFF} element={<StaffForm />} />
+            </>
+          )}
           <Route path={PATH.STAFF_DETAILS} element={<StaffDetails />} />
-          <Route path={PATH.ADD_STAFF} element={<StaffForm />} />
-          <Route path={PATH.EDIT_STAFF} element={<StaffForm />} />
           <Route path={PATH.ATTENDANCE} element={<Attendance />} />
           <Route path={PATH.ATTENDANCE_DETAILS} element={<AttendanceDetail />} />
           <Route path="*" element={<PageNotFound />} />
