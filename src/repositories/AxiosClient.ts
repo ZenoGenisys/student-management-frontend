@@ -11,7 +11,7 @@ type ResponseData<T> = { data: T };
 export const register = async () => {
   // Set the backend base URL. Switched from a relative '/api' proxy to the
   // production API gateway endpoint.
-  axios.defaults.baseURL = 'https://qis6mmxuph.execute-api.ap-south-2.amazonaws.com/production';
+  axios.defaults.baseURL = 'https://l605cp47e5.execute-api.ap-south-2.amazonaws.com/prod';
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 };
 
