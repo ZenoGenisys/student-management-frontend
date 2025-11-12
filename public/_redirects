@@ -1,2 +1,2 @@
-/api/*    http://140.245.209.64/:splat   200
+/api/*    https://qis6mmxuph.execute-api.ap-south-2.amazonaws.com/production/student-management-BE/:splat   200
 /*        /index.html   200
