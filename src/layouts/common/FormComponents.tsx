@@ -97,9 +97,7 @@ export const AvatarUpload = ({ file, onChange, onClear }: AvatarUploadProps) => 
           message: 'file size should be less than 4MB',
           severity: 'info',
         });
-      } else if (
-        !['image/jpeg', 'image/png'].includes(files.type)
-      ) {
+      } else if (!['image/jpeg', 'image/png'].includes(files.type)) {
         showSnackbar({
           message: 'File type should be JPG or PNG',
           severity: 'info',
@@ -125,7 +123,11 @@ export const AvatarUpload = ({ file, onChange, onClear }: AvatarUploadProps) => 
           }}
         />
       ) : (
-        <Avatar src="/static/images/avatar/1.jpg" sx={{ width: 80, height: 80 }} variant="circular" />
+        <Avatar
+          src="/static/images/avatar/1.jpg"
+          sx={{ width: 80, height: 80 }}
+          variant="circular"
+        />
       )}
 
       <Box display="flex" flexDirection="column" gap={1}>
@@ -139,12 +141,7 @@ export const AvatarUpload = ({ file, onChange, onClear }: AvatarUploadProps) => 
             startIcon={<UploadFileOutlinedIcon />}
           >
             Upload Avatar
-            <input
-              type="file"
-              hidden
-              onChange={handleFileUpload}
-              accept="image/*"
-            />
+            <input type="file" hidden onChange={handleFileUpload} accept="image/*" />
           </Button>
           <Button
             variant="contained"
@@ -182,9 +179,13 @@ export const AcademyDocumentUpload = ({ file, onChange, onClear }: AcademyDocume
           severity: 'info',
         });
       } else if (
-        !['image/jpeg', 'image/png', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(
-          files.type,
-        )
+        ![
+          'image/jpeg',
+          'image/png',
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ].includes(files.type)
       ) {
         showSnackbar({
           message: 'File type should be JPG, PNG, PDF, DOC, or DOCX',
@@ -224,7 +225,6 @@ export const AcademyDocumentUpload = ({ file, onChange, onClear }: AcademyDocume
 
   return (
     <Box display="flex" gap={1} mb={3} flexDirection="column">
-
       <Box display="flex" flexDirection="column" gap={1}>
         <Box display="flex" gap={1}>
           <Button
@@ -254,7 +254,9 @@ export const AcademyDocumentUpload = ({ file, onChange, onClear }: AcademyDocume
             Remove
           </Button>
         </Box>
-        <Typography variant="caption">File must be JPG, PNG, PDF, DOC, or DOCX format, up to 4 MB.</Typography>
+        <Typography variant="caption">
+          File must be JPG, PNG, PDF, DOC, or DOCX format, up to 4 MB.
+        </Typography>
       </Box>
 
       {renderFilePreview()}
