@@ -42,5 +42,5 @@ export const uploadFiles = async (files: FileUploadItem[]): Promise<MultiFileUpl
     formData.append('names', item.name);
   }
 
-  return postMultiPart<MultiFileUploadResponse>('api/files/upload', 'POST', formData, null);
+  return postMultiPart<MultiFileUploadResponse>('/api/files/upload', 'POST', formData, null);
 };
