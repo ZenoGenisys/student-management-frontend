@@ -1,3 +1,4 @@
+import { API_PATH } from '../config';
 import { postMultiPart } from './AxiosClient';
 import { API_PATH } from '../config';
 
