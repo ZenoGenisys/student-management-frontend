@@ -38,18 +38,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     [handleStatusAPI],
   );
 
-  useEffect(() => {
-    register();
+  const getAuth = useCallback(async () => {
     const savedAuth = storageService.getItem<AuthState>('auth');
     if (savedAuth) {
       setUserSessionToken(savedAuth.token);
-      handleStatusAPI(savedAuth.token ?? '');
+      await handleStatusAPI(savedAuth.token ?? '');
     }
     setIsAuthLoading(false);
+  }, [handleStatusAPI]);
+
+  useEffect(() => {
+    register();
+    getAuth();
     SessionService.observe(() => {
       logout();
     });
-  }, [logout, handleStatusAPI]);
+  }, [logout, getAuth]);
 
   const value = useMemo(
     () => ({
